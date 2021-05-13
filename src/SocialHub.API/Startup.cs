@@ -29,6 +29,17 @@ namespace SocialHub.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                // TODO: Restrict Origins
+                options.AddDefaultPolicy(options =>
+                {
+                    options.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -65,6 +76,8 @@ namespace SocialHub.API
             // TODO: Use app.UseHttpsRedirection(); in production
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthentication();
 

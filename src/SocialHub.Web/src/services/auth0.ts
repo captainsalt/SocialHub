@@ -4,6 +4,7 @@ const auth0 = new Auth0Client({
   domain: process.env.VUE_APP_DOMAIN,
   client_id: process.env.VUE_APP_CLIENT_ID,
   redirect_uri: process.env.VUE_APP_REDIRECT,
+  audience: process.env.VUE_APP_API_IDENTIFIER,
   cacheLocation: "localstorage"
 });
 
