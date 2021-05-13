@@ -39,10 +39,10 @@ namespace SocialHub.Infrastructure.Tests
         [Fact]
         public async Task GetUserByID_ShouldReturnNone_WhenUserDoesNotExist()
         {
-            // Arrange
+            // Act
             var user = await _sut.GetUserByID(1);
 
-
+            // Assert
             user.IsNone.Should().BeTrue();
         }
     }

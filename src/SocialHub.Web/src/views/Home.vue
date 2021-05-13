@@ -1,27 +1,34 @@
 <template>
   <div>
-    <label for="email"> {{ email }}</label>
-    <input
-      v-model="email"
-      placeholder="email"
-      type="text"
-    >
-    <label for=""> {{ password }}</label>
-    <input v-model="password" type="password">
-    <button @click="send">
-      Send
+    <button @click="login">
+      Login
+    </button>
+
+    <button @click="logout">
+      Logout
     </button>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import auth0 from "@/services/auth0";
+import router from "@/router";
+import { onMounted } from "@vue/runtime-core";
 
-const email = ref("");
-const password = ref("");
+onMounted(async () => {
+  if (window.location.search.includes("code=") &&
+    window.location.search.includes("state=")) {
+    await auth0.handleRedirectCallback();
 
-function send() {
-  email.value = "send";
-  password.value = "yosha";
+    router.push("/dashboard");
+  }
+});
+
+async function login() { // eslint-disable-line
+  await auth0.loginWithRedirect();
+}
+
+async function logout() { // eslint-disable-line
+  await auth0.logout();
 }
 </script>
