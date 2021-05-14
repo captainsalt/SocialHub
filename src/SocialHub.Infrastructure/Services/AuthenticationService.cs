@@ -1,5 +1,6 @@
 ﻿using LanguageExt;
 using Microsoft.Extensions.Configuration;
+using SocialHub.Application.Models;
 using SocialHub.Application.Services;
 using SocialHub.Domain;
 using SocialHub.Domain.Models;
@@ -21,12 +22,12 @@ namespace SocialHub.Infrastructure.Services
             _dbContext = dbContext;
         }
 
-        public Task<Option<Account>> Login(Account user)
+        public Task<Option<Account>> Login(LoginRequest loginRequest)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Account> Register(Account user)
+        public Task<Option<Account>> Register(RegisterRequest user)
         {
             throw new NotImplementedException();
         }
