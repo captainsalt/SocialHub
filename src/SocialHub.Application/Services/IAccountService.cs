@@ -7,6 +7,8 @@ namespace SocialHub.Application
 {
     public interface IAccountService
     {
-        Task<Option<Account>> GetUserByID(int id);
+        Task<Option<Account>> GetUserByIDAsync(int id);
+
+        Task<Option<Account>> GetUserByUsernameAsync(string username);
     }
 }

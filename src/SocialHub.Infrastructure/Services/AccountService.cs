@@ -17,10 +17,14 @@ namespace SocialHub.Infrastructure
             _dbContext = dbContext;
         }
 
-        public async Task<Option<Account>> GetUserByID(int id)
+        public Task<Option<Account>> GetUserByIDAsync(int id)
         {
-            var user = await _dbContext.Accounts.FindAsync(id);
-            return user;
+            throw new System.NotImplementedException();
+        }
+
+        public Task<Option<Account>> GetUserByUsernameAsync(string username)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
