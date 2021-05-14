@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace SocialHub.Application.Models
 {
-    public record RegisterRequest(string email, string username, string password);
+    public record RegisterRequest(string Email, string Username, string Password);
 }
