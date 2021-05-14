@@ -1,9 +1,11 @@
 ﻿using LanguageExt;
+using Microsoft.EntityFrameworkCore;
 using SocialHub.Application;
+using SocialHub.Application.Exceptions;
 using SocialHub.Application.Interfaces;
-using SocialHub.Domain;
+using SocialHub.Application.Models;
+using SocialHub.Application.Services;
 using SocialHub.Domain.Models;
-using SocialHub.Infrastructure.Database;
 using System.Threading.Tasks;
 
 namespace SocialHub.Infrastructure
@@ -11,10 +13,14 @@ namespace SocialHub.Infrastructure
     public class AccountService : IAccountService
     {
         private readonly ISocialHubDbContext _dbContext;
+        private readonly ICryptographyService _cryptographyService;
 
-        public AccountService(ISocialHubDbContext dbContext)
+        public AccountService(
+            ISocialHubDbContext dbContext,
+            ICryptographyService cryptographyService)
         {
             _dbContext = dbContext;
+            _cryptographyService = cryptographyService;
         }
 
         public Task<Option<Account>> GetUserByIDAsync(int id)
@@ -22,9 +28,20 @@ namespace SocialHub.Infrastructure
             throw new System.NotImplementedException();
         }
 
-        public Task<Option<Account>> GetUserByUsernameAsync(string username)
+        public async Task<Option<Account>> GetUserByUsernameAsync(string username) =>
+            await _dbContext.Accounts.SingleOrDefaultAsync(acc => acc.Username == username);
+
+        public async Task<Either<UsernameInUseException, Account>> RegisterAsync(RegisterRequest request)
         {
-            throw new System.NotImplementedException();
+            var account = await GetUserByUsernameAsync(request.Username);
+
+            if (account.IsSome)
+                return new UsernameInUseException();
+
+            var hashedPassword = _cryptographyService.Hash(request.Password);
+            var result = await _dbContext.Accounts.AddAsync(new(request.Email, request.Username, hashedPassword));
+
+            return result.Entity;
         }
     }
 }
