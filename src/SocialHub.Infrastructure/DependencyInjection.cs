@@ -4,6 +4,7 @@ using SocialHub.Application.Interfaces;
 using SocialHub.Application.Services;
 using SocialHub.Infrastructure.Database;
 using SocialHub.Infrastructure.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace SocialHub.Infrastructure
 {
@@ -12,7 +13,7 @@ namespace SocialHub.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection serviceCollection, IConfiguration configuration)
         {
             // TODO: Add ability to configure from IConfiguration
-            serviceCollection.AddDbContext<ISocialHubDbContext, SocialHubDbContext>();
+            serviceCollection.AddDbContext<ISocialHubDbContext, SocialHubDbContext>(options => options.UseInMemoryDatabase("SocialHub"));
 
             serviceCollection.AddTransient<IAccountService, AccountService>();
             serviceCollection.AddTransient<IAuthenticationService, AuthenticationService>();
