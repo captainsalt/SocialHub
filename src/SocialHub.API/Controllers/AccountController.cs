@@ -13,22 +13,35 @@ namespace SocialHub.API.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _accountService;
+        private readonly IAuthenticationService _authenticationService;
 
-        public AccountController(IAccountService accountService)
+        public AccountController(IAccountService accountService, IAuthenticationService authenticationService)
         {
             _accountService = accountService;
+            _authenticationService = authenticationService;
         }
 
-        [HttpPost]
+        [HttpPost("login")]
         [Authorize]
-        public async Task<IActionResult> Register(RegisterRequest request)
+        public async Task<IActionResult> Login(LoginRequest request)
+        {
+            var result = await _authenticationService.LoginAsync(request);
+
+            return result.Match<IActionResult>(
+                token => Ok(token),
+                ex => BadRequest(ex)
+            );
+        }
+
+        [HttpPost("create")]
+        public async Task<IActionResult> Register([FromForm] RegisterRequest request)
         {
             var result = await _accountService.RegisterAsync(request);
 
-            if (result.IsRight)
-                return Ok();
-            else
-                return BadRequest();
+            return result.Match<IActionResult>(
+                acc => Ok(),
+                ex => BadRequest(ex)
+            );
         }
     }
 }
