@@ -27,9 +27,10 @@ namespace SocialHub.API.Controllers
         {
             var result = await _authenticationService.LoginAsync(request);
 
+            // TODO: Make auth response class
             return result.Match<IActionResult>(
                 token => Ok(token),
-                ex => BadRequest(ex)
+                ex => BadRequest(ex.Message)
             );
         }
 
@@ -40,7 +41,7 @@ namespace SocialHub.API.Controllers
 
             return result.Match<IActionResult>(
                 acc => Ok(),
-                ex => BadRequest(ex)
+                ex => BadRequest(ex.Message)
             );
         }
     }
