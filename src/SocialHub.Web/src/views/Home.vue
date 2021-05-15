@@ -1,12 +1,6 @@
 <template>
   <div>
-    <button @click="login">
-      Login
-    </button>
-
-    <button @click="logout">
-      Logout
-    </button>
+    <LoginForm/>
   </div>
 </template>
 
@@ -14,6 +8,7 @@
 import auth0 from "@/services/auth0";
 import router from "@/router";
 import { onMounted } from "@vue/runtime-core";
+import LoginForm from "@/components/LoginForm.vue";
 
 onMounted(async () => {
   if (window.location.search.includes("code=") &&
