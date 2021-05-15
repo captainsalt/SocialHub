@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace SocialHub.Infrastructure.Services
 {
+    // TODO: Combine with AccountService
     public class AuthenticationService : IAuthenticationService
     {
         private readonly IAccountService _accountService;
