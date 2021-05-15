@@ -40,22 +40,6 @@ namespace SocialHub.API
                 });
             });
 
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
-            {
-                options.Authority = Configuration["Auth0:Domain"];
-                options.Audience = Configuration["Auth0:ApiIdentifier"];
-                // TODO: Use more claims 
-                // TODO: Add roles
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    NameClaimType = ClaimTypes.NameIdentifier,
-                };
-            });
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
