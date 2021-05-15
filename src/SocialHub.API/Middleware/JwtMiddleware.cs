@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using SocialHub.Application;
+using SocialHub.Application.Services;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
