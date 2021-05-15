@@ -10,7 +10,7 @@
       >
 
       <!-- Username -->
-      <label for="username">Username: {{ username }}</label>
+      <label for="username">Username</label>
       <input
         id="username"
         v-model="username"

@@ -5,6 +5,7 @@
 </template>
 
 <script lang="ts" setup>
+/* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
 import auth0 from "@/services/auth0";
 import router from "@/router";
 import { onMounted } from "@vue/runtime-core";
@@ -19,11 +20,11 @@ onMounted(async () => {
   }
 });
 
-async function login() { // eslint-disable-line
+async function login() {
   await auth0.loginWithRedirect();
 }
 
-async function logout() { // eslint-disable-line
+async function logout() {
   await auth0.logout();
 }
 </script>
