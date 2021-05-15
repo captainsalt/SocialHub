@@ -1,11 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
-using SocialHub.Application.Services;
+﻿using SocialHub.Application.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SocialHub.Infrastructure.Services
 {
@@ -40,8 +35,10 @@ namespace SocialHub.Infrastructure.Services
             byte[] hash = pbkdf2.GetBytes(20);
 
             for (int i = 0; i < 20; i++)
+            {
                 if (hashBytes[i + 16] != hash[i])
                     return false;
+            }
 
             return true;
         }
