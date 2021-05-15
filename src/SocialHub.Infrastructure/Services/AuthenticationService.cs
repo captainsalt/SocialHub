@@ -31,8 +31,17 @@ namespace SocialHub.Infrastructure.Services
             var accountOption = await _accountService.GetUserByUsernameAsync(loginRequest.Username);
 
             return accountOption
-                    .Some<Either<InvalidLoginException, string>>(acc => _jwtService.GenerateJwtToken(acc))
-                    .None(() => new InvalidLoginException());
+                    .Some<Either<InvalidLoginException, string>>(
+                        acc =>
+                        {
+                            var isMatch = _cryptographyService.IsMatch(loginRequest.Password, acc.Password);
+
+                            if (isMatch)
+                                return _jwtService.GenerateJwtToken(acc);
+                            else
+                                return new InvalidLoginException();
+                        })
+                        .None(() => new InvalidLoginException());
         }
     }
 }
