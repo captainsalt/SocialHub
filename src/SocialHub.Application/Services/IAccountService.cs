@@ -4,7 +4,7 @@ using SocialHub.Application.Models;
 using SocialHub.Domain.Models;
 using System.Threading.Tasks;
 
-namespace SocialHub.Application
+namespace SocialHub.Application.Services
 {
     public interface IAccountService
     {

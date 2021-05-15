@@ -8,7 +8,7 @@ using SocialHub.Application.Services;
 using SocialHub.Domain.Models;
 using System.Threading.Tasks;
 
-namespace SocialHub.Infrastructure
+namespace SocialHub.Infrastructure.Services
 {
     public class AccountService : IAccountService
     {
