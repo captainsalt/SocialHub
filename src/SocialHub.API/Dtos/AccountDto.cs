@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SocialHub.Infrastructure.Dtos
 {
-    class AccountDto
+    public class AccountDto
     {
         public string Username { get; set; }
 

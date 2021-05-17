@@ -4,8 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using SocialHub.Infrastructure;
 using SocialHub.API.Middleware;
+using SocialHub.Infrastructure;
 
 namespace SocialHub.API
 {

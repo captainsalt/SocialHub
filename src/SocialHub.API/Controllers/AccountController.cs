@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using SocialHub.API.Attributes;
 using SocialHub.Application.Models;
 using SocialHub.Application.Services;
+using SocialHub.Infrastructure.Dtos;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -14,11 +16,16 @@ namespace SocialHub.API.Controllers
     {
         private readonly IAccountService _accountService;
         private readonly IAuthenticationService _authenticationService;
+        private readonly IMapper _mapper;
 
-        public AccountController(IAccountService accountService, IAuthenticationService authenticationService)
+        public AccountController(
+            IAccountService accountService,
+            IAuthenticationService authenticationService,
+            IMapper mapper)
         {
             _accountService = accountService;
             _authenticationService = authenticationService;
+            _mapper = mapper;
         }
 
         [HttpPost("login")]
@@ -41,7 +48,13 @@ namespace SocialHub.API.Controllers
 
             return result.Match<IActionResult>(
                 // TODO: Make auth resonse record
-                token => Ok(new { Token = token }),
+                tokenAccount => 
+                {
+                    var (token, account) = tokenAccount;
+                    var accountDto = _mapper.Map<AccountDto>(account);
+
+                    return Ok(new AuthResponse(token, accountDto));
+                },
                 ex => BadRequest(ex.Message)
             );
         }
