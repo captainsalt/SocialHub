@@ -1,9 +1,7 @@
-﻿using SocialHub.Domain;
-using System.Threading.Tasks;
-using LanguageExt;
-using SocialHub.Domain.Models;
-using SocialHub.Application.Models;
+﻿using LanguageExt;
 using LanguageExt.Common;
+using SocialHub.Application.Models;
+using System.Threading.Tasks;
 
 namespace SocialHub.Application.Services
 {
@@ -14,6 +12,6 @@ namespace SocialHub.Application.Services
         /// </summary>
         /// <param name="loginRequest"></param>
         /// <returns>A JWT Token</returns>
-        Task<Either<Error, (string token, Account account)>> LoginAsync(LoginRequest loginRequest);
+        Task<Either<Error, AuthResponse>> LoginAsync(LoginRequest loginRequest);
     }
 }

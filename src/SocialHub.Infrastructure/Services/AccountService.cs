@@ -34,7 +34,7 @@ namespace SocialHub.Infrastructure.Services
         public async Task<Option<Account>> GetUserByUsernameAsync(string username) => 
             await _dbContext.Accounts.AsNoTracking().SingleOrDefaultAsync(acc => acc.Username == username);
 
-        public async Task<Either<Error, (string token, Account account)>> RegisterAsync(RegisterRequest request)
+        public async Task<Either<Error, AuthResponse>> RegisterAsync(RegisterRequest request)
         {
             var account = await GetUserByUsernameAsync(request.Username);
 
@@ -46,7 +46,9 @@ namespace SocialHub.Infrastructure.Services
 
             await _dbContext.SaveChangesAsync();
 
-            return (_jwtService.GenerateJwtToken(result.Entity), result.Entity);
+            var token = _jwtService.GenerateJwtToken(result.Entity);
+
+            return new AuthResponse(token, result.Entity);
         }
     }
 }

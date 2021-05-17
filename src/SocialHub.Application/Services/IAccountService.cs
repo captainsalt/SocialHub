@@ -17,6 +17,6 @@ namespace SocialHub.Application.Services
         /// </summary>
         /// <param name="user"></param>
         /// <returns>An exception or a JWT</returns>
-        Task<Either<Error, (string token, Account account)>> RegisterAsync(RegisterRequest request);
+        Task<Either<Error, AuthResponse>> RegisterAsync(RegisterRequest request);
     }
 }

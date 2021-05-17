@@ -1,10 +1,7 @@
 ﻿using LanguageExt;
 using LanguageExt.Common;
-using SocialHub.Application;
 using SocialHub.Application.Models;
 using SocialHub.Application.Services;
-using SocialHub.Domain.Models;
-using System;
 using System.Threading.Tasks;
 
 namespace SocialHub.Infrastructure.Services
@@ -26,21 +23,24 @@ namespace SocialHub.Infrastructure.Services
             _jwtService = jwtService;
         }
 
-        public async Task<Either<Error, (string token, Account account)>> LoginAsync(LoginRequest loginRequest)
+        public async Task<Either<Error, AuthResponse>> LoginAsync(LoginRequest loginRequest)
         {
             var accountOption = await _accountService.GetUserByUsernameAsync(loginRequest.Username);
 
-            return accountOption.Some<Either<Error, (string token, Account account)>>(
-                acc =>
-                {
-                    var isMatch = _cryptographyService.IsMatch(loginRequest.Password, acc.Password);
+            return accountOption
+                .Some<Either<Error, AuthResponse>>(
+                    acc =>
+                    {
+                        var isMatch = _cryptographyService.IsMatch(loginRequest.Password, acc.Password);
 
-                    if (isMatch)
-                        return (_jwtService.GenerateJwtToken(acc), acc);
-                    else
-                        return Errors.InvalidLogin;
-                })
-                .None(() => Errors.InvalidLogin);
+                        if (!isMatch)
+                            return Errors.InvalidLogin;
+
+                        var token = _jwtService.GenerateJwtToken(acc);
+                        return new AuthResponse(token, acc);
+                    })
+                    .None(Errors.InvalidLogin);
+
         }
     }
 }
