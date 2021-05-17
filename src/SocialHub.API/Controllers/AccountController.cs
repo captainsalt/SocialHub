@@ -42,7 +42,7 @@ namespace SocialHub.API.Controllers
 
                     return Ok(new AuthResponse(token, accountDto));
                 },
-                ex => BadRequest(ex.Message)
+                err => BadRequest(err.Message)
             );
         }
 
@@ -59,7 +59,7 @@ namespace SocialHub.API.Controllers
 
                     return Ok(new AuthResponse(token, accountDto));
                 },
-                ex => BadRequest(ex.Message)
+                err => BadRequest(err.Message)
             );
         }
     }

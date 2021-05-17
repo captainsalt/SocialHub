@@ -1,5 +1,5 @@
 ﻿using LanguageExt;
-using SocialHub.Application.Exceptions;
+using LanguageExt.Common;
 using SocialHub.Application.Models;
 using SocialHub.Domain.Models;
 using System.Threading.Tasks;
@@ -17,6 +17,6 @@ namespace SocialHub.Application.Services
         /// </summary>
         /// <param name="user"></param>
         /// <returns>An exception or a JWT</returns>
-        Task<Either<UsernameInUseException, (string token, Account account)>> RegisterAsync(RegisterRequest request);
+        Task<Either<Error, (string token, Account account)>> RegisterAsync(RegisterRequest request);
     }
 }

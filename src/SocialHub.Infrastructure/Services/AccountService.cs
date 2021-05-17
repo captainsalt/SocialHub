@@ -1,7 +1,7 @@
 ﻿using LanguageExt;
+using LanguageExt.Common;
 using Microsoft.EntityFrameworkCore;
 using SocialHub.Application;
-using SocialHub.Application.Exceptions;
 using SocialHub.Application.Interfaces;
 using SocialHub.Application.Models;
 using SocialHub.Application.Services;
@@ -34,12 +34,12 @@ namespace SocialHub.Infrastructure.Services
         public async Task<Option<Account>> GetUserByUsernameAsync(string username) => 
             await _dbContext.Accounts.AsNoTracking().SingleOrDefaultAsync(acc => acc.Username == username);
 
-        public async Task<Either<UsernameInUseException, (string token, Account account)>> RegisterAsync(RegisterRequest request)
+        public async Task<Either<Error, (string token, Account account)>> RegisterAsync(RegisterRequest request)
         {
             var account = await GetUserByUsernameAsync(request.Username);
 
             if (account.IsSome)
-                return new UsernameInUseException();
+                return Errors.UsernameInUse;
 
             var hashedPassword = _cryptographyService.Hash(request.Password);
             var result = await _dbContext.Accounts.AddAsync(new(request.Email, request.Username, hashedPassword));

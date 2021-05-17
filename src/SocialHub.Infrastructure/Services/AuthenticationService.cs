@@ -1,6 +1,6 @@
 ﻿using LanguageExt;
+using LanguageExt.Common;
 using SocialHub.Application;
-using SocialHub.Application.Exceptions;
 using SocialHub.Application.Models;
 using SocialHub.Application.Services;
 using SocialHub.Domain.Models;
@@ -26,22 +26,21 @@ namespace SocialHub.Infrastructure.Services
             _jwtService = jwtService;
         }
 
-        public async Task<Either<InvalidLoginException, (string token, Account account)>> LoginAsync(LoginRequest loginRequest)
+        public async Task<Either<Error, (string token, Account account)>> LoginAsync(LoginRequest loginRequest)
         {
             var accountOption = await _accountService.GetUserByUsernameAsync(loginRequest.Username);
 
-            return accountOption
-                    .Some<Either<InvalidLoginException, (string token, Account account)>>(
-                        acc =>
-                        {
-                            var isMatch = _cryptographyService.IsMatch(loginRequest.Password, acc.Password);
+            return accountOption.Some<Either<Error, (string token, Account account)>>(
+                acc =>
+                {
+                    var isMatch = _cryptographyService.IsMatch(loginRequest.Password, acc.Password);
 
-                            if (isMatch)
-                                return (_jwtService.GenerateJwtToken(acc), acc);
-                            else
-                                return new InvalidLoginException();
-                        })
-                        .None(() => new InvalidLoginException());
+                    if (isMatch)
+                        return (_jwtService.GenerateJwtToken(acc), acc);
+                    else
+                        return Errors.InvalidLogin;
+                })
+                .None(() => Errors.InvalidLogin);
         }
     }
 }
