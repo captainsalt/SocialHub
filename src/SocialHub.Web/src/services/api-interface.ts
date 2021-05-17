@@ -15,7 +15,7 @@ async function fetchRequest<T>(method: string, route: string, options: RequestIn
   });
 
   if (!response.ok)
-    throw new Error(await response.text());
+    throw new Error((await response.json()).message);
 
   return response.json();
 }
