@@ -23,7 +23,7 @@ namespace SocialHub.Infrastructure.Services
         public async Task<Option<Account>> GetUserByIDAsync(int id) =>
             await _dbContext.Accounts.FindAsync(id);
 
-        public async Task<Option<Account>> GetUserByUsernameAsync(string username) =>
+        public async Task<Option<Account>> GetAccountByUsername(string username) =>
             await _dbContext.Accounts.AsNoTracking().SingleOrDefaultAsync(acc => acc.Username == username);
 
         /// <summary>

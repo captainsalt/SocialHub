@@ -25,7 +25,7 @@ namespace SocialHub.Infrastructure.Services
 
         public async Task<Either<Error, AuthResponse>> LoginAsync(LoginRequest loginRequest)
         {
-            var accountOption = await _accountService.GetUserByUsernameAsync(loginRequest.Username);
+            var accountOption = await _accountService.GetAccountByUsername(loginRequest.Username);
 
             return accountOption
                 .Some<Either<Error, AuthResponse>>(
@@ -44,7 +44,7 @@ namespace SocialHub.Infrastructure.Services
 
         public async Task<Either<Error, AuthResponse>> RegisterAsync(RegisterRequest request)
         {
-            var account = await _accountService.GetUserByUsernameAsync(request.Username);
+            var account = await _accountService.GetAccountByUsername(request.Username);
 
             if (account.IsSome)
                 return Errors.UsernameInUse;

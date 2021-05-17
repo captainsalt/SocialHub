@@ -12,6 +12,6 @@ namespace SocialHub.Application.Services
 
         Task<Option<Account>> GetUserByIDAsync(int id);
 
-        Task<Option<Account>> GetUserByUsernameAsync(string username);
+        Task<Option<Account>> GetAccountByUsername(string username);
     }
 }

@@ -35,7 +35,7 @@ namespace SocialHub.Infrastructure.Tests.Services
         public async Task LoginAsync_ShouldReturnRight_WhenAccountExists()
         {
             // Arrange 
-            _accountService.GetUserByUsernameAsync(default)
+            _accountService.GetAccountByUsername(default)
                 .ReturnsForAnyArgs(_testAccount);
 
             _cryptographyService.IsMatch(default, default)
@@ -52,7 +52,7 @@ namespace SocialHub.Infrastructure.Tests.Services
         public async Task LoginAsync_ShouldReturnLeft_WhenAccountDoesNotExist()
         {
             // Arrange 
-            _accountService.GetUserByUsernameAsync(default)
+            _accountService.GetAccountByUsername(default)
                 .ReturnsForAnyArgs(Option<Account>.None);
 
             // Act
@@ -66,7 +66,7 @@ namespace SocialHub.Infrastructure.Tests.Services
         public async Task LoginAsync_ShouldReturnLeft_WhenPasswordsDoNotMatch()
         {
             // Arrange 
-            _accountService.GetUserByUsernameAsync(default)
+            _accountService.GetAccountByUsername(default)
                 .ReturnsForAnyArgs(_testAccount);
 
             _cryptographyService.IsMatch(default, default)
@@ -83,7 +83,7 @@ namespace SocialHub.Infrastructure.Tests.Services
         public async Task RegisterAsync_ShouldReturnLeft_WhenAccountExists()
         {
             // Arrange
-            _accountService.GetUserByUsernameAsync(default)
+            _accountService.GetAccountByUsername(default)
                 .ReturnsForAnyArgs(_testAccount);
 
             // Act 
@@ -97,7 +97,7 @@ namespace SocialHub.Infrastructure.Tests.Services
         public async Task RegisterAsync_ShouldReturnRight_WhenAccountIsCreated()
         {
             // Arrange
-            _accountService.GetUserByUsernameAsync(default)
+            _accountService.GetAccountByUsername(default)
                 .ReturnsForAnyArgs(Option<Account>.None);
 
             // Act 
