@@ -7,35 +7,40 @@ interface AuthResponse {
   account: Account;
 }
 
-async function register(model: RegisterFormModel): Promise<AuthResponse> {
-  const result = await fetch(`${process.env.VUE_APP_API_URL}/api/account/create`, {
-    method: "POST",
-    body: JSON.stringify(model),
-    headers: {
-      "Content-Type": "application/json"
-    }
+async function fetchRequest<T>(method: string, route: string, options: RequestInit): Promise<T> { // eslint-disable-line no-undef
+  const response = await fetch(`${process.env.VUE_APP_API_URL}${route}`, {
+    ...options,
+    method,
+    mode: "cors"
   });
 
-  if (!result.ok)
-    throw new Error("Error registering");
+  if (!response.ok)
+    throw new Error(await response.text());
 
-  const response = await result.json();
-  return response;
+  return response.json();
 }
 
 async function login(model: LoginFormModel): Promise<AuthResponse> {
-  const result = await fetch(`${process.env.VUE_APP_API_URL}/api/account/login`, {
-    method: "POST",
+  const options = {
     body: JSON.stringify(model),
     headers: {
       "Content-Type": "application/json"
     }
-  });
+  };
 
-  if (!result.ok)
-    throw new Error("Error logging in");
+  const response = await fetchRequest<AuthResponse>("POST", "/api/account/login", options);
+  return response;
+}
 
-  const response = await result.json();
+async function register(model: RegisterFormModel): Promise<AuthResponse> {
+  const options = {
+    body: JSON.stringify(model),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+
+  const response = await fetchRequest<AuthResponse>("POST", "/api/account/create", options);
   return response;
 }
 
