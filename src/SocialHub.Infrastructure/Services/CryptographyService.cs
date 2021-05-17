@@ -1,5 +1,5 @@
-﻿using SocialHub.Application.Services;
-using SocialHub.Infrastructure.Models;
+﻿using SocialHub.Application.Models;
+using SocialHub.Application.Services;
 using System;
 using System.Security.Cryptography;
 

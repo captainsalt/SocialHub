@@ -1,4 +1,4 @@
-﻿namespace SocialHub.Infrastructure.Models
+﻿namespace SocialHub.Application.Models
 {
     public class CryptographyServiceConfiguration
     {
