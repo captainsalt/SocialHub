@@ -1,26 +1,46 @@
 ﻿using LanguageExt;
-using SocialHub.Application;
+using Microsoft.EntityFrameworkCore;
 using SocialHub.Application.Interfaces;
-using SocialHub.Domain;
+using SocialHub.Application.Services;
 using SocialHub.Domain.Models;
-using SocialHub.Infrastructure.Database;
 using System.Threading.Tasks;
 
-namespace SocialHub.Infrastructure
+namespace SocialHub.Infrastructure.Services
 {
     public class AccountService : IAccountService
     {
         private readonly ISocialHubDbContext _dbContext;
+        private readonly ICryptographyService _cryptographyService;
 
-        public AccountService(ISocialHubDbContext dbContext)
+        public AccountService(
+            ISocialHubDbContext dbContext,
+            ICryptographyService cryptographyService)
         {
             _dbContext = dbContext;
+            _cryptographyService = cryptographyService;
         }
 
-        public async Task<Option<Account>> GetUserByID(int id)
+        public async Task<Option<Account>> GetUserByIDAsync(int id) =>
+            await _dbContext.Accounts.FindAsync(id);
+
+        public async Task<Option<Account>> GetAccountByUsername(string username) =>
+            await _dbContext.Accounts.AsNoTracking().SingleOrDefaultAsync(acc => acc.Username == username);
+
+        /// <summary>
+        /// Hashes account password then adds it to the database
+        /// </summary>
+        /// <param name="account"></param>
+        /// <returns></returns>
+        public async Task<Account> AddAccountAsync(Account account)
         {
-            var user = await _dbContext.Accounts.FindAsync(id);
-            return user;
+            var hashedPassword = _cryptographyService.Hash(account.Password);
+            var newAccont = new Account(account.Email, account.Username, hashedPassword);
+
+            await _dbContext.Accounts.AddAsync(newAccont);
+
+            await _dbContext.SaveChangesAsync();
+
+            return newAccont;
         }
     }
 }

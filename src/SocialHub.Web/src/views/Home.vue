@@ -1,34 +1,19 @@
 <template>
   <div>
-    <button @click="login">
-      Login
-    </button>
+    <RegisterForm v-if="toggle"/>
+    <LoginForm v-else/>
 
-    <button @click="logout">
-      Logout
+    <button @click="toggle = !toggle">
+      Toggle
     </button>
   </div>
 </template>
 
 <script lang="ts" setup>
-import auth0 from "@/services/auth0";
-import router from "@/router";
-import { onMounted } from "@vue/runtime-core";
+/* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
+import RegisterForm from "@/components/RegisterForm.vue";
+import LoginForm from "@/components/LoginForm.vue";
+import { ref } from "vue";
 
-onMounted(async () => {
-  if (window.location.search.includes("code=") &&
-    window.location.search.includes("state=")) {
-    await auth0.handleRedirectCallback();
-
-    router.push("/dashboard");
-  }
-});
-
-async function login() { // eslint-disable-line
-  await auth0.loginWithRedirect();
-}
-
-async function logout() { // eslint-disable-line
-  await auth0.logout();
-}
+const toggle = ref(false);
 </script>

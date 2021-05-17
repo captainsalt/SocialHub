@@ -1,12 +1,15 @@
 ﻿using LanguageExt;
-using SocialHub.Domain;
 using SocialHub.Domain.Models;
 using System.Threading.Tasks;
 
-namespace SocialHub.Application
+namespace SocialHub.Application.Services
 {
     public interface IAccountService
     {
-        Task<Option<Account>> GetUserByID(int id);
+        Task<Account> AddAccountAsync(Account account);
+
+        Task<Option<Account>> GetUserByIDAsync(int id);
+
+        Task<Option<Account>> GetAccountByUsername(string username);
     }
 }
