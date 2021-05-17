@@ -45,7 +45,7 @@ import router from "@/router";
 export default {
   setup() {
     const errorMessage = ref("");
-    const formModel = reactive(new RegisterFormModel("", "", ""));
+    const formModel = reactive(new RegisterFormModel());
 
     async function registerUser() {
       try {

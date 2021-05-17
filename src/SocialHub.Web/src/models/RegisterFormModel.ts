@@ -1,8 +1,8 @@
 export default class RegisterFormModel {
-  constructor(username: string, password: string, email: string) {
-    this.username = username;
-    this.password = password;
-    this.email = email;
+  constructor() {
+    this.username = "";
+    this.password = "";
+    this.email = "";
   }
 
   username
