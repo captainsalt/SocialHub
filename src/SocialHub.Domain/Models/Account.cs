@@ -5,6 +5,10 @@ namespace SocialHub.Domain.Models
 {
     public class Account
     {
+        public Account()
+        {
+        }
+
         public Account(string email, string username, string password)
         {
             Email = email;

@@ -34,11 +34,13 @@ namespace SocialHub.Infrastructure.Services
         public async Task<Account> AddAccountAsync(Account account)
         {
             var hashedPassword = _cryptographyService.Hash(account.Password);
-            var result = await _dbContext.Accounts.AddAsync(new(account.Email, account.Username, hashedPassword));
+            var newAccont = new Account(account.Email, account.Username, hashedPassword);
+
+            await _dbContext.Accounts.AddAsync(newAccont);
 
             await _dbContext.SaveChangesAsync();
 
-            return result.Entity;
+            return newAccont;
         }
     }
 }

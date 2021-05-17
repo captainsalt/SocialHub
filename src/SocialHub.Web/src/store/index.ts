@@ -1,4 +1,4 @@
-import Account from "@/models/Account";
+import { Account } from "@/models/Account";
 import { computed, reactive } from "vue";
 
 const state = reactive({

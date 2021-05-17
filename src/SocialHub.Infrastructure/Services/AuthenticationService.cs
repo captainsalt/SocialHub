@@ -40,7 +40,6 @@ namespace SocialHub.Infrastructure.Services
                         return new AuthResponse(token, acc);
                     })
                     .None(Errors.InvalidLogin);
-
         }
 
         public async Task<Either<Error, AuthResponse>> RegisterAsync(RegisterRequest request)
