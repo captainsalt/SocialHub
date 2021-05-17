@@ -35,7 +35,7 @@ namespace SocialHub.API.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> Register([FromForm] RegisterRequest request)
+        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
             var result = await _accountService.RegisterAsync(request);
 

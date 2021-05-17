@@ -5,6 +5,7 @@
       <label for="email">Email</label>
       <input
         id="email"
+        v-model="email"
         type="text"
         placeholder="Email"
       >
@@ -22,10 +23,15 @@
       <label for="password">Password</label>
       <input
         id="password"
+        v-model="password"
         type="password"
         placeholder="Password"
       >
     </fieldset>
+
+    <button @click.prevent="register">
+      Register
+    </button>
   </form>
 </template>
 
@@ -40,8 +46,17 @@ export default {
       email: ""
     });
 
+    function register() {
+      fetch(`${process.env.VUE_APP_API_URL}/api/account/create`, {
+        method: "POST",
+        body: JSON.stringify(formModel),
+        headers: [["Content-Type", "application/json"]]
+      });
+    }
+
     return {
-      ...toRefs(formModel)
+      ...toRefs(formModel),
+      register
     };
   }
 };
