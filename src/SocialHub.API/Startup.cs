@@ -23,6 +23,8 @@ namespace SocialHub.API
         {
             services.AddInfrastructure(Configuration);
 
+            services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
+
             services.AddCors(options =>
             {
                 // TODO: Restrict Origins
