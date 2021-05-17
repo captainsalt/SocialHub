@@ -37,19 +37,30 @@
 
 <script lang="ts">
 import RegisterFormModel from "@/models/RegisterFormModel";
-import { reactive, toRefs } from "vue";
+import { reactive, toRefs, ref } from "vue";
 import { register } from "@/services/api-interface";
+import { setToken } from "@/store";
+import router from "@/router";
 
 export default {
   setup() {
+    const errorMessage = ref("");
     const formModel = reactive(new RegisterFormModel("", "", ""));
 
     async function registerUser() {
-      const token = await register(formModel);
+      try {
+        const authToken = await register(formModel);
+        setToken(authToken);
+        await router.push("/dashboard");
+      }
+      catch (error) {
+        errorMessage.value = error;
+      }
     }
 
     return {
       ...toRefs(formModel),
+      errorMessage,
       registerUser
     };
   }
