@@ -2,8 +2,8 @@
 using LanguageExt.Common;
 using SocialHub.Application.Models;
 using SocialHub.Application.Services;
-using System.Threading.Tasks;
 using SocialHub.Domain.Models;
+using System.Threading.Tasks;
 
 namespace SocialHub.Infrastructure.Services
 {
@@ -39,7 +39,7 @@ namespace SocialHub.Infrastructure.Services
                         var token = _jwtService.GenerateJwtToken(acc);
                         return new AuthResponse(token, acc);
                     })
-                    .None(Errors.InvalidLogin);
+                .None(Errors.InvalidLogin);
         }
 
         public async Task<Either<Error, AuthResponse>> RegisterAsync(RegisterRequest request)
