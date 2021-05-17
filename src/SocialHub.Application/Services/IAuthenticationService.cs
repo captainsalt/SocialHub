@@ -14,6 +14,6 @@ namespace SocialHub.Application.Services
         /// </summary>
         /// <param name="loginRequest"></param>
         /// <returns>A JWT Token</returns>
-        Task<Either<InvalidLoginException, string>> LoginAsync(LoginRequest loginRequest);
+        Task<Either<InvalidLoginException, (string token, Account account)>> LoginAsync(LoginRequest loginRequest);
     }
 }

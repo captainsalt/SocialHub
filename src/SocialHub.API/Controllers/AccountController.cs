@@ -35,8 +35,13 @@ namespace SocialHub.API.Controllers
             var result = await _authenticationService.LoginAsync(request);
 
             return result.Match<IActionResult>(
-                // TODO: Make auth response record
-                token => Ok(new { Token = token }),
+                tokenAccount =>
+                {
+                    var (token, account) = tokenAccount;
+                    var accountDto = _mapper.Map<AccountDto>(account);
+
+                    return Ok(new AuthResponse(token, accountDto));
+                },
                 ex => BadRequest(ex.Message)
             );
         }
@@ -47,7 +52,6 @@ namespace SocialHub.API.Controllers
             var result = await _accountService.RegisterAsync(request);
 
             return result.Match<IActionResult>(
-                // TODO: Make auth resonse record
                 tokenAccount => 
                 {
                     var (token, account) = tokenAccount;
