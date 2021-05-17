@@ -27,11 +27,11 @@
         type="password"
         placeholder="Password"
       >
+      <br>
+      <button @click.prevent="registerUser">
+        Register
+      </button>
     </fieldset>
-
-    <button @click.prevent="registerUser">
-      Register
-    </button>
   </form>
 </template>
 
@@ -39,7 +39,7 @@
 import RegisterFormModel from "@/models/RegisterFormModel";
 import { reactive, toRefs, ref } from "vue";
 import { register } from "@/services/api-interface";
-import { setToken } from "@/store";
+import { setAccount, setToken } from "@/store";
 import router from "@/router";
 
 export default {
@@ -49,8 +49,10 @@ export default {
 
     async function registerUser() {
       try {
-        const authToken = await register(formModel);
-        setToken(authToken);
+        const response = await register(formModel);
+        setToken(response.token);
+        setAccount(response.account);
+
         await router.push("/dashboard");
       }
       catch (error) {

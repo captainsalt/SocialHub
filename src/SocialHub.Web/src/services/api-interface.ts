@@ -1,7 +1,8 @@
+import Account from "@/models/Account";
 import RegisterFormModel from "@/models/RegisterFormModel";
 
 // TODO: Make an API calling service
-async function register(model: RegisterFormModel) : Promise<string> {
+async function register(model: RegisterFormModel): Promise<{ token: string, account: Account}> {
   const result = await fetch(`${process.env.VUE_APP_API_URL}/api/account/create`, {
     method: "POST",
     body: JSON.stringify(model),
@@ -15,7 +16,7 @@ async function register(model: RegisterFormModel) : Promise<string> {
 
   // eslint-disable-next-line no-undef
   const response = await result.json();
-  return response.token;
+  return response;
 }
 
 export {
