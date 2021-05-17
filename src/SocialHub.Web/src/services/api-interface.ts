@@ -1,8 +1,13 @@
-import Account from "@/models/Account";
+import { Account } from "@/models/Account";
+import LoginFormModel from "@/models/LoginFormModel";
 import RegisterFormModel from "@/models/RegisterFormModel";
 
-// TODO: Make an API calling service
-async function register(model: RegisterFormModel): Promise<{ token: string, account: Account}> {
+interface AuthResponse {
+  token: string;
+  account: Account;
+}
+
+async function register(model: RegisterFormModel): Promise<AuthResponse> {
   const result = await fetch(`${process.env.VUE_APP_API_URL}/api/account/create`, {
     method: "POST",
     body: JSON.stringify(model),
@@ -11,14 +16,30 @@ async function register(model: RegisterFormModel): Promise<{ token: string, acco
     }
   });
 
-  if (result.status < 200 || result.status > 299)
+  if (!result.ok)
     throw new Error("Error registering");
 
-  // eslint-disable-next-line no-undef
+  const response = await result.json();
+  return response;
+}
+
+async function login(model: LoginFormModel): Promise<AuthResponse> {
+  const result = await fetch(`${process.env.VUE_APP_API_URL}/api/account/login`, {
+    method: "POST",
+    body: JSON.stringify(model),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+
+  if (!result.ok)
+    throw new Error("Error logging in");
+
   const response = await result.json();
   return response;
 }
 
 export {
-  register
+  register,
+  login
 };

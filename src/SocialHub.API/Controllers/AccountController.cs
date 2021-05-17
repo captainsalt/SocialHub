@@ -27,8 +27,7 @@ namespace SocialHub.API.Controllers
         }
 
         [HttpPost("login")]
-        [Authorize]
-        public async Task<IActionResult> Login(LoginRequest request)
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             var result = await _authenticationService.LoginAsync(request);
 
