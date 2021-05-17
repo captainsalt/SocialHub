@@ -14,7 +14,6 @@ namespace SocialHub.Infrastructure.Services
     {
         private readonly ISocialHubDbContext _dbContext;
         private readonly ICryptographyService _cryptographyService;
-        private readonly IJwtService _jwtService;
 
         public AccountService(
             ISocialHubDbContext dbContext,
@@ -23,7 +22,6 @@ namespace SocialHub.Infrastructure.Services
         {
             _dbContext = dbContext;
             _cryptographyService = cryptographyService;
-            _jwtService = jwtService;
         }
 
         public Task<Option<Account>> GetUserByIDAsync(int id)
@@ -31,24 +29,22 @@ namespace SocialHub.Infrastructure.Services
             throw new System.NotImplementedException();
         }
 
-        public async Task<Option<Account>> GetUserByUsernameAsync(string username) => 
+        public async Task<Option<Account>> GetUserByUsernameAsync(string username) =>
             await _dbContext.Accounts.AsNoTracking().SingleOrDefaultAsync(acc => acc.Username == username);
 
-        public async Task<Either<Error, AuthResponse>> RegisterAsync(RegisterRequest request)
+        /// <summary>
+        /// Hashes account password then adds it to the database
+        /// </summary>
+        /// <param name="account"></param>
+        /// <returns></returns>
+        public async Task<Account> AddAccountAsync(Account account)
         {
-            var account = await GetUserByUsernameAsync(request.Username);
-
-            if (account.IsSome)
-                return Errors.UsernameInUse;
-
-            var hashedPassword = _cryptographyService.Hash(request.Password);
-            var result = await _dbContext.Accounts.AddAsync(new(request.Email, request.Username, hashedPassword));
+            var hashedPassword = _cryptographyService.Hash(account.Password);
+            var result = await _dbContext.Accounts.AddAsync(new(account.Email, account.Username, hashedPassword));
 
             await _dbContext.SaveChangesAsync();
 
-            var token = _jwtService.GenerateJwtToken(result.Entity);
-
-            return new AuthResponse(token, result.Entity);
+            return result.Entity;
         }
     }
 }

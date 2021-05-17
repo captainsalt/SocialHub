@@ -3,10 +3,10 @@ using LanguageExt.Common;
 using SocialHub.Application.Models;
 using SocialHub.Application.Services;
 using System.Threading.Tasks;
+using SocialHub.Domain.Models;
 
 namespace SocialHub.Infrastructure.Services
 {
-    // TODO: Combine with AccountService
     public class AuthenticationService : IAuthenticationService
     {
         private readonly IAccountService _accountService;
@@ -41,6 +41,19 @@ namespace SocialHub.Infrastructure.Services
                     })
                     .None(Errors.InvalidLogin);
 
+        }
+
+        public async Task<Either<Error, AuthResponse>> RegisterAsync(RegisterRequest request)
+        {
+            var account = await _accountService.GetUserByUsernameAsync(request.Username);
+
+            if (account.IsSome)
+                return Errors.UsernameInUse;
+
+            var newAccount = await _accountService.AddAccountAsync(new Account(request.Email, request.Username, request.Password));
+            var token = _jwtService.GenerateJwtToken(newAccount);
+
+            return new AuthResponse(token, newAccount);
         }
     }
 }

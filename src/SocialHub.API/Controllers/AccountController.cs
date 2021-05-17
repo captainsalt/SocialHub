@@ -14,7 +14,6 @@ namespace SocialHub.API.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly IAccountService _accountService;
         private readonly IAuthenticationService _authenticationService;
         private readonly IMapper _mapper;
 
@@ -23,7 +22,6 @@ namespace SocialHub.API.Controllers
             IAuthenticationService authenticationService,
             IMapper mapper)
         {
-            _accountService = accountService;
             _authenticationService = authenticationService;
             _mapper = mapper;
         }
@@ -49,7 +47,7 @@ namespace SocialHub.API.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
-            var result = await _accountService.RegisterAsync(request);
+            var result = await _authenticationService.RegisterAsync(request);
 
             return result.Match<IActionResult>(
                 tokenAccount => 
