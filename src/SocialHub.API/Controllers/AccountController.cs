@@ -50,7 +50,7 @@ namespace SocialHub.API.Controllers
             var result = await _authenticationService.RegisterAsync(request);
 
             return result.Match<IActionResult>(
-                tokenAccount => 
+                tokenAccount =>
                 {
                     var (token, account) = tokenAccount;
                     var accountDto = _mapper.Map<AccountDto>(account);

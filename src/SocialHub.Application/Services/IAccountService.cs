@@ -1,6 +1,4 @@
 ﻿using LanguageExt;
-using LanguageExt.Common;
-using SocialHub.Application.Models;
 using SocialHub.Domain.Models;
 using System.Threading.Tasks;
 

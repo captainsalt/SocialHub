@@ -25,7 +25,7 @@ namespace SocialHub.Infrastructure.Services
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[] 
+                Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(JwtRegisteredClaimNames.Sub, user.ID.ToString()),
                     new Claim(JwtRegisteredClaimNames.Email, user.Email)
