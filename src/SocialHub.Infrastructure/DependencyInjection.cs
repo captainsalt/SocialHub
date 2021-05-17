@@ -5,6 +5,7 @@ using SocialHub.Application.Interfaces;
 using SocialHub.Application.Services;
 using SocialHub.Infrastructure.Database;
 using SocialHub.Infrastructure.Services;
+using System;
 
 namespace SocialHub.Infrastructure
 {
@@ -12,8 +13,15 @@ namespace SocialHub.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection serviceCollection, IConfiguration configuration)
         {
-            // TODO: Add ability to configure from IConfiguration
-            serviceCollection.AddDbContext<ISocialHubDbContext, SocialHubDbContext>(options => options.UseInMemoryDatabase("SocialHub"));
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development"
+                && configuration.GetConnectionString("postgres") is null)
+            {
+                serviceCollection.AddDbContext<ISocialHubDbContext, SocialHubDbContext>(options => options.UseInMemoryDatabase("SocialHub"));
+            }
+            else
+            {
+                serviceCollection.AddDbContext<ISocialHubDbContext, SocialHubDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("postgres")));
+            }
 
             serviceCollection.AddTransient<IAccountService, AccountService>();
             serviceCollection.AddTransient<IAuthenticationService, AuthenticationService>();
