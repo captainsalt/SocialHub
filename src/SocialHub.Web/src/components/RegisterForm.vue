@@ -29,34 +29,28 @@
       >
     </fieldset>
 
-    <button @click.prevent="register">
+    <button @click.prevent="registerUser">
       Register
     </button>
   </form>
 </template>
 
 <script lang="ts">
+import RegisterFormModel from "@/models/RegisterFormModel";
 import { reactive, toRefs } from "vue";
+import { register } from "@/services/api-interface";
 
 export default {
   setup() {
-    const formModel = reactive({
-      username: "",
-      password: "",
-      email: ""
-    });
+    const formModel = reactive(new RegisterFormModel("", "", ""));
 
-    function register() {
-      fetch(`${process.env.VUE_APP_API_URL}/api/account/create`, {
-        method: "POST",
-        body: JSON.stringify(formModel),
-        headers: [["Content-Type", "application/json"]]
-      });
+    async function registerUser() {
+      const token = await register(formModel);
     }
 
     return {
       ...toRefs(formModel),
-      register
+      registerUser
     };
   }
 };

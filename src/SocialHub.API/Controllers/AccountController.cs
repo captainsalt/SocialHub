@@ -40,7 +40,7 @@ namespace SocialHub.API.Controllers
             var result = await _accountService.RegisterAsync(request);
 
             return result.Match<IActionResult>(
-                // TODO: Make  auth resonse record
+                // TODO: Make auth resonse record
                 token => Ok(new { Token = token }),
                 ex => BadRequest(ex.Message)
             );
