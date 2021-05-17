@@ -14,13 +14,16 @@ namespace SocialHub.Infrastructure.Services
     {
         private readonly ISocialHubDbContext _dbContext;
         private readonly ICryptographyService _cryptographyService;
+        private readonly IJwtService _jwtService;
 
         public AccountService(
             ISocialHubDbContext dbContext,
-            ICryptographyService cryptographyService)
+            ICryptographyService cryptographyService,
+            IJwtService jwtService)
         {
             _dbContext = dbContext;
             _cryptographyService = cryptographyService;
+            _jwtService = jwtService;
         }
 
         public Task<Option<Account>> GetUserByIDAsync(int id)
@@ -31,7 +34,7 @@ namespace SocialHub.Infrastructure.Services
         public async Task<Option<Account>> GetUserByUsernameAsync(string username) => 
             await _dbContext.Accounts.AsNoTracking().SingleOrDefaultAsync(acc => acc.Username == username);
 
-        public async Task<Either<UsernameInUseException, Account>> RegisterAsync(RegisterRequest request)
+        public async Task<Either<UsernameInUseException, string>> RegisterAsync(RegisterRequest request)
         {
             var account = await GetUserByUsernameAsync(request.Username);
 
@@ -43,7 +46,7 @@ namespace SocialHub.Infrastructure.Services
 
             await _dbContext.SaveChangesAsync();
 
-            return result.Entity;
+            return _jwtService.GenerateJwtToken(result.Entity); ;
         }
     }
 }

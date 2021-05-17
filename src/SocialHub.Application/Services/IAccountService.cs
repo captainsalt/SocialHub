@@ -12,6 +12,11 @@ namespace SocialHub.Application.Services
 
         Task<Option<Account>> GetUserByUsernameAsync(string username);
 
-        Task<Either<UsernameInUseException, Account>> RegisterAsync(RegisterRequest user);
+        /// <summary>
+        /// Register user to database then returns a JTW
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns>An exception or a JWT</returns>
+        Task<Either<UsernameInUseException, string>> RegisterAsync(RegisterRequest user);
     }
 }
