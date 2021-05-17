@@ -1,4 +1,5 @@
 ﻿using SocialHub.Application.Services;
+using SocialHub.Infrastructure.Models;
 using System;
 using System.Security.Cryptography;
 
@@ -6,14 +7,19 @@ namespace SocialHub.Infrastructure.Services
 {
     public class CryptographyService : ICryptographyService
     {
-        private readonly int _iterations = 10_000;
+        private readonly CryptographyServiceConfiguration _config;
+
+        public CryptographyService(CryptographyServiceConfiguration config)
+        {
+            _config = config;
+        }
 
         public string Hash(string input)
         {
             byte[] salt;
             new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
 
-            var pbkdf2 = new Rfc2898DeriveBytes(input, salt, _iterations);
+            var pbkdf2 = new Rfc2898DeriveBytes(input, salt, _config.Iterations);
             byte[] hash = pbkdf2.GetBytes(20);
 
             byte[] hashBytes = new byte[36];
@@ -31,7 +37,7 @@ namespace SocialHub.Infrastructure.Services
             byte[] salt = new byte[16];
             Array.Copy(hashBytes, 0, salt, 0, 16);
 
-            var pbkdf2 = new Rfc2898DeriveBytes(input, salt, _iterations);
+            var pbkdf2 = new Rfc2898DeriveBytes(input, salt, _config.Iterations);
             byte[] hash = pbkdf2.GetBytes(20);
 
             for (int i = 0; i < 20; i++)

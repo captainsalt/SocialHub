@@ -1,10 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SocialHub.Application.Interfaces;
 using SocialHub.Application.Services;
 using SocialHub.Infrastructure.Database;
 using SocialHub.Infrastructure.Services;
-using Microsoft.EntityFrameworkCore;
 
 namespace SocialHub.Infrastructure
 {
@@ -17,8 +17,11 @@ namespace SocialHub.Infrastructure
 
             serviceCollection.AddTransient<IAccountService, AccountService>();
             serviceCollection.AddTransient<IAuthenticationService, AuthenticationService>();
-            serviceCollection.AddTransient<ICryptographyService, CryptographyService>();
             serviceCollection.AddTransient<IJwtService, JwtService>();
+            serviceCollection.AddTransient<ICryptographyService, CryptographyService>(config =>
+            {
+                return new CryptographyService(new(iterations: 10_000));
+            });
 
             return serviceCollection;
         }
