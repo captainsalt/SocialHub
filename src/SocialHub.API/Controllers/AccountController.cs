@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using LanguageExt.Common;
 using Microsoft.AspNetCore.Mvc;
 using SocialHub.API.Attributes;
+using SocialHub.API.Dtos;
 using SocialHub.Application.Models;
 using SocialHub.Application.Services;
 using SocialHub.Infrastructure.Dtos;
@@ -18,7 +20,6 @@ namespace SocialHub.API.Controllers
         private readonly IMapper _mapper;
 
         public AccountController(
-            IAccountService accountService,
             IAuthenticationService authenticationService,
             IMapper mapper)
         {
@@ -39,7 +40,7 @@ namespace SocialHub.API.Controllers
 
                     return Ok(new AuthResponse(token, accountDto));
                 },
-                err => BadRequest(err.Message)
+                err => BadRequest(MapError(err))
             );
         }
 
@@ -56,8 +57,11 @@ namespace SocialHub.API.Controllers
 
                     return Ok(new AuthResponse(token, accountDto));
                 },
-                err => BadRequest(err.Message)
+                err => BadRequest(MapError(err))
             );
         }
+
+        private ErrorDto MapError(Error err) => 
+            _mapper.Map<ErrorDto>(err);
     }
 }
