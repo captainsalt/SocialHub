@@ -1,28 +1,26 @@
 <template>
   <form>
-    <fieldset>
-      <!-- Username -->
-      <label for="username">Username</label>
+    <div class="form">
+      <label class="label">Username</label>
       <input
-        id="username"
-        v-model="username"
+        v-bind="username"
+        class="input"
         type="text"
-        placeholder="Username"
+        required
       >
 
-      <!-- Password -->
-      <label for="password">Password</label>
+      <label class="mt-2 label">Password</label>
       <input
-        id="password"
-        v-model="password"
+        v-bind="password"
+        class="input"
         type="password"
-        placeholder="Password"
+        required
       >
-      <br>
-      <button @click.prevent="userLogin">
+
+      <button class="w-full mt-2 btn btn-primary" @click.prevent="userLogin">
         Log in
       </button>
-    </fieldset>
+    </div>
   </form>
 </template>
 

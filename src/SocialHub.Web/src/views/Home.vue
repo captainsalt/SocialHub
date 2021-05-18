@@ -1,11 +1,16 @@
 <template>
-  <div>
-    <RegisterForm v-if="toggle"/>
-    <LoginForm v-else/>
+  <div class="grid items-center w-screen h-screen p-5 lg:p-96">
+    <div>
+      <LoginForm v-if="showLogin"/>
+      <RegisterForm v-else/>
 
-    <button @click="toggle = !toggle">
-      Toggle
-    </button>
+      <a
+        class="block mt-5 text-xl text-center lg:text-base anchor"
+        @click="showLogin = !showLogin"
+      >
+        {{ showLogin ? "Register here" : "Log in here" }}
+      </a>
+    </div>
   </div>
 </template>
 
@@ -15,5 +20,5 @@ import RegisterForm from "@/components/RegisterForm.vue";
 import LoginForm from "@/components/LoginForm.vue";
 import { ref } from "vue";
 
-const toggle = ref(false);
+const showLogin = ref(true);
 </script>
