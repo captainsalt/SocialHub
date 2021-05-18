@@ -5,21 +5,6 @@ __metadata:
   version: 4
   cacheKey: 7
 
-"@auth0/auth0-spa-js@npm:^1.15.0":
-  version: 1.15.0
-  resolution: "@auth0/auth0-spa-js@npm:1.15.0"
-  dependencies:
-    abortcontroller-polyfill: ^1.7.1
-    browser-tabs-lock: ^1.2.13
-    core-js: ^3.11.0
-    es-cookie: ^1.3.2
-    fast-text-encoding: ^1.0.3
-    promise-polyfill: ^8.2.0
-    unfetch: ^4.2.0
-  checksum: b4a8bcc37ea45884e14e717e57baf4b7d305694e48a6275e14f31711f7c760fd855c7e8795a87fdda0e98d0c706c39630bfa4780bcbe6f04c878f2ca7599cbad
-  languageName: node
-  linkType: hard
-
 "@babel/code-frame@npm:^7.0.0, @babel/code-frame@npm:^7.12.13, @babel/code-frame@npm:^7.8.3":
   version: 7.12.13
   resolution: "@babel/code-frame@npm:7.12.13"
@@ -2806,13 +2791,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"abortcontroller-polyfill@npm:^1.7.1":
-  version: 1.7.3
-  resolution: "abortcontroller-polyfill@npm:1.7.3"
-  checksum: 9eefccb05d3befd865cf03b1d374abd289fb6c3a25cffe0c34d916b9629e043851cf5f5bd57a2eed7d6cee1af237ddb0a0ba3e3a82146627b8b71ed9c483c6d1
-  languageName: node
-  linkType: hard
-
 "accepts@npm:~1.3.4, accepts@npm:~1.3.5, accepts@npm:~1.3.7":
   version: 1.3.7
   resolution: "accepts@npm:1.3.7"
@@ -3759,15 +3737,6 @@ __metadata:
   dependencies:
     resolve: 1.1.7
   checksum: 4f76701a975e6ee2b01a75b8f0ee600fb176fb543cb5acd2e35cb0eb2a51d32c9a8342394fb9b1b0a627a16f415b0d2a14af0cd5663b8e77dbcc6ae72694cb35
-  languageName: node
-  linkType: hard
-
-"browser-tabs-lock@npm:^1.2.13":
-  version: 1.2.14
-  resolution: "browser-tabs-lock@npm:1.2.14"
-  dependencies:
-    lodash: ">=4.17.21"
-  checksum: 84450dfe01d1e433c4eb595916cfac05128bd7e450f96c5c9ea48730a15d8455cf4709e7c59689b08a05ea73e4891a9bb8b674f963f2fc6bb91a80215ae35333
   languageName: node
   linkType: hard
 
@@ -4773,7 +4742,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js@npm:^3.11.0, core-js@npm:^3.6.5":
+"core-js@npm:^3.6.5":
   version: 3.12.1
   resolution: "core-js@npm:3.12.1"
   checksum: 8b1d05579e7ddeafcd390001cc893540275fa3e658a00ae57f88954411a25bdfe583debb1929c6a50e40631cc07f2092490ea2284b35ffb922b23d7677060f28
@@ -5823,13 +5792,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"es-cookie@npm:^1.3.2":
-  version: 1.3.2
-  resolution: "es-cookie@npm:1.3.2"
-  checksum: 35177da58cc41ff6635ad3505ae0a338baadf9c14cc1cdc9338fc80ec5806b250fb43b1b3f60fd4cd0bd0fb2a0f2b93472a2bcfdb656ccdcf01e78375dda0b76
-  languageName: node
-  linkType: hard
-
 "es-to-primitive@npm:^1.2.1":
   version: 1.2.1
   resolution: "es-to-primitive@npm:1.2.1"
@@ -6416,13 +6378,6 @@ __metadata:
   version: 2.0.6
   resolution: "fast-levenshtein@npm:2.0.6"
   checksum: a2d03af3088b0397633e007fb3010ecfa4f91cae2116d2385653c59396a1b31467641afa672a79e6f82218518670dc144128378124e711e35dbf90bc82846f22
-  languageName: node
-  linkType: hard
-
-"fast-text-encoding@npm:^1.0.3":
-  version: 1.0.3
-  resolution: "fast-text-encoding@npm:1.0.3"
-  checksum: f14fb9242fc8ea942d8b6374f84e918aa5e97bbdf3cafbbf737b04f677277a1900cb9914eab601822cc51787dc607bfff5904e646b3fcc82d84081b21261ba87
   languageName: node
   linkType: hard
 
@@ -9516,7 +9471,7 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"lodash@npm:>=4.17.21, lodash@npm:^4.17.11, lodash@npm:^4.17.14, lodash@npm:^4.17.15, lodash@npm:^4.17.19, lodash@npm:^4.17.20, lodash@npm:^4.17.3, lodash@npm:^4.17.4":
+"lodash@npm:^4.17.11, lodash@npm:^4.17.14, lodash@npm:^4.17.15, lodash@npm:^4.17.19, lodash@npm:^4.17.20, lodash@npm:^4.17.3, lodash@npm:^4.17.4":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: 4983720b9abca930a4a46f18db163d7dad8dd00dbed6db0cc7b499b33b717cce69f80928b27bbb1ff2cbd3b19d251ee90669a8b5ea466072ca81c2ebe91e7468
@@ -11732,13 +11687,6 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"promise-polyfill@npm:^8.2.0":
-  version: 8.2.0
-  resolution: "promise-polyfill@npm:8.2.0"
-  checksum: 37a612596d7f3eddf3cd650df9e94726eac8273f4d61efef7145dbf6570a082291e6424c718d17f84de1dd1473cbd24319094a63f7a2ccf3ece4145e512ccc40
-  languageName: node
-  linkType: hard
-
 "promise-retry@npm:^2.0.1":
   version: 2.0.1
   resolution: "promise-retry@npm:2.0.1"
@@ -12907,7 +12855,6 @@ resolve@1.1.7:
   version: 0.0.0-use.local
   resolution: "socialhub.web@workspace:."
   dependencies:
-    "@auth0/auth0-spa-js": ^1.15.0
     "@types/jest": ^24.0.19
     "@typescript-eslint/eslint-plugin": ^4.18.0
     "@typescript-eslint/parser": ^4.18.0
@@ -14079,13 +14026,6 @@ typescript@~4.1.5:
     has-symbols: ^1.0.2
     which-boxed-primitive: ^1.0.2
   checksum: aa944f1ecfec638b841b331383d0b80edc40855271ecc213c1aa736096d8d0b39ba25b64d102f56c597521db9cd3f0ddbcb97a0f760c240ab584e94e457518c1
-  languageName: node
-  linkType: hard
-
-"unfetch@npm:^4.2.0":
-  version: 4.2.0
-  resolution: "unfetch@npm:4.2.0"
-  checksum: a1ec2f1d0fd6e0e9d46d659b6639dac490eefde4dcb5d9a060b78e380a543182bbdf395c7772685a023fb76c8e5d2c8b843f199d727c5f3af3cced88b3dcc741
   languageName: node
   linkType: hard
 
