@@ -1,4 +1,4 @@
-import { Account } from "@/models/Account";
+import Account from "@/models/Account";
 import LoginFormModel from "@/models/LoginFormModel";
 import RegisterFormModel from "@/models/RegisterFormModel";
 
