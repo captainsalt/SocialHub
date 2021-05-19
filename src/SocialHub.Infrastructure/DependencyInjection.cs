@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SocialHub.Application.Interfaces;
-using SocialHub.Application.Services;
 using SocialHub.Infrastructure.Database;
 using SocialHub.Infrastructure.Services;
 using System;
@@ -14,7 +13,7 @@ namespace SocialHub.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection serviceCollection, IConfiguration configuration)
         {
             if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development"
-                && configuration.GetConnectionString("postgres") is null)
+                && configuration.GetConnectionString("Postgres") is null)
             {
                 serviceCollection.AddDbContext<ISocialHubDbContext, SocialHubDbContext>(options => options.UseInMemoryDatabase("SocialHub"));
             }
@@ -23,9 +22,10 @@ namespace SocialHub.Infrastructure
                 serviceCollection.AddDbContext<ISocialHubDbContext, SocialHubDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("postgres")));
             }
 
+            serviceCollection.AddSingleton<IJwtService, JwtService>();
             serviceCollection.AddTransient<IAccountService, AccountService>();
             serviceCollection.AddTransient<IAuthenticationService, AuthenticationService>();
-            serviceCollection.AddTransient<IJwtService, JwtService>();
+            serviceCollection.AddTransient<IPostService, PostService>();
             serviceCollection.AddTransient<ICryptographyService, CryptographyService>(config =>
             {
                 return new CryptographyService(new(iterations: 10_000));

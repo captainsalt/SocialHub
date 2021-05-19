@@ -1,5 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SocialHub.Domain.Models;
+﻿using LanguageExt;
+using LanguageExt.Common;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using SocialHub.Domain.Entities;
 using System.Threading.Tasks;
 
 namespace SocialHub.Application.Interfaces
@@ -8,6 +11,12 @@ namespace SocialHub.Application.Interfaces
     {
         DbSet<Account> Accounts { get; set; }
 
-        Task<int> SaveChangesAsync();
+        DbSet<Post> Posts { get; set; }
+
+        Task<Either<Error, Unit>> AddAsync<T>(T entity) where T : class;
+
+        Task<Either<Error, Unit>> UpdateAsync<T>(T entity) where T : class;
+
+        EntityEntry Entry<T>(T entity) where T : class;
     }
 }
