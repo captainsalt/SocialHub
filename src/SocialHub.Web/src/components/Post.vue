@@ -7,12 +7,17 @@
 </template>
 
 <script lang="ts">
-import Account from "@/models/Account";
+import AccountModel from "@/models/AccountModel";
+import PostModel from "@/models/PostModel";
 
 export default {
   props: {
     author: {
-      type: Account,
+      type: AccountModel,
+      required: true
+    },
+    post: {
+      type: PostModel,
       required: true
     }
   }

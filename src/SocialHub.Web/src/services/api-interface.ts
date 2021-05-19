@@ -1,10 +1,10 @@
-import Account from "@/models/Account";
+import AccountModel from "@/models/AccountModel";
 import LoginFormModel from "@/models/LoginFormModel";
 import RegisterFormModel from "@/models/RegisterFormModel";
 
 interface AuthResponse {
   token: string;
-  account: Account;
+  account: AccountModel;
 }
 
 async function fetchRequest<T>(method: string, route: string, options: RequestInit): Promise<T> { // eslint-disable-line no-undef

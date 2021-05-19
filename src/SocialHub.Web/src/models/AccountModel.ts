@@ -1,9 +1,9 @@
-export default class Account {
+export default class AccountModel {
   constructor(username: string, email: string) {
     this.username = username;
     this.email = email;
   }
-  
-  username: string
-  email: string
+
+  username
+  email
 }

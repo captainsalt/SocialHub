@@ -1,4 +1,4 @@
-import Account from "@/models/Account";
+import AccountModel from "@/models/AccountModel";
 import { computed, reactive } from "vue";
 
 const state = reactive({
@@ -12,8 +12,8 @@ const setToken = (token: string) => {
   state.token = token;
 };
 
-const account = computed<Account>(() => JSON.parse(state.account));
-const setAccount = (account: Account) => {
+const account = computed<AccountModel>(() => JSON.parse(state.account));
+const setAccount = (account: AccountModel) => {
   const stringAccount = JSON.stringify(account);
   localStorage.setItem("account", stringAccount);
   state.account = stringAccount;
