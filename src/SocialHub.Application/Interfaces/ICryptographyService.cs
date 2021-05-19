@@ -1,4 +1,4 @@
-﻿namespace SocialHub.Application.Services
+﻿namespace SocialHub.Application.Interfaces
 {
     public interface ICryptographyService
     {

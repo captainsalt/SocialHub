@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using LanguageExt;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using SocialHub.Application.Services;
-using SocialHub.Domain.Models;
+using SocialHub.Application.Interfaces;
+using SocialHub.Domain.Entities;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -18,17 +20,19 @@ namespace SocialHub.Infrastructure.Services
             _configuration = configuration;
         }
 
-        public string GenerateJwtToken(Account user)
+        public string Key { get; } = "USER";
+
+        public string GenerateJwtToken(Account account)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration["SecretKey"]);
+            var key = Encoding.ASCII.GetBytes(_configuration["SecretString"]);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim(JwtRegisteredClaimNames.Sub, user.ID.ToString()),
-                    new Claim(JwtRegisteredClaimNames.Email, user.Email)
+                    new Claim(JwtRegisteredClaimNames.Sub, account.Id.ToString()),
+                    new Claim(JwtRegisteredClaimNames.Email, account.Email)
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -38,5 +42,33 @@ namespace SocialHub.Infrastructure.Services
 
             return tokenHandler.WriteToken(token);
         }
+
+        public Account GetAccountFromToken(HttpContext context) =>
+            context.Items[Key] as Account;
+
+        public Option<JwtSecurityToken> ValidateToken(string token)
+        {
+            try
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(_configuration["SecretString"]);
+
+                tokenHandler.ValidateToken(token, new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero
+                }, out SecurityToken validatedToken);
+
+                return validatedToken as JwtSecurityToken;
+            }
+            catch (Exception)
+            {
+                return Option<JwtSecurityToken>.None;
+            }
+        }
+
     }
 }

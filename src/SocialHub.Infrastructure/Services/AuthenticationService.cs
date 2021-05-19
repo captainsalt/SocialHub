@@ -1,8 +1,8 @@
 ﻿using LanguageExt;
 using LanguageExt.Common;
+using SocialHub.Application.Interfaces;
 using SocialHub.Application.Models;
-using SocialHub.Application.Services;
-using SocialHub.Domain.Models;
+using SocialHub.Domain.Entities;
 using System.Threading.Tasks;
 
 namespace SocialHub.Infrastructure.Services
@@ -23,12 +23,12 @@ namespace SocialHub.Infrastructure.Services
             _jwtService = jwtService;
         }
 
-        public async Task<Either<Error, AuthResponse>> LoginAsync(LoginRequest loginRequest)
+        public async Task<Either<Error, AuthResult>> LoginAsync(LoginRequest loginRequest)
         {
             var accountOption = await _accountService.GetAccountByUsername(loginRequest.Username);
 
             return accountOption
-                .Some<Either<Error, AuthResponse>>(
+                .Some<Either<Error, AuthResult>>(
                     acc =>
                     {
                         var isMatch = _cryptographyService.IsMatch(loginRequest.Password, acc.Password);
@@ -37,12 +37,12 @@ namespace SocialHub.Infrastructure.Services
                             return Errors.InvalidLogin;
 
                         var token = _jwtService.GenerateJwtToken(acc);
-                        return new AuthResponse(token, acc);
+                        return new AuthResult(token, acc);
                     })
                 .None(Errors.InvalidLogin);
         }
 
-        public async Task<Either<Error, AuthResponse>> RegisterAsync(RegisterRequest request)
+        public async Task<Either<Error, AuthResult>> RegisterAsync(RegisterRequest request)
         {
             var account = await _accountService.GetAccountByUsername(request.Username);
 
@@ -52,7 +52,7 @@ namespace SocialHub.Infrastructure.Services
             var newAccount = await _accountService.AddAccountAsync(new Account(request.Email, request.Username, request.Password));
             var token = _jwtService.GenerateJwtToken(newAccount);
 
-            return new AuthResponse(token, newAccount);
+            return new AuthResult(token, newAccount);
         }
     }
 }

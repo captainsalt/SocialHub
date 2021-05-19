@@ -1,12 +1,12 @@
 ﻿using FluentAssertions;
-using LanguageExt;
 using NSubstitute;
+using SocialHub.Application.Interfaces;
 using SocialHub.Application.Models;
-using SocialHub.Application.Services;
-using SocialHub.Domain.Models;
+using SocialHub.Domain.Entities;
 using SocialHub.Infrastructure.Services;
 using System.Threading.Tasks;
 using Xunit;
+using static LanguageExt.Prelude;
 
 namespace SocialHub.Infrastructure.Tests.Services
 {
@@ -53,7 +53,7 @@ namespace SocialHub.Infrastructure.Tests.Services
         {
             // Arrange 
             _accountService.GetAccountByUsername(default)
-                .ReturnsForAnyArgs(Option<Account>.None);
+                .ReturnsForAnyArgs(None);
 
             // Act
             var response = await _sut.LoginAsync(_loginRequest);
@@ -98,7 +98,7 @@ namespace SocialHub.Infrastructure.Tests.Services
         {
             // Arrange
             _accountService.GetAccountByUsername(default)
-                .ReturnsForAnyArgs(Option<Account>.None);
+                .ReturnsForAnyArgs(None);
 
             // Act 
             var result = await _sut.RegisterAsync(_registerRequest);

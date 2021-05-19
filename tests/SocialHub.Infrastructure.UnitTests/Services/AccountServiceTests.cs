@@ -1,7 +1,7 @@
 using EntityFrameworkCoreMock.NSubstitute;
 using NSubstitute;
-using SocialHub.Application.Services;
-using SocialHub.Domain.Models;
+using SocialHub.Application.Interfaces;
+using SocialHub.Domain.Entities;
 using SocialHub.Infrastructure.Services;
 using SocialHub.Infrastructure.Tests.Helpers;
 using System.Threading.Tasks;
@@ -18,21 +18,22 @@ namespace SocialHub.Infrastructure.Tests.Services
         public AccountServiceTests()
         {
             _sut = new AccountService(_dbContext.Object, _cryptographyService);
-            _cryptographyService.Hash(default).ReturnsForAnyArgs("");
+
+            _cryptographyService.Hash(default)
+                .ReturnsForAnyArgs("");
         }
 
         [Fact]
-        public async Task AddAccountAsync_ShouldCallPassowrdHasher()
+        public async Task AddAccountAsync_ShouldCallHash_WhenCalled()
         {
             // Arrange
-            var expextedArgument = "unhashedPassword";
-            var testAccount = new Account() { Password = expextedArgument };
+            var testAccount = new Account();
 
             // Act 
             await _sut.AddAccountAsync(testAccount);
 
             // Assert
-            _cryptographyService.Received(1).Hash(testAccount.Password);
+            _cryptographyService.Received(1).Hash(default);
         }
     }
 }
