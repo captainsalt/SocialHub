@@ -1,6 +1,13 @@
 <template>
   <form>
-    <div class="form">
+    <div>
+      <Alert
+        v-if="errorMessage"
+        class="mb-2 text-center"
+        type="error"
+        :message="errorMessage"
+      />
+
       <!-- Password -->
       <label class="label">Email</label>
       <input
@@ -38,13 +45,15 @@
 </template>
 
 <script lang="ts">
-import RegisterFormModel from "@/models/RegisterFormModel";
 import { reactive, toRefs, ref } from "vue";
 import { register } from "@/services/api-interface";
 import { setAccount, setToken } from "@/store";
 import router from "@/router";
+import RegisterFormModel from "@/models/RegisterFormModel";
+import Alert from "@/components/Alert.vue";
 
 export default {
+  components: { Alert },
   setup() {
     const errorMessage = ref("");
     const formModel = reactive(new RegisterFormModel());
@@ -58,7 +67,7 @@ export default {
         await router.push("/dashboard");
       }
       catch (error) {
-        errorMessage.value = error;
+        errorMessage.value = error.message ?? "Error";
       }
     }
 

@@ -1,7 +1,7 @@
 <template>
   <div class="w-full text-white rounded-md" :class="alertClasses">
     <div class="container flex items-center justify-between px-6 py-4 mx-auto">
-      <div class="flex">
+      <div class="mx-auto">
         {{ message }}
       </div>
     </div>

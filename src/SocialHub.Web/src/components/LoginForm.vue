@@ -1,9 +1,16 @@
 <template>
   <form>
-    <div class="form">
+    <div>
+      <Alert
+        v-if="errorMessage"
+        type="error"
+        class="mb-2"
+        :message="errorMessage"
+      />
+
       <label class="label">Username</label>
       <input
-        v-bind="username"
+        v-model="username"
         class="input"
         type="text"
         required
@@ -11,7 +18,7 @@
 
       <label class="mt-2 label">Password</label>
       <input
-        v-bind="password"
+        v-model="password"
         class="input"
         type="password"
         required
@@ -26,12 +33,14 @@
 
 <script lang="ts">
 import LoginFormModel from "@/models/LoginFormModel";
+import Alert from "@/components/Alert.vue";
 import { reactive, toRefs, ref } from "vue";
 import { login } from "@/services/api-interface";
 import { setAccount, setToken } from "@/store";
 import router from "@/router";
 
 export default {
+  components: { Alert },
   setup() {
     const errorMessage = ref("");
     const formModel = reactive(new LoginFormModel());
@@ -45,7 +54,7 @@ export default {
         await router.push("/dashboard");
       }
       catch (error) {
-        errorMessage.value = error;
+        errorMessage.value = error.message ?? "Error";
       }
     }
 
