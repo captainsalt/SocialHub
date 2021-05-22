@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using static LanguageExt.Prelude;
-using Microsoft.EntityFrameworkCore;
 
 namespace SocialHub.Infrastructure.Services
 {
@@ -60,7 +59,7 @@ namespace SocialHub.Infrastructure.Services
                 select shared.ConcatFast(own).ConcatFast(followed).Distinct().ToList();
         }
 
-        public EitherAsync<Error, List<Post>> GetPublicFeed(Guid accountId)
+        public EitherAsync<Error, List<Post>> GetProfileFeed(Guid accountId)
         {
             return
                 from acc in _accountService.GetAccountByIdAsync(accountId).ToAsync()
@@ -70,7 +69,6 @@ namespace SocialHub.Infrastructure.Services
         }
 
         // TODO: Remove code repetition
-        // TODO: Use bind
         public async Task<Either<Error, Unit>> LikePostAsync(Guid accountId, Guid postId)
         {
             var postComputation = await GetPostByIdAsync(postId);

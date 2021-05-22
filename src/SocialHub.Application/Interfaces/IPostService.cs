@@ -20,5 +20,7 @@ namespace SocialHub.Application.Interfaces
         Task<Either<Error, Unit>> RemoveShareAsync(Guid accountId, Guid postId);
 
         EitherAsync<Error, List<Post>> GetHomeFeed(Guid accountId);
+
+        EitherAsync<Error, List<Post>> GetProfileFeed(Guid accountId);
     }
 }
