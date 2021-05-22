@@ -5,7 +5,9 @@ using SocialHub.Application.Interfaces;
 using SocialHub.Application.Models;
 using SocialHub.Domain.Entities;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
+using static LanguageExt.Prelude;
 
 namespace SocialHub.Infrastructure.Services
 {
@@ -49,5 +51,54 @@ namespace SocialHub.Infrastructure.Services
 
             return newAccont;
         }
+
+        public EitherAsync<Error, Unit> FollowAccountAsync(Guid followerId, Guid followeeId)
+        {
+            if (followerId == followeeId)
+                return Errors.CannotFollowSelf;
+
+            var followeeContext = GetAccountByIdAsync(followeeId).ToAsync();
+            var followerContext = GetAccountByIdAsync(followerId).ToAsync();
+
+            return
+                followeeContext.Bind(followee =>
+                followerContext.BindAsync<Unit>(async follower =>
+                {
+                    await _dbContext.Entry(followee)
+                        .Collection("Followers")
+                        .LoadAsync();
+
+                    if (UserIsFollowing(followerId, followee))
+                        return Errors.AlreadyFollowing;
+
+                    followee.Followers.Add(followee);
+                    await _dbContext.UpdateAsync(followee);
+
+                    return unit;
+                }));
+        }
+
+        public EitherAsync<Error, Unit> UnfollowAccountAsync(Guid followerId, Guid followeeId)
+        {
+            var followeeContext = GetAccountByIdAsync(followeeId).ToAsync();
+            var followerContext = GetAccountByIdAsync(followerId).ToAsync();
+
+            return
+                followeeContext.Bind(followee =>
+                followerContext.BindAsync<Unit>(async follower =>
+                {
+                    await _dbContext.Entry(followee)
+                        .Collection("Followers")
+                        .LoadAsync();
+
+                    followee.Followers.Remove(followee);
+                    await _dbContext.UpdateAsync(followee);
+
+                    return unit;
+                }));
+        }
+
+        private static bool UserIsFollowing(Guid followerId, Account followee) =>
+            followee.Followers.FirstOrDefault(acc => acc.Id == followerId) is not null;
     }
 }

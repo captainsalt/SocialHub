@@ -13,5 +13,9 @@ namespace SocialHub.Application.Models
         public static readonly Error UserDoesNotExist = Error.New("User does not exist");
 
         public static readonly Error PostNotFound = Error.New("Post not found");
+
+        public static readonly Error CannotFollowSelf = Error.New("Cannot follow yourself");
+
+        public static readonly Error AlreadyFollowing = Error.New("You are already following this user");
     }
 }

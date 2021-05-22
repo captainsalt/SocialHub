@@ -30,6 +30,12 @@ namespace SocialHub.Infrastructure.Database
 
             // TODO: Use entities for join
             modelBuilder.Entity<Account>()
+                .HasMany(acc => acc.Followers)
+                .WithMany(acc => acc.Following)
+                .UsingEntity(joinTable => joinTable.ToTable("AccountAccountFollowing"));
+
+            // TODO: Combine likes with shares
+            modelBuilder.Entity<Account>()
                 .HasMany(acc => acc.Likes)
                 .WithMany(post => post.LikedBy)
                 .UsingEntity(joinTable => joinTable.ToTable("AccountPostLike"));

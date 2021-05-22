@@ -16,13 +16,19 @@ namespace SocialHub.API.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAuthenticationService _authenticationService;
+        private readonly IAccountService _accountService;
+        private readonly IJwtService _jwtService;
         private readonly IMapper _mapper;
 
         public AccountController(
             IAuthenticationService authenticationService,
+            IAccountService accountService,
+            IJwtService jwtService,
             IMapper mapper)
         {
             _authenticationService = authenticationService;
+            _accountService = accountService;
+            _jwtService = jwtService;
             _mapper = mapper;
         }
 
@@ -45,6 +51,30 @@ namespace SocialHub.API.Controllers
             return result.Match<IActionResult>(
                 authResult => Ok(MapAuthResult(authResult)),
                 err => BadRequest(MapError(err))
+            );
+        }
+
+        [HttpPost("follow")]
+        public async Task<IActionResult> Follow([FromQuery] FollowRequest request)
+        {
+            var tokenAccount = _jwtService.GetAccountFromToken(HttpContext);
+
+            return await _accountService.FollowAccountAsync(tokenAccount.Id, request.followeeId)
+                .Match<IActionResult>(
+                    unit => Ok(),
+                    err => BadRequest(MapError(err))
+            );
+        }
+
+        [HttpDelete("unfollow")]
+        public async Task<IActionResult> Unfollow([FromQuery] FollowRequest request)
+        {
+            var tokenAccount = _jwtService.GetAccountFromToken(HttpContext);
+
+            return await _accountService.UnfollowAccountAsync(tokenAccount.Id, request.followeeId)
+                .Match<IActionResult>(
+                    unit => Ok(),
+                    err => BadRequest(MapError(err))
             );
         }
 
