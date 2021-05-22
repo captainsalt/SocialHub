@@ -4,6 +4,8 @@ using SocialHub.Application.Interfaces;
 using SocialHub.Application.Models;
 using SocialHub.Domain.Entities;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using static LanguageExt.Prelude;
 
@@ -47,7 +49,26 @@ namespace SocialHub.Infrastructure.Services
                 err => err);
         }
 
-        // TODO: Remove code repitition
+        public EitherAsync<Error, List<Post>> GetHomeFeed(Guid accountId)
+        {
+            return
+                from acc in _accountService.GetAccountByIdAsync(accountId).ToAsync()
+                from shared in GetSharedPosts(acc).ToAsync()
+                from own in GetOwnPosts(acc).ToAsync()
+                from followed in GetFolloweePosts(acc).ToAsync()
+                select shared.ConcatFast(own).ConcatFast(followed).Distinct().ToList();
+        }
+
+        public EitherAsync<Error, List<Post>> GetProfileFeed(Guid accountId)
+        {
+            return
+                from acc in _accountService.GetAccountByIdAsync(accountId).ToAsync()
+                from shared in GetSharedPosts(acc).ToAsync()
+                from own in GetOwnPosts(acc).ToAsync()
+                select shared.ConcatFast(own).Distinct().ToList();
+        }
+
+        // TODO: Remove code repetition
         public async Task<Either<Error, Unit>> LikePostAsync(Guid accountId, Guid postId)
         {
             var postComputation = await GetPostByIdAsync(postId);
@@ -140,6 +161,43 @@ namespace SocialHub.Infrastructure.Services
                 },
                 err => err
             );
+        }
+
+        private async Task<Either<Error, List<Post>>> GetOwnPosts(Account account)
+        {
+            var postCollection = _dbContext.Entry(account).Collection(nameof(account.Posts));
+
+            if (!postCollection.IsLoaded)
+                await postCollection.LoadAsync();
+
+            return account.Posts;
+        }
+
+        private async Task<Either<Error, List<Post>>> GetSharedPosts(Account account)
+        {
+            var sharesCollection = _dbContext.Entry(account).Collection(nameof(account.Shares));
+
+            if (!sharesCollection.IsLoaded)
+                await sharesCollection.LoadAsync();
+
+            return account.Shares;
+        }
+
+        /// <summary>
+        /// Gets the followees authored and shared posts 
+        /// </summary>
+        /// <param name="account">Followee</param>
+        /// <returns></returns>
+        private async Task<Either<Error, List<Post>>> GetFolloweePosts(Account account)
+        {
+            var followees = _dbContext.Entry(account).Collection(nameof(account.Following));
+
+            if (!followees.IsLoaded)
+                await followees.LoadAsync();
+
+            return account.Following
+                .SelectMany(followee => followee.Posts.ConcatFast(followee.Shares))
+                .ToList();
         }
     }
 }

@@ -8,6 +8,8 @@ using SocialHub.API.Models.Dtos;
 using SocialHub.Application.Interfaces;
 using SocialHub.Domain.Entities;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SocialHub.API.Controllers
@@ -18,13 +20,45 @@ namespace SocialHub.API.Controllers
     {
         private readonly IPostService _postService;
         private readonly IJwtService _jwtService;
+        private readonly IAccountService _accountService;
         private readonly IMapper _mapper;
 
-        public PostController(IPostService postService, IJwtService jwtService, IMapper mapper)
+        public PostController(
+            IPostService postService,
+            IJwtService jwtService,
+            IAccountService accountService,
+            IMapper mapper)
         {
             _postService = postService;
             _jwtService = jwtService;
+            _accountService = accountService;
             _mapper = mapper;
+        }
+
+        [HttpGet("feed")]
+        public async Task<IActionResult> GetHomeFeed()
+        {
+            var account = _jwtService.GetAccountFromToken(HttpContext);
+            var result = _postService.GetHomeFeed(account.Id);
+
+            return await result.Match<IActionResult>(
+                posts => Ok(MapPostList(posts)),
+                err => BadRequest(err)
+            );
+        }
+
+        [HttpGet("feed/{username}")]
+        public async Task<IActionResult> GetProfileFeed(string username)
+        {
+            var result =
+                from acc in _accountService.GetAccountByUsernameAsync(username).ToAsync()
+                from feed in _postService.GetHomeFeed(acc.Id)
+                select feed;
+
+            return await result.Match<IActionResult>(
+                posts => Ok(MapPostList(posts)),
+                err => BadRequest(err)
+            );
         }
 
         [HttpPost("create")]
@@ -89,6 +123,9 @@ namespace SocialHub.API.Controllers
 
         private PostDto MapPost(Post post) =>
             _mapper.Map<PostDto>(post);
+
+        private List<PostDto> MapPostList(List<Post> posts) =>
+            posts.Select(p => _mapper.Map<PostDto>(p)).ToList();
 
         private ErrorDto MapError(Error err) =>
             _mapper.Map<ErrorDto>(err);
