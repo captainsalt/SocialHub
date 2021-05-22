@@ -12,7 +12,7 @@ namespace SocialHub.Application.Interfaces
 
         Task<Either<Error, Account>> GetAccountByIdAsync(Guid id);
 
-        Task<Option<Account>> GetAccountByUsername(string username);
+        Task<Either<Error, Account>> GetAccountByUsernameAsync(string username);
 
         EitherAsync<Error, Unit> FollowAccountAsync(Guid followerId, Guid followeeId);
 

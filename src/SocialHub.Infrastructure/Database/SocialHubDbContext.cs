@@ -6,7 +6,6 @@ using SocialHub.Application.Interfaces;
 using SocialHub.Domain.Entities;
 using System;
 using System.Threading.Tasks;
-using static LanguageExt.Prelude;
 
 namespace SocialHub.Infrastructure.Database
 {
@@ -52,26 +51,26 @@ namespace SocialHub.Infrastructure.Database
             base.Entry(entity);
 
         // TODO: Capture errors
-        public async Task<Either<Error, Unit>> AddAsync<T>(T entity) where T : class
+        public async Task<Either<Error, T>> AddAsync<T>(T entity) where T : class
         {
             var doesNotExist = !Entry(entity).IsKeySet;
 
             if (entity is IEntity x && doesNotExist)
                 x.CreatedAt = DateTime.Now;
 
-            await base.AddAsync(entity);
+            var added = await base.AddAsync(entity);
             await SaveChangesAsync();
 
-            return unit;
+            return added.Entity;
         }
 
         // TODO: Capture errors
-        public async Task<Either<Error, Unit>> UpdateAsync<T>(T entity) where T : class
+        public async Task<Either<Error, T>> UpdateAsync<T>(T entity) where T : class
         {
-            base.Update(entity);
+            var updated = base.Update(entity);
             await SaveChangesAsync();
 
-            return unit;
+            return updated.Entity;
         }
     }
 }

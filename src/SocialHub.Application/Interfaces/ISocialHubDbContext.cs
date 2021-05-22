@@ -13,9 +13,9 @@ namespace SocialHub.Application.Interfaces
 
         DbSet<Post> Posts { get; set; }
 
-        Task<Either<Error, Unit>> AddAsync<T>(T entity) where T : class;
+        Task<Either<Error, T>> AddAsync<T>(T entity) where T : class;
 
-        Task<Either<Error, Unit>> UpdateAsync<T>(T entity) where T : class;
+        Task<Either<Error, T>> UpdateAsync<T>(T entity) where T : class;
 
         EntityEntry Entry<T>(T entity) where T : class;
     }

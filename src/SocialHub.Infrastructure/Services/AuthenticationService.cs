@@ -25,34 +25,37 @@ namespace SocialHub.Infrastructure.Services
 
         public async Task<Either<Error, AuthResult>> LoginAsync(LoginRequest loginRequest)
         {
-            var accountOption = await _accountService.GetAccountByUsername(loginRequest.Username);
+            var accountEither = await _accountService.GetAccountByUsernameAsync(loginRequest.Username);
 
-            return accountOption
-                .Some<Either<Error, AuthResult>>(
-                    acc =>
-                    {
-                        var isMatch = _cryptographyService.IsMatch(loginRequest.Password, acc.Password);
+            return accountEither.Match<Either<Error, AuthResult>>(
+                acc =>
+                {
+                    var isMatch = _cryptographyService.IsMatch(loginRequest.Password, acc.Password);
 
-                        if (!isMatch)
-                            return Errors.InvalidLogin;
+                    if (!isMatch)
+                        return Errors.InvalidLogin;
 
-                        var token = _jwtService.GenerateJwtToken(acc);
-                        return new AuthResult(token, acc);
-                    })
-                .None(Errors.InvalidLogin);
+                    var token = _jwtService.GenerateJwtToken(acc);
+                    return new AuthResult(token, acc);
+                },
+                err => Errors.InvalidLogin
+            );
         }
 
         public async Task<Either<Error, AuthResult>> RegisterAsync(RegisterRequest request)
         {
-            var account = await _accountService.GetAccountByUsername(request.Username);
+            var accountEither = _accountService.GetAccountByUsernameAsync(request.Username).ToAsync();
 
-            if (account.IsSome)
-                return Errors.UsernameInUse;
+            return await accountEither.MatchAsync<Either<Error, AuthResult>>(
+                acc => Errors.UsernameInUse,
+                async err =>
+                {
+                    var newAccount = await _accountService.AddAccountAsync(new Account(request.Email, request.Username, request.Password));
+                    var token = _jwtService.GenerateJwtToken(newAccount);
 
-            var newAccount = await _accountService.AddAccountAsync(new Account(request.Email, request.Username, request.Password));
-            var token = _jwtService.GenerateJwtToken(newAccount);
-
-            return new AuthResult(token, newAccount);
+                    return new AuthResult(token, newAccount);
+                }
+            );
         }
     }
 }

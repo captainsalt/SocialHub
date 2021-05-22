@@ -49,7 +49,7 @@ namespace SocialHub.API.Controllers
             var result = await _authenticationService.RegisterAsync(request);
 
             return result.Match<IActionResult>(
-                authResult => Ok(MapAuthResult(authResult)),
+                authResult => Created(HttpContext.Request.Path.Value, MapAuthResult(authResult)),
                 err => BadRequest(MapError(err))
             );
         }
