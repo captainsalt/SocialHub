@@ -9,6 +9,7 @@ using SocialHub.Application.Interfaces;
 using SocialHub.Domain.Entities;
 using System;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace SocialHub.API.Controllers
 {
@@ -25,6 +26,22 @@ namespace SocialHub.API.Controllers
             _postService = postService;
             _jwtService = jwtService;
             _mapper = mapper;
+        }
+
+        [HttpGet("feed")]
+        public async Task<IActionResult> GetHomeFeed()
+        {
+            var account = _jwtService.GetAccountFromToken(HttpContext);
+            var result = _postService.GetHomeFeed(account.Id);
+
+            return await result.Match<IActionResult>(
+                postList =>
+                {
+                    var mappedPosts = postList.Select(p => _mapper.Map<PostDto>(p));
+                    return Ok(mappedPosts);
+                },
+                err => BadRequest(err)
+            );
         }
 
         [HttpPost("create")]

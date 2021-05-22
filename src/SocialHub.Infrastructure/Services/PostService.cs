@@ -53,23 +53,20 @@ namespace SocialHub.Infrastructure.Services
         public EitherAsync<Error, List<Post>> GetHomeFeed(Guid accountId)
         {
             return
-                _accountService.GetAccountByIdAsync(accountId)
-                    .ToAsync()
-                    .Bind(acc =>
-                    {
-                        var sharedContext = GetSharedPosts(acc).ToAsync();
-                        var likesContext = GetSharedPosts(acc).ToAsync();
-                        var followedAccountContext = GetFollowedAccountPosts(acc).ToAsync();
+                from acc in _accountService.GetAccountByIdAsync(accountId).ToAsync()
+                from shared in GetSharedPosts(acc).ToAsync()
+                from own in GetOwnPosts(acc).ToAsync()
+                from followed in GetFolloweePosts(acc).ToAsync()
+                select shared.ConcatFast(own).ConcatFast(followed).Distinct().ToList();
+        }
 
-                        return sharedContext.Bind(shared =>
-                            likesContext.Bind(likes =>
-                            followedAccountContext.Bind<List<Post>>(followed =>
-                            {
-                                return shared.ConcatFast(likes)
-                                        .ConcatFast(followed)
-                                        .ToList();
-                            })));
-                    });
+        public EitherAsync<Error, List<Post>> GetPublicFeed(Guid accountId)
+        {
+            return
+                from acc in _accountService.GetAccountByIdAsync(accountId).ToAsync()
+                from shared in GetSharedPosts(acc).ToAsync()
+                from own in GetOwnPosts(acc).ToAsync()
+                select shared.ConcatFast(own).Distinct().ToList();
         }
 
         // TODO: Remove code repetition
@@ -168,6 +165,16 @@ namespace SocialHub.Infrastructure.Services
             );
         }
 
+        private async Task<Either<Error, List<Post>>> GetOwnPosts(Account account)
+        {
+            var postCollection = _dbContext.Entry(account).Collection(nameof(account.Posts));
+
+            if (!postCollection.IsLoaded)
+                await postCollection.LoadAsync();
+
+            return account.Posts;
+        }
+
         private async Task<Either<Error, List<Post>>> GetSharedPosts(Account account)
         {
             var sharesCollection = _dbContext.Entry(account).Collection(nameof(account.Shares));
@@ -178,25 +185,20 @@ namespace SocialHub.Infrastructure.Services
             return account.Shares;
         }
 
-        private async Task<Either<Error, List<Post>>> GetLikedPosts(Account account)
+        /// <summary>
+        /// Gets the followees authored and shared posts 
+        /// </summary>
+        /// <param name="account">Followee</param>
+        /// <returns></returns>
+        private async Task<Either<Error, List<Post>>> GetFolloweePosts(Account account)
         {
-            var likedCollection = _dbContext.Entry(account).Collection(nameof(account.Likes));
+            var followees = _dbContext.Entry(account).Collection(nameof(account.Following));
 
-            if (!likedCollection.IsLoaded)
-                await likedCollection.LoadAsync();
-
-            return account.Likes;
-        }
-
-        private async Task<Either<Error, List<Post>>> GetFollowedAccountPosts(Account account)
-        {
-            var followedAccountPosts = _dbContext.Entry(account).Collection(nameof(account.Following));
-
-            if (!followedAccountPosts.IsLoaded)
-                await followedAccountPosts.LoadAsync();
+            if (!followees.IsLoaded)
+                await followees.LoadAsync();
 
             return account.Following
-                .SelectMany(acc => acc.Posts.ConcatFast(acc.Shares))
+                .SelectMany(followee => followee.Posts.ConcatFast(followee.Shares))
                 .ToList();
         }
     }
