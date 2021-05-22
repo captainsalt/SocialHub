@@ -1,6 +1,7 @@
 ﻿using SocialHub.API.Dtos;
+using System;
 
 namespace SocialHub.API.Models.Dtos
 {
-    public record PostDto(string Content, AccountDto Account);
+    public record PostDto(Guid Id, string Content, DateTime CreatedAt, AccountDto Account);
 }

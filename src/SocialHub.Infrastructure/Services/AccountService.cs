@@ -34,8 +34,15 @@ namespace SocialHub.Infrastructure.Services
             return user;
         }
 
-        public async Task<Option<Account>> GetAccountByUsername(string username) =>
-            await _dbContext.Accounts.SingleOrDefaultAsync(acc => acc.Username == username);
+        public async Task<Either<Error, Account>> GetAccountByUsernameAsync(string username)
+        {
+            var user = await _dbContext.Accounts.FirstOrDefaultAsync(acc => acc.Username == username);
+
+            if (user is null)
+                return Errors.UserDoesNotExist;
+
+            return user;
+        }
 
         /// <summary>
         /// Hashes account password then adds it to the database

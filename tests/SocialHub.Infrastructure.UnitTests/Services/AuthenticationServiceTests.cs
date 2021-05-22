@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using LanguageExt.Common;
 using NSubstitute;
 using SocialHub.Application.Interfaces;
 using SocialHub.Application.Models;
@@ -6,7 +7,6 @@ using SocialHub.Domain.Entities;
 using SocialHub.Infrastructure.Services;
 using System.Threading.Tasks;
 using Xunit;
-using static LanguageExt.Prelude;
 
 namespace SocialHub.Infrastructure.Tests.Services
 {
@@ -35,7 +35,7 @@ namespace SocialHub.Infrastructure.Tests.Services
         public async Task LoginAsync_ShouldReturnRight_WhenAccountExists()
         {
             // Arrange 
-            _accountService.GetAccountByUsername(default)
+            _accountService.GetAccountByUsernameAsync(default)
                 .ReturnsForAnyArgs(_testAccount);
 
             _cryptographyService.IsMatch(default, default)
@@ -52,8 +52,8 @@ namespace SocialHub.Infrastructure.Tests.Services
         public async Task LoginAsync_ShouldReturnLeft_WhenAccountDoesNotExist()
         {
             // Arrange 
-            _accountService.GetAccountByUsername(default)
-                .ReturnsForAnyArgs(None);
+            _accountService.GetAccountByUsernameAsync(default)
+                .ReturnsForAnyArgs(default(Error));
 
             // Act
             var response = await _sut.LoginAsync(_loginRequest);
@@ -66,7 +66,7 @@ namespace SocialHub.Infrastructure.Tests.Services
         public async Task LoginAsync_ShouldReturnLeft_WhenPasswordsDoNotMatch()
         {
             // Arrange 
-            _accountService.GetAccountByUsername(default)
+            _accountService.GetAccountByUsernameAsync(default)
                 .ReturnsForAnyArgs(_testAccount);
 
             _cryptographyService.IsMatch(default, default)
@@ -83,7 +83,7 @@ namespace SocialHub.Infrastructure.Tests.Services
         public async Task RegisterAsync_ShouldReturnLeft_WhenAccountExists()
         {
             // Arrange
-            _accountService.GetAccountByUsername(default)
+            _accountService.GetAccountByUsernameAsync(default)
                 .ReturnsForAnyArgs(_testAccount);
 
             // Act 
@@ -97,8 +97,8 @@ namespace SocialHub.Infrastructure.Tests.Services
         public async Task RegisterAsync_ShouldReturnRight_WhenAccountIsCreated()
         {
             // Arrange
-            _accountService.GetAccountByUsername(default)
-                .ReturnsForAnyArgs(None);
+            _accountService.GetAccountByUsernameAsync(default)
+                .ReturnsForAnyArgs(default(Error));
 
             // Act 
             var result = await _sut.RegisterAsync(_registerRequest);

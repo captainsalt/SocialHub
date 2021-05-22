@@ -30,21 +30,25 @@ namespace SocialHub.Infrastructure.Services
             return post;
         }
 
-        public async Task<Either<Error, Unit>> CreatePost(Guid authorId, string content)
+        public async Task<Either<Error, Post>> CreatePostAsync(Guid authorId, string content)
         {
             var accountComputation = await _accountService.GetAccountByIdAsync(authorId);
 
-            return await accountComputation.MatchAsync<Either<Error, Unit>>(
+            return await accountComputation.MatchAsync(
                 async acc =>
                 {
-                    await _dbContext.AddAsync(new Post(acc.Id, content));
-                    return unit;
+                    return await _dbContext.AddAsync(new Post(acc.Id, content))
+                        .ToAsync()
+                        .Match<Either<Error, Post>>(
+                            post => post,
+                            err => err
+                        );
                 },
                 err => err);
         }
 
         // TODO: Remove code repitition
-        public async Task<Either<Error, Unit>> LikePost(Guid accountId, Guid postId)
+        public async Task<Either<Error, Unit>> LikePostAsync(Guid accountId, Guid postId)
         {
             var postComputation = await GetPostByIdAsync(postId);
             var accountComputation = await _accountService.GetAccountByIdAsync(accountId);
@@ -65,7 +69,7 @@ namespace SocialHub.Infrastructure.Services
             );
         }
 
-        public async Task<Either<Error, Unit>> SharePost(Guid accountId, Guid postId)
+        public async Task<Either<Error, Unit>> SharePostAsync(Guid accountId, Guid postId)
         {
             var postComputation = await GetPostByIdAsync(postId);
             var accountComputation = await _accountService.GetAccountByIdAsync(accountId);
@@ -86,7 +90,7 @@ namespace SocialHub.Infrastructure.Services
             );
         }
 
-        public async Task<Either<Error, Unit>> RemoveLike(Guid accountId, Guid postId)
+        public async Task<Either<Error, Unit>> RemoveLikeAsync(Guid accountId, Guid postId)
         {
             var postComputation = await GetPostByIdAsync(postId);
             var accountComputation = await _accountService.GetAccountByIdAsync(accountId);
@@ -112,7 +116,7 @@ namespace SocialHub.Infrastructure.Services
             );
         }
 
-        public async Task<Either<Error, Unit>> RemoveShare(Guid accountId, Guid postId)
+        public async Task<Either<Error, Unit>> RemoveShareAsync(Guid accountId, Guid postId)
         {
             var postComputation = await GetPostByIdAsync(postId);
             var accountComputation = await _accountService.GetAccountByIdAsync(accountId);
