@@ -4,8 +4,11 @@ using SocialHub.Application.Interfaces;
 using SocialHub.Application.Models;
 using SocialHub.Domain.Entities;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using static LanguageExt.Prelude;
+using Microsoft.EntityFrameworkCore;
 
 namespace SocialHub.Infrastructure.Services
 {
@@ -47,7 +50,30 @@ namespace SocialHub.Infrastructure.Services
                 err => err);
         }
 
-        // TODO: Remove code repitition
+        public EitherAsync<Error, List<Post>> GetHomeFeed(Guid accountId)
+        {
+            return
+                _accountService.GetAccountByIdAsync(accountId)
+                    .ToAsync()
+                    .Bind(acc =>
+                    {
+                        var sharedContext = GetSharedPosts(acc).ToAsync();
+                        var likesContext = GetSharedPosts(acc).ToAsync();
+                        var followedAccountContext = GetFollowedAccountPosts(acc).ToAsync();
+
+                        return sharedContext.Bind(shared =>
+                            likesContext.Bind(likes =>
+                            followedAccountContext.Bind<List<Post>>(followed =>
+                            {
+                                return shared.ConcatFast(likes)
+                                        .ConcatFast(followed)
+                                        .ToList();
+                            })));
+                    });
+        }
+
+        // TODO: Remove code repetition
+        // TODO: Use bind
         public async Task<Either<Error, Unit>> LikePostAsync(Guid accountId, Guid postId)
         {
             var postComputation = await GetPostByIdAsync(postId);
@@ -140,6 +166,38 @@ namespace SocialHub.Infrastructure.Services
                 },
                 err => err
             );
+        }
+
+        private async Task<Either<Error, List<Post>>> GetSharedPosts(Account account)
+        {
+            var sharesCollection = _dbContext.Entry(account).Collection(nameof(account.Shares));
+
+            if (!sharesCollection.IsLoaded)
+                await sharesCollection.LoadAsync();
+
+            return account.Shares;
+        }
+
+        private async Task<Either<Error, List<Post>>> GetLikedPosts(Account account)
+        {
+            var likedCollection = _dbContext.Entry(account).Collection(nameof(account.Likes));
+
+            if (!likedCollection.IsLoaded)
+                await likedCollection.LoadAsync();
+
+            return account.Likes;
+        }
+
+        private async Task<Either<Error, List<Post>>> GetFollowedAccountPosts(Account account)
+        {
+            var followedAccountPosts = _dbContext.Entry(account).Collection(nameof(account.Following));
+
+            if (!followedAccountPosts.IsLoaded)
+                await followedAccountPosts.LoadAsync();
+
+            return account.Following
+                .SelectMany(acc => acc.Posts.ConcatFast(acc.Shares))
+                .ToList();
         }
     }
 }
