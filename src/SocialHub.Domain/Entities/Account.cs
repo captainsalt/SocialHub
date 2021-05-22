@@ -37,5 +37,9 @@ namespace SocialHub.Domain.Entities
         public virtual List<Post> Shares { get; set; } = new();
 
         public virtual List<Post> Likes { get; set; } = new();
+
+        public virtual List<Account> Followers { get; set; } = new();
+
+        public virtual List<Account> Following { get; set; } = new();
     }
 }

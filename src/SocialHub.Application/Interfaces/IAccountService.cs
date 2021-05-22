@@ -13,5 +13,9 @@ namespace SocialHub.Application.Interfaces
         Task<Either<Error, Account>> GetAccountByIdAsync(Guid id);
 
         Task<Option<Account>> GetAccountByUsername(string username);
+
+        EitherAsync<Error, Unit> FollowAccountAsync(Guid followerId, Guid followeeId);
+
+        EitherAsync<Error, Unit> UnfollowAccountAsync(Guid followerId, Guid followeeId);
     }
 }
