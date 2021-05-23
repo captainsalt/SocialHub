@@ -12,11 +12,7 @@ const post = new PostModel("111-111-111-111", author, "Hello world", new Date())
 
 const Template = args => ({
   components: { Post },
-  setup() {
-    return {
-      args
-    };
-  },
+  setup: () => ({ args }),
   template: "<Post v-bind='args' />"
 });
 

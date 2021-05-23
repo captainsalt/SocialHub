@@ -9,7 +9,8 @@ module.exports = {
   },
   variants: {
     extend: {
-      cursor: ["hover"]
+      cursor: ["hover"],
+      stroke: ["hover"]
     }
   },
   plugins: []
