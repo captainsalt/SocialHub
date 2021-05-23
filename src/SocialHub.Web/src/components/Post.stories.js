@@ -7,15 +7,12 @@ export default {
   component: PostModel
 };
 
-const author = new AccountModel("test@test.com", "GenericUser");
-const post = new PostModel(author, "Hello world");
+const author = new AccountModel("111-111-111-111", "test@test.com", "GenericUser", new Date());
+const post = new PostModel("111-111-111-111", author, "Hello world", new Date());
 
 const Template = args => ({
   components: { Post },
   setup() {
-    args.author = author;
-    args.post = post;
-
     return {
       args
     };
@@ -23,7 +20,8 @@ const Template = args => ({
   template: "<Post v-bind='args' />"
 });
 
-export const Plain = Template.bind({});
-Plain.args = {
-
+export const Single = Template.bind({});
+Single.args = {
+  author,
+  post
 };

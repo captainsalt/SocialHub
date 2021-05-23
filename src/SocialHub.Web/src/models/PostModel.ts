@@ -5,7 +5,7 @@ export default class PostModel {
     this.id = id;
     this.author = author;
     this.content = content;
-    this. createdAt = createdAt
+    this.createdAt = createdAt;
   }
 
   id
