@@ -1,8 +1,9 @@
 <template>
-  <div class="w-full p-3 border-2 border-purple-300">
+  <div class="w-full p-3 border-collapse border-gray-300 d">
     <!-- Header -->
-    <div class="">
-      {{ author.username }} <span class="text-sm text-gray-600">{{ post.createdAt }}</span>
+    <div>
+      {{ post.author.username }}
+      <span class="text-sm text-gray-600">{{ post.createdAt }}</span>
     </div>
 
     <!-- Content -->
@@ -24,15 +25,10 @@
 </template>
 
 <script lang="ts">
-import AccountModel from "@/models/AccountModel";
 import PostModel from "@/models/PostModel";
 
 export default {
   props: {
-    author: {
-      type: AccountModel,
-      required: true
-    },
     post: {
       type: PostModel,
       required: true

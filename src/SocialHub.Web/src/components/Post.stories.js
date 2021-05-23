@@ -20,8 +20,7 @@ const Template = args => ({
   template: "<Post v-bind='args' />"
 });
 
-export const Single = Template.bind({});
-Single.args = {
-  author,
+export const Default = Template.bind({});
+Default.args = {
   post
 };
