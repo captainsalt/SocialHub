@@ -1,9 +1,12 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SocialHub.Domain.Entities
 {
+    [Index(nameof(Username), IsUnique = true)]
+    [Index(nameof(Email), IsUnique = true)]
     public class Account : IEntity
     {
         public Account()
