@@ -71,12 +71,9 @@ namespace SocialHub.Infrastructure.Services
         // TODO: Remove code repetition
         public async Task<Either<Error, Unit>> LikePostAsync(Guid accountId, Guid postId)
         {
-            var postComputation = await GetPostByIdAsync(postId);
-            var accountComputation = await _accountService.GetAccountByIdAsync(accountId);
-
             var result =
-                from post in postComputation
-                from account in accountComputation
+                from post in GetPostByIdAsync(postId).ToAsync()
+                from account in _accountService.GetAccountByIdAsync(accountId).ToAsync()
                 select (post, account);
 
             return await result.MatchAsync<Either<Error, Unit>>(
@@ -92,12 +89,9 @@ namespace SocialHub.Infrastructure.Services
 
         public async Task<Either<Error, Unit>> SharePostAsync(Guid accountId, Guid postId)
         {
-            var postComputation = await GetPostByIdAsync(postId);
-            var accountComputation = await _accountService.GetAccountByIdAsync(accountId);
-
             var result =
-                from post in postComputation
-                from account in accountComputation
+                from post in GetPostByIdAsync(postId).ToAsync()
+                from account in _accountService.GetAccountByIdAsync(accountId).ToAsync()
                 select (post, account);
 
             return await result.MatchAsync<Either<Error, Unit>>(
