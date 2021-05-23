@@ -125,7 +125,7 @@ namespace SocialHub.Infrastructure.Services
                 async res =>
                 {
                     await _dbContext.Entry(res.account)
-                        .Collection("Likes")
+                        .Collection(nameof(res.account.Likes))
                         .LoadAsync();
 
                     res.account.Likes.Remove(res.post);
@@ -151,7 +151,7 @@ namespace SocialHub.Infrastructure.Services
                 async res =>
                 {
                     await _dbContext.Entry(res.account)
-                        .Collection("Shares")
+                        .Collection(nameof(res.account.Shares))
                         .LoadAsync();
 
                     res.account.Shares.Remove(res.post);
