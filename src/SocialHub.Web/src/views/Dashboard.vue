@@ -1,11 +1,9 @@
 <template>
-  <div>
-    <div>Welcome {{ account.username }}</div>
-    <div>This is the dashboard</div>
-  </div>
+  <PureDashboard :posts="[]"/>
 </template>
 
 <script lang="ts" setup>
 /* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
+import PureDashboard from "@/views/pure/PureDashboard.vue";
 import { account } from "@/store";
 </script>
