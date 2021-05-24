@@ -13,6 +13,12 @@ const routes: Array<RouteRecordRaw> = [
     name: "home",
     meta: { requiresAuth: true },
     component: NavLayout
+  },
+  {
+    path: "/profile",
+    name: "profile",
+    meta: { requiresAuth: true },
+    component: NavLayout
   }
 ];
 
