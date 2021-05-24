@@ -11,6 +11,7 @@ export default {
   components: { PureProfile },
   setup() {
     const { posts } = usePostsStore();
+
     return {
       posts,
       account
