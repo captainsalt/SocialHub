@@ -12,7 +12,12 @@ const Template = args => ({
   template: "<PureDashboard v-bind='args'/>"
 });
 
-export const Default = Template.bind({});
-Default.args = {
+export const SinglePost = Template.bind({});
+SinglePost.args = {
+  posts: PostContainerStories.Single.args.posts
+};
+
+export const ManyPosts = Template.bind({});
+ManyPosts.args = {
   posts: PostContainerStories.Many.args.posts
 };
