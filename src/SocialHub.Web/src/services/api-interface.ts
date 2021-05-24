@@ -1,6 +1,8 @@
 import AccountModel from "@/models/AccountModel";
+import PostModel from "@/models/PostModel";
 import LoginFormModel from "@/models/LoginFormModel";
 import RegisterFormModel from "@/models/RegisterFormModel";
+import { token } from "@/store";
 
 interface AuthResponse {
   token: string;
@@ -20,7 +22,7 @@ async function fetchRequest<T>(method: string, route: string, options: RequestIn
   return response.json();
 }
 
-async function login(model: LoginFormModel): Promise<AuthResponse> {
+export async function login(model: LoginFormModel): Promise<AuthResponse> {
   const options = {
     body: JSON.stringify(model),
     headers: {
@@ -32,7 +34,7 @@ async function login(model: LoginFormModel): Promise<AuthResponse> {
   return response;
 }
 
-async function register(model: RegisterFormModel): Promise<AuthResponse> {
+export async function register(model: RegisterFormModel): Promise<AuthResponse> {
   const options = {
     body: JSON.stringify(model),
     headers: {
@@ -44,7 +46,13 @@ async function register(model: RegisterFormModel): Promise<AuthResponse> {
   return response;
 }
 
-export {
-  register,
-  login
-};
+export async function getFeed() {
+  const response = await fetchRequest<PostModel[]>("GET", "/api/post/feed", {
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    }
+  });
+
+  return response;
+}

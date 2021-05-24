@@ -2,7 +2,7 @@
   <div class="p-3 border-collapse border-gray-300">
     <!-- Header -->
     <div>
-      {{ post.author.username }}
+      {{ post.account.username }}
       <span class="text-sm text-gray-600">{{ post.createdAt }}</span>
     </div>
 

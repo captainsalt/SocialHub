@@ -2,7 +2,7 @@ import PureProfile from "./PureProfile";
 import * as PostStories from "@/components/Post.stories.js";
 import * as PostContainerStories from "@/components/PostContainer.stories.js";
 
-const account = PostStories.Default.args.post.author;
+const account = PostStories.Default.args.post.account;
 
 export default {
   title: "Views/Pure/PureProfile",
