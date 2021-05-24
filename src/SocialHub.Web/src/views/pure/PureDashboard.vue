@@ -1,7 +1,7 @@
 <template>
-  <div class="h-screen">
+  <div>
     <PostContainer :posts="posts"/>
-    <BottomNav/>
+    <BottomNav class="fixed bottom-0 w-screen"/>
   </div>
 </template>
 
