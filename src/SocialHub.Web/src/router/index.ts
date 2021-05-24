@@ -1,18 +1,24 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import Landing from "@/views/Landing.vue";
+import NavLayout from "@/views/NavLayout.vue";
 import Home from "@/views/Home.vue";
-import Dashboard from "@/views/Dashboard.vue";
+import Profile from "@/views/Profile.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    name: "Home",
-    component: Home
+    name: "landing",
+    component: Landing
   },
   {
-    path: "/dashboard",
-    name: "dashboard",
+    path: "/home",
+    name: "Layout",
     meta: { requiresAuth: true },
-    component: Dashboard
+    component: NavLayout,
+    children: [
+      { path: "", component: Home },
+      { path: "/profile/:username", component: Profile }
+    ]
   }
 ];
 

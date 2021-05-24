@@ -1,48 +1,59 @@
 <template>
   <form>
-    <fieldset>
+    <div>
+      <Alert
+        v-if="errorMessage"
+        class="mb-2 text-center"
+        type="error"
+        :message="errorMessage"
+      />
+
       <!-- Password -->
-      <label for="email">Email</label>
+      <label class="label">Email</label>
       <input
-        id="email"
         v-model="email"
+        class="input"
         type="text"
-        placeholder="Email"
+        required
       >
 
       <!-- Username -->
-      <label for="username">Username</label>
+      <label class="mt-2 label" for="username">Username</label>
       <input
         id="username"
         v-model="username"
+        class="input"
         type="text"
-        placeholder="Username"
+        required
       >
 
       <!-- Password -->
-      <label for="password">Password</label>
+      <label class="mt-2 label" for="password">Password</label>
       <input
         id="password"
         v-model="password"
+        class="input"
         type="password"
-        placeholder="Password"
+        required
       >
-      <br>
-      <button @click.prevent="registerUser">
+
+      <button class="w-full mt-2 btn btn-primary" @click.prevent="registerUser">
         Register
       </button>
-    </fieldset>
+    </div>
   </form>
 </template>
 
 <script lang="ts">
-import RegisterFormModel from "@/models/RegisterFormModel";
 import { reactive, toRefs, ref } from "vue";
 import { register } from "@/services/api-interface";
 import { setAccount, setToken } from "@/store";
 import router from "@/router";
+import RegisterFormModel from "@/models/RegisterFormModel";
+import Alert from "@/components/Alert.vue";
 
 export default {
+  components: { Alert },
   setup() {
     const errorMessage = ref("");
     const formModel = reactive(new RegisterFormModel());
@@ -53,10 +64,10 @@ export default {
         setToken(response.token);
         setAccount(response.account);
 
-        await router.push("/dashboard");
+        await router.push("/home");
       }
       catch (error) {
-        errorMessage.value = error;
+        errorMessage.value = error.message ?? "Error";
       }
     }
 

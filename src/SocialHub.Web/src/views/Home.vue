@@ -1,19 +1,27 @@
 <template>
-  <div>
-    <RegisterForm v-if="toggle"/>
-    <LoginForm v-else/>
-
-    <button @click="toggle = !toggle">
-      Toggle
-    </button>
-  </div>
+  <PureHome :posts="posts"/>
 </template>
 
-<script lang="ts" setup>
-/* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
-import RegisterForm from "@/components/RegisterForm.vue";
-import LoginForm from "@/components/LoginForm.vue";
-import { ref } from "vue";
+<script lang="ts">
+import { onBeforeMount } from "vue";
+import PureHome from "@/views/pure/PureHome.vue";
+import { usePostsStore } from "@/store/local";
+import { getFeed } from "@/services/api-interface";
 
-const toggle = ref(false);
+export default {
+  components: { PureHome },
+  setup() {
+    const { posts, setValue } = usePostsStore();
+
+    onBeforeMount(async () => {
+      const response = await getFeed();
+      setValue(response);
+    });
+
+    return {
+      posts
+    };
+  }
+};
 </script>
+

@@ -1,39 +1,46 @@
 <template>
   <form>
-    <fieldset>
-      <!-- Username -->
-      <label for="username">Username</label>
+    <div>
+      <Alert
+        v-if="errorMessage"
+        type="error"
+        class="mb-2"
+        :message="errorMessage"
+      />
+
+      <label class="label">Username</label>
       <input
-        id="username"
         v-model="username"
+        class="input"
         type="text"
-        placeholder="Username"
+        required
       >
 
-      <!-- Password -->
-      <label for="password">Password</label>
+      <label class="mt-2 label">Password</label>
       <input
-        id="password"
         v-model="password"
+        class="input"
         type="password"
-        placeholder="Password"
+        required
       >
-      <br>
-      <button @click.prevent="userLogin">
+
+      <button class="w-full mt-2 btn btn-primary" @click.prevent="userLogin">
         Log in
       </button>
-    </fieldset>
+    </div>
   </form>
 </template>
 
 <script lang="ts">
 import LoginFormModel from "@/models/LoginFormModel";
+import Alert from "@/components/Alert.vue";
 import { reactive, toRefs, ref } from "vue";
 import { login } from "@/services/api-interface";
 import { setAccount, setToken } from "@/store";
 import router from "@/router";
 
 export default {
+  components: { Alert },
   setup() {
     const errorMessage = ref("");
     const formModel = reactive(new LoginFormModel());
@@ -44,10 +51,10 @@ export default {
         setToken(response.token);
         setAccount(response.account);
 
-        await router.push("/dashboard");
+        await router.push("/home");
       }
       catch (error) {
-        errorMessage.value = error;
+        errorMessage.value = error.message ?? "Error";
       }
     }
 
