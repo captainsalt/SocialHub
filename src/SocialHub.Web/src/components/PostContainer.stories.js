@@ -25,6 +25,13 @@ export const Empty = Template.bind({});
 Empty.args = {
 };
 
+export const Single = Template.bind({});
+Single.args = {
+  posts: [
+    PostStories.Default.args.post
+  ]
+};
+
 export const Many = Template.bind({});
 Many.args = {
   posts
