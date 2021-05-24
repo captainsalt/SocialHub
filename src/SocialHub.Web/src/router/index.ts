@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Landing from "@/views/Landing.vue";
-import Home from "@/views/Home.vue";
+import NavLayout from "@/views/NavLayout.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -12,7 +12,7 @@ const routes: Array<RouteRecordRaw> = [
     path: "/home",
     name: "home",
     meta: { requiresAuth: true },
-    component: Home
+    component: NavLayout
   }
 ];
 
