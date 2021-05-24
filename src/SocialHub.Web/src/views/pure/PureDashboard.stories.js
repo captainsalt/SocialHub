@@ -14,5 +14,5 @@ const Template = args => ({
 
 export const Default = Template.bind({});
 Default.args = {
-  posts: PostContainerStories.Content.args.posts
+  posts: PostContainerStories.Many.args.posts
 };

@@ -6,6 +6,11 @@ export default {
   component: PostContainer
 };
 
+const posts = [];
+
+for (let i = 0; i < 20; i++)
+  posts.push(PostStories.Default.args.post);
+
 const Template = args => ({
   components: { PostContainer },
   setup() {
@@ -20,11 +25,7 @@ export const Empty = Template.bind({});
 Empty.args = {
 };
 
-export const Content = Template.bind({});
-Content.args = {
-  posts: [
-    PostStories.Default.args.post,
-    PostStories.Default.args.post,
-    PostStories.Default.args.post
-  ]
+export const Many = Template.bind({});
+Many.args = {
+  posts
 };
