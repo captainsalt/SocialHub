@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Landing from "@/views/Landing.vue";
 import NavLayout from "@/views/NavLayout.vue";
+import Home from "@/views/Home.vue";
+import Profile from "@/views/Profile.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -10,15 +12,13 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/home",
-    name: "home",
+    name: "Layout",
     meta: { requiresAuth: true },
-    component: NavLayout
-  },
-  {
-    path: "/profile",
-    name: "profile",
-    meta: { requiresAuth: true },
-    component: NavLayout
+    component: NavLayout,
+    children: [
+      { path: "", component: Home },
+      { path: "/profile", component: Profile }
+    ]
   }
 ];
 
