@@ -1,15 +1,15 @@
-import PureDashboard from "./PureDashboard";
+import PureHome from "./PureHome";
 import * as PostContainerStories from "@/components/PostContainer.stories.js";
 
 export default {
-  title: "Views/PureDashboard",
-  component: PureDashboard
+  title: "Views/PureHome",
+  component: PureHome
 };
 
 const Template = args => ({
-  components: { PureDashboard },
+  components: { PureHome },
   setup: () => ({ args }),
-  template: "<PureDashboard v-bind='args'/>"
+  template: "<PureHome v-bind='args'/>"
 });
 
 export const SinglePost = Template.bind({});

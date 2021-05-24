@@ -1,18 +1,18 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Landing from "@/views/Landing.vue";
-import Dashboard from "@/views/Dashboard.vue";
+import Home from "@/views/Home.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    name: "Landing",
+    name: "landing",
     component: Landing
   },
   {
-    path: "/dashboard",
-    name: "dashboard",
+    path: "/home",
+    name: "home",
     meta: { requiresAuth: true },
-    component: Dashboard
+    component: Home
   }
 ];
 

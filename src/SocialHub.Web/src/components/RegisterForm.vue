@@ -64,7 +64,7 @@ export default {
         setToken(response.token);
         setAccount(response.account);
 
-        await router.push("/dashboard");
+        await router.push("/home");
       }
       catch (error) {
         errorMessage.value = error.message ?? "Error";
