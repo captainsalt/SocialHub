@@ -1,8 +1,11 @@
 <template>
   <div class="bg-purple-50">
     <div class="grid items-center grid-flow-col mt-1 justify-items-center auto-cols-auto">
-      <div class="svg-container">
-        <!-- Home -->
+      <!-- Home -->
+      <div
+        class="svg-container"
+        @click="$emit('onNav', 'home')"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="nav-button"
@@ -23,8 +26,11 @@
         </span>
       </div>
 
-      <div class="svg-container">
-        <!-- Profile -->
+      <!-- Profile -->
+      <div
+        class="svg-container"
+        @click="$emit('onNav', 'profile')"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="nav-button"
@@ -49,7 +55,12 @@
 </template>
 
 <script lang="ts">
-export default {};
+export default {
+  emits: {
+    onNav: (payload: string) =>
+      ["home", "profile"].indexOf(payload) !== -1
+  }
+};
 </script>
 
 <style scoped>

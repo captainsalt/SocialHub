@@ -12,7 +12,7 @@
       </button>
     </div>
 
-    <PostContainer :posts="posts" />
+    <PostContainer :posts="posts"/>
   </div>
 </template>
 

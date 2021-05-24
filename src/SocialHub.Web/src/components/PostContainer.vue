@@ -18,7 +18,7 @@ export default {
   },
   props: {
     posts: {
-      type: [],
+      type: Array,
       required: true,
       validator: (val: any[]) =>
         val.every(item => item instanceof PostModel)
