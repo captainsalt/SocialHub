@@ -3,18 +3,27 @@
 </template>
 
 <script lang="ts">
+import { onBeforeMount } from "vue";
+import router from "@/router";
 import PureProfile from "@/views/pure/PureProfile.vue";
-import { account } from "@/store";
 import { usePostsStore } from "@/store/local";
+import { getUserFeed } from "@/services/api-interface";
+import AccountModel from "@/models/AccountModel";
 
 export default {
   components: { PureProfile },
   setup() {
-    const { posts } = usePostsStore();
+    const { posts, setValue } = usePostsStore();
+
+    onBeforeMount(async () => {
+      const username = router.currentRoute.value.params.username;
+      const response = await getUserFeed(username.toString());
+      setValue(response);
+    });
 
     return {
       posts,
-      account
+      account: new AccountModel("MOCK USER", "MOCK USER", "MOCK USER", new Date())
     };
   }
 };

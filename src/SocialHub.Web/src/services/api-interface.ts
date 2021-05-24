@@ -56,3 +56,14 @@ export async function getFeed() {
 
   return response;
 }
+
+export async function getUserFeed(username: string) {
+  const response = await fetchRequest<PostModel[]>("GET", `/api/post/feed/${username}`, {
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    }
+  });
+
+  return response;
+}

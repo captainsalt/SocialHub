@@ -17,7 +17,7 @@ const routes: Array<RouteRecordRaw> = [
     component: NavLayout,
     children: [
       { path: "", component: Home },
-      { path: "/profile", component: Profile }
+      { path: "/profile/:username", component: Profile }
     ]
   }
 ];

@@ -4,7 +4,7 @@
       <!-- Home -->
       <div
         class="svg-container"
-        @click="$emit('onNav', 'home')"
+        @click="$emit('onNav', '/home')"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -29,7 +29,7 @@
       <!-- Profile -->
       <div
         class="svg-container"
-        @click="$emit('onNav', 'profile')"
+        @click="$emit('onNav', `/profile/${account.username}`)"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -55,10 +55,16 @@
 </template>
 
 <script lang="ts">
+import { account } from "@/store";
+
 export default {
   emits: {
-    onNav: (payload: string) =>
-      ["home", "profile"].indexOf(payload) !== -1
+    onNav: null
+  },
+  setup() {
+    return {
+      account
+    };
   }
 };
 </script>
