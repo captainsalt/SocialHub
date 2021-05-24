@@ -2,7 +2,7 @@ import PureHome from "./PureHome";
 import * as PostContainerStories from "@/components/PostContainer.stories.js";
 
 export default {
-  title: "Views/PureHome",
+  title: "Views/Pure/PureHome",
   component: PureHome
 };
 
