@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full p-3 border-collapse border-gray-300 d">
+  <div class="p-3 border-collapse border-gray-300">
     <!-- Header -->
     <div>
       {{ post.author.username }}

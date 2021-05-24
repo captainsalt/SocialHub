@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full border-2 border-purple-700 divide-y rounded-md">
+  <div class="divide-y rounded-md">
     <Post
       v-for="p in posts"
       :key="p.id"
