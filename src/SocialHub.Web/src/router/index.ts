@@ -7,7 +7,7 @@ import Profile from "@/views/Profile.vue";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    name: "landing",
+    name: "Landing",
     component: Landing
   },
   {
@@ -16,8 +16,8 @@ const routes: Array<RouteRecordRaw> = [
     meta: { requiresAuth: true },
     component: NavLayout,
     children: [
-      { path: "", component: Home },
-      { path: "/profile/:username", component: Profile }
+      { path: "", name: "Home", component: Home },
+      { path: "/profile/:username", name: "Profile", component: Profile }
     ]
   }
 ];
