@@ -16,7 +16,7 @@ import router from "@/router";
 import BottomNav from "@/components/BottomNav.vue";
 import PostInput from "@/components/PostInput.vue";
 
-const isHome = ref(false);
+const isHome = ref(router.currentRoute.value.name === "Home");
 
 watch(() => router.currentRoute.value.name, val => {
   isHome.value = router.currentRoute.value.name === "Home";
