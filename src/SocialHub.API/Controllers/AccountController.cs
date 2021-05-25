@@ -33,11 +33,16 @@ namespace SocialHub.API.Controllers
         [HttpGet("profile/{username}")]
         public async Task<IActionResult> GetProfile(string username)
         {
-            var result = _accountService.GetAccountProfile(username);
+            var tokenAccount = _jwtService.GetAccountFromToken(HttpContext);
+
+            var result =
+                from profile in _accountService.GetAccountProfile(username)
+                from isFollowing in _accountService.IsFollowingAccount(tokenAccount.Id, profile.Account.Id)
+                select profile with { IsFollowing = isFollowing };
 
             return await result.Match<IActionResult>(
                 result => Ok(Map<AccountProfileDto>(result)),
-                err => BadRequest(err)
+                err => BadRequest(MapError(err))
             );
         }
 
