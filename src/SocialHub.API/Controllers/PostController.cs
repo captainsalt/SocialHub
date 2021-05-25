@@ -38,8 +38,10 @@ namespace SocialHub.API.Controllers
         [HttpGet("feed")]
         public async Task<IActionResult> GetHomeFeed()
         {
-            var account = _jwtService.GetAccountFromToken(HttpContext);
-            var result = _postService.GetHomeFeed(account.Id);
+            var result =
+                from tokenAccount in _jwtService.GetAccountFromToken(HttpContext).ToAsync()
+                from feed in _postService.GetHomeFeed(tokenAccount.Id)
+                select feed;
 
             return await result.Match<IActionResult>(
                 posts => Ok(MapPostList(posts)),
@@ -64,10 +66,12 @@ namespace SocialHub.API.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> CreatePost([FromBody] CreatePostRequest request)
         {
-            var account = _jwtService.GetAccountFromToken(HttpContext);
-            var result = await _postService.CreatePostAsync(account.Id, request.Content);
+            var result =
+                from tokenAccount in _jwtService.GetAccountFromToken(HttpContext).ToAsync()
+                from post in _postService.CreatePostAsync(tokenAccount.Id, request.Content).ToAsync()
+                select post;
 
-            return result.Match<IActionResult>(
+            return await result.Match<IActionResult>(
                 post => Created(HttpContext.Request.Path.Value, MapPost(post)),
                 err => BadRequest(MapError(err))
             );
@@ -76,10 +80,12 @@ namespace SocialHub.API.Controllers
         [HttpPost("like")]
         public async Task<IActionResult> LikePost([FromQuery] Guid postId)
         {
-            var account = _jwtService.GetAccountFromToken(HttpContext);
-            var result = await _postService.LikePostAsync(account.Id, postId);
+            var result =
+                from tokenAccount in _jwtService.GetAccountFromToken(HttpContext).ToAsync()
+                from unit in _postService.LikePostAsync(tokenAccount.Id, postId).ToAsync()
+                select unit;
 
-            return result.Match<IActionResult>(
+            return await result.Match<IActionResult>(
                 unit => Ok(),
                 err => BadRequest(MapError(err))
             );
@@ -88,10 +94,12 @@ namespace SocialHub.API.Controllers
         [HttpPost("share")]
         public async Task<IActionResult> SharePost([FromQuery] Guid postId)
         {
-            var account = _jwtService.GetAccountFromToken(HttpContext);
-            var result = await _postService.SharePostAsync(account.Id, postId);
+            var result =
+                from tokenAccount in _jwtService.GetAccountFromToken(HttpContext).ToAsync()
+                from unit in _postService.SharePostAsync(tokenAccount.Id, postId).ToAsync()
+                select unit;
 
-            return result.Match<IActionResult>(
+            return await result.Match<IActionResult>(
                 unit => Ok(),
                 err => BadRequest(MapError(err))
             );
@@ -100,11 +108,13 @@ namespace SocialHub.API.Controllers
         [HttpDelete("share/remove")]
         public async Task<IActionResult> RemoveShare([FromQuery] Guid postId)
         {
-            var account = _jwtService.GetAccountFromToken(HttpContext);
-            var result = await _postService.RemoveShareAsync(account.Id, postId);
+            var result = 
+                from tokenAccount in _jwtService.GetAccountFromToken(HttpContext).ToAsync() 
+                from unit in _postService.RemoveShareAsync(tokenAccount.Id, postId).ToAsync() 
+                select unit;
 
-            return result.Match<IActionResult>(
-                unit => Ok(),
+            return await result.Match<IActionResult>(
+                unit => Ok(), 
                 err => BadRequest(MapError(err))
             );
         }
@@ -112,11 +122,13 @@ namespace SocialHub.API.Controllers
         [HttpDelete("like/remove")]
         public async Task<IActionResult> RemoveLike([FromQuery] Guid postId)
         {
-            var account = _jwtService.GetAccountFromToken(HttpContext);
-            var result = await _postService.RemoveLikeAsync(account.Id, postId);
+            var result = 
+                from tokenAccount in _jwtService.GetAccountFromToken(HttpContext).ToAsync() 
+                from unit in _postService.RemoveLikeAsync(tokenAccount.Id, postId).ToAsync() 
+                select unit;
 
-            return result.Match<IActionResult>(
-                unit => Ok(),
+            return await result.Match<IActionResult>(
+                unit => Ok(), 
                 err => BadRequest(MapError(err))
             );
         }

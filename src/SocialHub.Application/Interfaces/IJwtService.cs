@@ -1,4 +1,5 @@
 ﻿using LanguageExt;
+using LanguageExt.Common;
 using Microsoft.AspNetCore.Http;
 using SocialHub.Domain.Entities;
 using System.IdentityModel.Tokens.Jwt;
@@ -14,7 +15,7 @@ namespace SocialHub.Application.Interfaces
 
         string GenerateJwtToken(Account account);
 
-        Account GetAccountFromToken(HttpContext context);
+        Either<Error, Account> GetAccountFromToken(HttpContext context);
 
         Option<JwtSecurityToken> ValidateToken(string token);
     }
