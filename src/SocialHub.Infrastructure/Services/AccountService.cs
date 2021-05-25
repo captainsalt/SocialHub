@@ -75,7 +75,7 @@ namespace SocialHub.Infrastructure.Services
                         .Collection(nameof(followee.Likes))
                         .LoadAsync();
 
-                    if (UserIsFollowing(followerId, followee))
+                    if (IsFollowingUser(followerId, followee))
                         return Errors.AlreadyFollowing;
 
                     followee.Followers.Add(followee);
@@ -105,7 +105,7 @@ namespace SocialHub.Infrastructure.Services
                 }));
         }
 
-        private static bool UserIsFollowing(Guid followerId, Account followee) =>
+        private static bool IsFollowingUser(Guid followerId, Account followee) =>
             followee.Followers.FirstOrDefault(acc => acc.Id == followerId) is not null;
     }
 }
