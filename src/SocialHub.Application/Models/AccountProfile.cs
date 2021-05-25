@@ -1,5 +1,4 @@
 using SocialHub.Domain.Entities;
-using System;
 
 namespace SocialHub.Application.Models
 {

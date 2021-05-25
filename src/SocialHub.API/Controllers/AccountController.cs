@@ -7,8 +7,6 @@ using SocialHub.Application.Interfaces;
 using SocialHub.Application.Models;
 using System.Threading.Tasks;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace SocialHub.API.Controllers
 {
     [Route("api/[controller]")]
@@ -33,7 +31,7 @@ namespace SocialHub.API.Controllers
         }
 
         [HttpGet("profile/{username}")]
-        public async Task<IActionResult> GetProfile(string username) 
+        public async Task<IActionResult> GetProfile(string username)
         {
             var result = _accountService.GetAccountProfile(username);
 
