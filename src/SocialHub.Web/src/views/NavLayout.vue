@@ -12,7 +12,7 @@
 
 <script lang="ts" setup>
 /* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, Ref, watch } from "vue";
 import router from "@/router";
 import BottomNav from "@/components/BottomNav.vue";
 import PostInput from "@/components/PostInput.vue";
