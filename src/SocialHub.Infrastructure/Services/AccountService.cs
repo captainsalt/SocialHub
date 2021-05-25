@@ -128,7 +128,7 @@ namespace SocialHub.Infrastructure.Services
                         .Cast<Post>()
                         .LongCountAsync();
 
-                    return new AccountProfile(account.Id, followerCount, followingCount, totalPosts);
+                    return new AccountProfile(account, followerCount, followingCount, totalPosts);
                 });
         }
 

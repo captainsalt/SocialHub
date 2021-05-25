@@ -16,6 +16,7 @@ namespace SocialHub.API
             CreateMap<Post, PostDto>();
             CreateMap<Error, ErrorDto>();
             CreateMap<AuthResult, AuthResultDto>();
+            CreateMap<AccountProfile, AccountProfileDto>();
         }
     }
 }

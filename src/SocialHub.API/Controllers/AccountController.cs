@@ -38,7 +38,7 @@ namespace SocialHub.API.Controllers
             var result = _accountService.GetAccountProfile(username);
 
             return await result.Match<IActionResult>(
-                result => Ok(result),
+                result => Ok(Map<AccountProfileDto>(result)),
                 err => BadRequest(err)
             );
         }
@@ -49,7 +49,7 @@ namespace SocialHub.API.Controllers
             var result = await _authenticationService.LoginAsync(request);
 
             return result.Match<IActionResult>(
-                authResult => Ok(MapAuthResult(authResult)),
+                authResult => Ok(Map<AuthResultDto>(authResult)),
                 err => BadRequest(MapError(err))
             );
         }
@@ -60,7 +60,7 @@ namespace SocialHub.API.Controllers
             var result = await _authenticationService.RegisterAsync(request);
 
             return result.Match<IActionResult>(
-                authResult => Created(HttpContext.Request.Path.Value, MapAuthResult(authResult)),
+                authResult => Created(HttpContext.Request.Path.Value, Map<AuthResultDto>(authResult)),
                 err => BadRequest(MapError(err))
             );
         }
@@ -92,7 +92,7 @@ namespace SocialHub.API.Controllers
         private ErrorDto MapError(Error err) =>
             _mapper.Map<ErrorDto>(err);
 
-        private AuthResultDto MapAuthResult(AuthResult result) =>
-            _mapper.Map<AuthResultDto>(result);
+        private T Map<T>(object source) =>
+            _mapper.Map<T>(source);
     }
 }
