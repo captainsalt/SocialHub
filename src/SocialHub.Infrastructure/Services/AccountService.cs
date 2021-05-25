@@ -72,7 +72,7 @@ namespace SocialHub.Infrastructure.Services
                 followerContext.BindAsync<Unit>(async follower =>
                 {
                     await _dbContext.Entry(followee)
-                        .Collection("Followers")
+                        .Collection(nameof(followee.Likes))
                         .LoadAsync();
 
                     if (UserIsFollowing(followerId, followee))
@@ -95,7 +95,7 @@ namespace SocialHub.Infrastructure.Services
                 followerContext.BindAsync<Unit>(async follower =>
                 {
                     await _dbContext.Entry(followee)
-                        .Collection("Followers")
+                        .Collection(nameof(followee.Followers))
                         .LoadAsync();
 
                     followee.Followers.Remove(followee);
