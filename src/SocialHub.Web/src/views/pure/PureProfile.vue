@@ -2,10 +2,11 @@
   <div>
     <div class="p-2 bg-purple-100">
       <p>
-        {{ account.username }}
+        {{ profile.account.username }}
       </p>
-      <p>Followers: 0</p>
-      <p>Following: 0</p>
+      <p>Followers: {{ profile.followers }} </p>
+      <p>Following: {{ profile.following }}</p>
+      <p>Total posts: {{ profile.totalPosts }}</p>
 
       <button class="btn btn-primary">
         Follow
@@ -17,14 +18,14 @@
 </template>
 
 <script lang="ts">
-import AccountModel from "@/models/AccountModel";
+import ProfileModel from "@/models/ProfileModel";
 import PostContainer from "@/components/PostContainer.vue";
 
 export default {
   components: { PostContainer },
   props: {
-    account: {
-      type: AccountModel,
+    profile: {
+      type: ProfileModel,
       required: true
     },
     posts: {

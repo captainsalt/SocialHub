@@ -1,29 +1,33 @@
 <template>
-  <PureProfile :account="account" :posts="posts"/>
+  <PureProfile :profile="profile" :posts="posts"/>
 </template>
 
 <script lang="ts">
-import { onBeforeMount } from "vue";
+import { onBeforeMount, ref } from "vue";
 import router from "@/router";
 import PureProfile from "@/views/pure/PureProfile.vue";
 import { usePostsStore } from "@/store/local";
-import { getUserFeed } from "@/services/api-interface";
-import AccountModel from "@/models/AccountModel";
+import { getUserFeed, getProfile } from "@/services/api-interface";
+import ProfileModel from "@/models/ProfileModel";
 
 export default {
   components: { PureProfile },
   setup() {
-    const { posts, setValue } = usePostsStore();
+    const { posts, setValue: setPostsValue } = usePostsStore();
+    const profile = ref<ProfileModel | any>({});
 
     onBeforeMount(async () => {
-      const username = router.currentRoute.value.params.username;
-      const response = await getUserFeed(username.toString());
-      setValue(response);
+      const username = router.currentRoute.value.params.username.toString();
+      const feedResponse = await getUserFeed(username);
+      const profileResponse = await getProfile(username);
+
+      setPostsValue(feedResponse);
+      profile.value = profileResponse;
     });
 
     return {
       posts,
-      account: new AccountModel("MOCK USER", "MOCK USER", "MOCK USER", new Date())
+      profile
     };
   }
 };
