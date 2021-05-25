@@ -3,6 +3,7 @@ import PostModel from "@/models/PostModel";
 import LoginFormModel from "@/models/LoginFormModel";
 import RegisterFormModel from "@/models/RegisterFormModel";
 import { token } from "@/store";
+import ProfileModel from "@/models/ProfileModel";
 
 interface AuthResponse {
   token: string;
@@ -80,6 +81,17 @@ export async function createPost(content: string) {
   };
 
   const response = await fetchRequest<PostModel[]>("POST", `/api/post/create`, options);
+
+  return response;
+}
+
+export async function getProfile(username: string) {
+  const response = await fetchRequest<ProfileModel>("GET", `/api/account/profile/${username}`, {
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    }
+  });
 
   return response;
 }

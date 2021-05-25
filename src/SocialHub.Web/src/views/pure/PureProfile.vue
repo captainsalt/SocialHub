@@ -1,30 +1,20 @@
 <template>
   <div>
-    <div class="p-2 bg-purple-100">
-      <p>
-        {{ account.username }}
-      </p>
-      <p>Followers: 0</p>
-      <p>Following: 0</p>
-
-      <button class="btn btn-primary">
-        Follow
-      </button>
-    </div>
-
+    <ProfileHeader :profile="profile"/>
     <PostContainer :posts="posts"/>
   </div>
 </template>
 
 <script lang="ts">
-import AccountModel from "@/models/AccountModel";
+import ProfileModel from "@/models/ProfileModel";
 import PostContainer from "@/components/PostContainer.vue";
+import ProfileHeader from "@/components/ProfileHeader.vue";
 
 export default {
-  components: { PostContainer },
+  components: { PostContainer, ProfileHeader },
   props: {
-    account: {
-      type: AccountModel,
+    profile: {
+      type: ProfileModel,
       required: true
     },
     posts: {

@@ -72,13 +72,14 @@ namespace SocialHub.Infrastructure.Services
                 followerContext.BindAsync<Unit>(async follower =>
                 {
                     await _dbContext.Entry(followee)
-                        .Collection(nameof(followee.Likes))
+                        .Collection(nameof(followee.Followers))
                         .LoadAsync();
 
                     if (IsFollowingUser(followerId, followee))
                         return Errors.AlreadyFollowing;
 
-                    followee.Followers.Add(followee);
+                    followee.Followers.Add(follower);
+
                     await _dbContext.UpdateAsync(followee);
 
                     return unit;
@@ -98,14 +99,40 @@ namespace SocialHub.Infrastructure.Services
                         .Collection(nameof(followee.Followers))
                         .LoadAsync();
 
-                    followee.Followers.Remove(followee);
+                    followee.Followers.Remove(follower);
                     await _dbContext.UpdateAsync(followee);
 
                     return unit;
                 }));
         }
 
+        public EitherAsync<Error, AccountProfile> GetAccountProfile(string username)
+        {
+            return GetAccountByUsernameAsync(username).ToAsync()
+                .BindAsync<AccountProfile>(async account =>
+                {
+                    var accountEntry = _dbContext.Entry(account);
+
+                    var followerCount = await accountEntry.Collection(nameof(account.Followers))
+                        .Query()
+                        .Cast<Account>()
+                        .LongCountAsync();
+
+                    var followingCount = await accountEntry.Collection(nameof(account.Following))
+                        .Query()
+                        .Cast<Account>()
+                        .LongCountAsync();
+
+                    var totalPosts = await accountEntry.Collection(nameof(account.Posts))
+                        .Query()
+                        .Cast<Post>()
+                        .LongCountAsync();
+
+                    return new AccountProfile(account, followerCount, followingCount, totalPosts);
+                });
+        }
+
         private static bool IsFollowingUser(Guid followerId, Account followee) =>
-            followee.Followers.FirstOrDefault(acc => acc.Id == followerId) is not null;
+                followee.Followers.FirstOrDefault(acc => acc.Id == followerId) is not null;
     }
 }
