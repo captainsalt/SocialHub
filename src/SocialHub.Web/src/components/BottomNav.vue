@@ -1,14 +1,14 @@
 <template>
-  <div class="bg-purple-50">
-    <div class="grid items-center grid-flow-col mt-1 justify-items-center auto-cols-auto">
+  <div>
+    <div class="flex justify-around w-full bg-purple-500">
       <!-- Home -->
       <div
-        class="svg-container"
+        class="nav-button"
         @click="$emit('onNav', '/home')"
       >
         <svg
+          class="group-hover:text-white"
           xmlns="http://www.w3.org/2000/svg"
-          class="nav-button"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -21,19 +21,19 @@
           />
         </svg>
 
-        <span class="nav-label">
+        <span class="group-hover:text-white">
           Home
         </span>
       </div>
 
       <!-- Profile -->
       <div
-        class="svg-container"
+        class="nav-button"
         @click="$emit('onNav', `/profile/${account.username}`)"
       >
         <svg
+          class="group-hover:text-white"
           xmlns="http://www.w3.org/2000/svg"
-          class="nav-button"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -46,7 +46,7 @@
           />
         </svg>
 
-        <span class="nav-label">
+        <span class="group-hover:text-white">
           Profile
         </span>
       </div>
@@ -70,23 +70,15 @@ export default {
 </script>
 
 <style scoped>
-.nav-label {
-  @apply text-xs;
-}
-
-.svg-container {
-  @apply flex flex-col w-full items-center;
-}
-
-.svg-container:hover {
-  @apply cursor-pointer;
-}
-
 .nav-button {
-  @apply h-6;
+  @apply flex flex-col flex-wrap items-center justify-center p-2 w-52 group hover:cursor-pointer hover:bg-purple-600;
 }
 
-.nav-button:hover {
-  @apply stroke-current text-purple-700;
+.nav-button:active {
+  @apply bg-purple-700;
+}
+
+.nav-button svg {
+  @apply h-7;
 }
 </style>
