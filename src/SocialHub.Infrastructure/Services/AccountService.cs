@@ -72,13 +72,14 @@ namespace SocialHub.Infrastructure.Services
                 followerContext.BindAsync<Unit>(async follower =>
                 {
                     await _dbContext.Entry(followee)
-                        .Collection(nameof(followee.Likes))
+                        .Collection(nameof(followee.Followers))
                         .LoadAsync();
 
                     if (IsFollowingUser(followerId, followee))
                         return Errors.AlreadyFollowing;
 
-                    followee.Followers.Add(followee);
+                    followee.Followers.Add(follower);
+
                     await _dbContext.UpdateAsync(followee);
 
                     return unit;
@@ -98,7 +99,7 @@ namespace SocialHub.Infrastructure.Services
                         .Collection(nameof(followee.Followers))
                         .LoadAsync();
 
-                    followee.Followers.Remove(followee);
+                    followee.Followers.Remove(follower);
                     await _dbContext.UpdateAsync(followee);
 
                     return unit;
