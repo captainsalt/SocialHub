@@ -1,8 +1,8 @@
 import PureProfile from "./PureProfile";
-import * as PostStories from "@/components/Post.stories.js";
 import * as PostContainerStories from "@/components/PostContainer.stories.js";
+import * as ProfileHeaderStories from "@/components/ProfileHeader.stories.js";
 
-const account = PostStories.Default.args.post.account;
+const profile = ProfileHeaderStories.Default.args.profile;
 
 export default {
   title: "Views/Pure/PureProfile",
@@ -17,14 +17,12 @@ const Template = args => ({
 
 export const SinglePost = Template.bind({});
 SinglePost.args = {
-  account,
-  posts: [
-    PostStories.Default.args.post
-  ]
+  profile,
+  posts: PostContainerStories.Single.args.posts
 };
 
 export const ManyPosts = Template.bind({});
 ManyPosts.args = {
-  account,
+  profile,
   posts: PostContainerStories.Many.args.posts
 };

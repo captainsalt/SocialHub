@@ -1,18 +1,6 @@
 <template>
   <div>
-    <div class="p-2 bg-purple-100">
-      <p>
-        {{ profile.account.username }}
-      </p>
-      <p>Followers: {{ profile.followers }} </p>
-      <p>Following: {{ profile.following }}</p>
-      <p>Total posts: {{ profile.totalPosts }}</p>
-
-      <button class="btn btn-primary">
-        Follow
-      </button>
-    </div>
-
+    <ProfileHeader :profile="profile"/>
     <PostContainer :posts="posts"/>
   </div>
 </template>
@@ -20,9 +8,10 @@
 <script lang="ts">
 import ProfileModel from "@/models/ProfileModel";
 import PostContainer from "@/components/PostContainer.vue";
+import ProfileHeader from "@/components/ProfileHeader.vue";
 
 export default {
-  components: { PostContainer },
+  components: { PostContainer, ProfileHeader },
   props: {
     profile: {
       type: ProfileModel,
