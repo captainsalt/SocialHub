@@ -32,6 +32,17 @@ namespace SocialHub.API.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet("profile/{username}")]
+        public async Task<IActionResult> GetProfile(string username) 
+        {
+            var result = _accountService.GetAccountProfile(username);
+
+            return await result.Match<IActionResult>(
+                result => Ok(result),
+                err => BadRequest(err)
+            );
+        }
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {

@@ -106,7 +106,33 @@ namespace SocialHub.Infrastructure.Services
                 }));
         }
 
+        public EitherAsync<Error, AccountProfile> GetAccountProfile(string username)
+        {
+            return GetAccountByUsernameAsync(username).ToAsync()
+                .BindAsync<AccountProfile>(async account =>
+                {
+                    var accountEntry = _dbContext.Entry(account);
+
+                    var followerCount = await accountEntry.Collection(nameof(account.Followers))
+                        .Query()
+                        .Cast<Account>()
+                        .LongCountAsync();
+
+                    var followingCount = await accountEntry.Collection(nameof(account.Following))
+                        .Query()
+                        .Cast<Account>()
+                        .LongCountAsync();
+
+                    var totalPosts = await accountEntry.Collection(nameof(account.Posts))
+                        .Query()
+                        .Cast<Post>()
+                        .LongCountAsync();
+
+                    return new AccountProfile(account.Id, followerCount, followingCount, totalPosts);
+                });
+        }
+
         private static bool IsFollowingUser(Guid followerId, Account followee) =>
-            followee.Followers.FirstOrDefault(acc => acc.Id == followerId) is not null;
+                followee.Followers.FirstOrDefault(acc => acc.Id == followerId) is not null;
     }
 }
