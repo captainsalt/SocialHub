@@ -17,8 +17,8 @@ import router from "@/router";
 import BottomNav from "@/components/BottomNav.vue";
 import PostInput from "@/components/PostInput.vue";
 
-const bNav: Ref<HTMLDivElement | null> = ref(null);
-const offsetDiv: Ref<HTMLDivElement | null> = ref(null);
+const bNav: Ref<HTMLDivElement> = ref();
+const offsetDiv: Ref<HTMLDivElement> = ref();
 
 function setOffsetHeight(value: string | number) {
   offsetDiv.value.style.height = `${value}px`;
