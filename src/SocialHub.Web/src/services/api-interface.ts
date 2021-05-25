@@ -67,3 +67,19 @@ export async function getUserFeed(username: string) {
 
   return response;
 }
+
+export async function createPost(content: string) {
+  const options = {
+    body: JSON.stringify({
+      content
+    }),
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    }
+  };
+
+  const response = await fetchRequest<PostModel[]>("POST", `/api/post/create`, options);
+
+  return response;
+}
