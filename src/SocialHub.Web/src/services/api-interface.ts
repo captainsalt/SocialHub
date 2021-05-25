@@ -95,3 +95,21 @@ export async function getProfile(username: string) {
 
   return response;
 }
+
+export async function follow(followeeUsername: string) {
+  return await fetchRequest<void>("POST", `/api/account/follow/${followeeUsername}`, {
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    }
+  });
+}
+
+export async function unfollow(followeeUsername: string) {
+  return await fetchRequest<void>("POST", `/api/account/unfollow/${followeeUsername}`, {
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": token.value
+    }
+  });
+}
