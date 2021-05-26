@@ -14,25 +14,25 @@
     <!-- Footer -->
     <div class="flex justify-around">
       <HeartSolid
-        v-if="post.isLiked"
+        v-if="isLiked"
         class="text-red-500 svg"
-        @click="$emit('likeRemove', post.id)"
+        @click="removePostLike"
       />
       <HeartOutline
         v-else
         class="svg"
-        @click="$emit('like', post.id)"
+        @click="likePost"
       />
 
       <SpeakerSolid
-        v-if="post.isShared"
+        v-if="isShared"
         class="text-green-500 svg"
-        @click="$emit('shareRemove', post.id) "
+        @click="removePostShare"
       />
       <SpeakerOutline
         v-else
         class="svg"
-        @click="$emit('share', post.id) "
+        @click="sharePost"
       />
     </div>
   </div>
@@ -40,8 +40,14 @@
 
 <script lang="ts">
 import PostModel from "@/models/PostModel";
+import { share, like, removeLike, removeShare } from "@/services/api-interface";
 import { HeartIcon as HeartOutline, SpeakerphoneIcon as SpeakerOutline } from "@heroicons/vue/outline";
 import { HeartIcon as HeartSolid, SpeakerphoneIcon as SpeakerSolid } from "@heroicons/vue/solid";
+import { ref } from "@vue/reactivity";
+
+interface Props {
+  post: PostModel
+}
 
 export default {
   components: {
@@ -56,11 +62,39 @@ export default {
       required: true
     }
   },
-  emits: {
-    like: null,
-    share: null,
-    likeRemove: null,
-    shareRemove: null
+  setup(props: Props) {
+    const isLiked = ref(props.post.isLiked);
+    const isShared = ref(props.post.isShared);
+    const postId = ref(props.post.id);
+
+    async function likePost() {
+      await like(postId.value);
+      isLiked.value = true;
+    }
+
+    async function sharePost() {
+      await share(postId.value);
+      isShared.value = true;
+    }
+
+    async function removePostLike() {
+      await removeLike(postId.value);
+      isLiked.value = false;
+    }
+
+    async function removePostShare() {
+      await removeShare(postId.value);
+      isShared.value = false;
+    }
+
+    return {
+      isLiked,
+      isShared,
+      likePost,
+      sharePost,
+      removePostLike,
+      removePostShare
+    };
   }
 };
 </script>
