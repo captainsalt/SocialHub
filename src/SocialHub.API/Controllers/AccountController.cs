@@ -33,11 +33,15 @@ namespace SocialHub.API.Controllers
         [HttpGet("profile/{username}")]
         public async Task<IActionResult> GetProfile(string username)
         {
-            var result = _accountService.GetAccountProfile(username);
+            var result =
+                from tokenAccount in _jwtService.GetAccountFromToken(HttpContext).ToAsync()
+                from profile in _accountService.GetAccountProfile(username)
+                from isFollowing in _accountService.IsFollowingAccount(tokenAccount.Id, profile.Account.Id)
+                select profile with { IsFollowing = isFollowing };
 
             return await result.Match<IActionResult>(
                 result => Ok(Map<AccountProfileDto>(result)),
-                err => BadRequest(err)
+                err => BadRequest(MapError(err))
             );
         }
 
@@ -66,24 +70,30 @@ namespace SocialHub.API.Controllers
         [HttpPost("follow")]
         public async Task<IActionResult> Follow([FromQuery] FollowRequest request)
         {
-            var tokenAccount = _jwtService.GetAccountFromToken(HttpContext);
+            var result =
+                from tokenAccount in _jwtService.GetAccountFromToken(HttpContext).ToAsync()
+                from followeeAcc in _accountService.GetAccountByUsernameAsync(request.FolloweeUsername).ToAsync()
+                from unit in _accountService.FollowAccountAsync(tokenAccount.Id, followeeAcc.Id)
+                select unit;
 
-            return await _accountService.FollowAccountAsync(tokenAccount.Id, request.followeeId)
-                .Match<IActionResult>(
-                    unit => Ok(),
-                    err => BadRequest(MapError(err))
+            return await result.Match<IActionResult>(
+                unit => Ok(),
+                err => BadRequest(MapError(err))
             );
         }
 
         [HttpDelete("unfollow")]
         public async Task<IActionResult> Unfollow([FromQuery] FollowRequest request)
         {
-            var tokenAccount = _jwtService.GetAccountFromToken(HttpContext);
+            var result =
+                from tokenAccount in _jwtService.GetAccountFromToken(HttpContext).ToAsync()
+                from followeeAcc in _accountService.GetAccountByUsernameAsync(request.FolloweeUsername).ToAsync()
+                from unit in _accountService.UnfollowAccountAsync(tokenAccount.Id, followeeAcc.Id)
+                select unit;
 
-            return await _accountService.UnfollowAccountAsync(tokenAccount.Id, request.followeeId)
-                .Match<IActionResult>(
-                    unit => Ok(),
-                    err => BadRequest(MapError(err))
+            return await result.Match<IActionResult>(
+                unit => Ok(),
+                err => BadRequest(MapError(err))
             );
         }
 

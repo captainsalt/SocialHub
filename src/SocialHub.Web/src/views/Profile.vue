@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { onBeforeMount, ref } from "vue";
+import { onBeforeMount, ref, watch } from "vue";
 import router from "@/router";
 import PureProfile from "@/views/pure/PureProfile.vue";
 import { usePostsStore } from "@/store/local";
@@ -14,15 +14,24 @@ export default {
   components: { PureProfile },
   setup() {
     const { posts, setValue: setPostsValue } = usePostsStore();
-    const profile = ref<ProfileModel | null>(null);
+    const profile = ref<ProfileModel>();
 
-    onBeforeMount(async () => {
+    async function displayProfile() {
       const username = router.currentRoute.value.params.username.toString();
-      const feedResponse = await getUserFeed(username);
       const profileResponse = await getProfile(username);
+      const feedResponse = await getUserFeed(username);
 
       setPostsValue(feedResponse);
       profile.value = profileResponse;
+    }
+
+    onBeforeMount(async () => {
+      await displayProfile();
+    });
+
+    watch(router.currentRoute, (newRoute, oldRoute) => {
+      if (newRoute.params.username !== oldRoute.params.username)
+        displayProfile();
     });
 
     return {

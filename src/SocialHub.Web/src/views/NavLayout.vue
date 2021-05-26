@@ -34,7 +34,8 @@ onMounted(() => {
 });
 
 const isHome = ref(router.currentRoute.value.name === "Home");
-watch(() => router.currentRoute.value.name, newVal => {
-  isHome.value = newVal === "Home";
+
+watch(router.currentRoute, newRoute => {
+  isHome.value = newRoute.name === "Home";
 });
 </script>

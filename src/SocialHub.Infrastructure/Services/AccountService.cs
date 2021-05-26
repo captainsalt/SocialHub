@@ -69,21 +69,22 @@ namespace SocialHub.Infrastructure.Services
 
             return
                 followeeContext.Bind(followee =>
-                followerContext.BindAsync<Unit>(async follower =>
+                followerContext.Bind(follower =>
+                IsFollowingAccount(followerId, followeeId).BindAsync<Unit>(async isFollowing =>
                 {
+                    if (isFollowing)
+                        return Errors.AlreadyFollowing;
+
                     await _dbContext.Entry(followee)
                         .Collection(nameof(followee.Followers))
                         .LoadAsync();
-
-                    if (IsFollowingUser(followerId, followee))
-                        return Errors.AlreadyFollowing;
 
                     followee.Followers.Add(follower);
 
                     await _dbContext.UpdateAsync(followee);
 
                     return unit;
-                }));
+                })));
         }
 
         public EitherAsync<Error, Unit> UnfollowAccountAsync(Guid followerId, Guid followeeId)
@@ -132,7 +133,23 @@ namespace SocialHub.Infrastructure.Services
                 });
         }
 
-        private static bool IsFollowingUser(Guid followerId, Account followee) =>
-                followee.Followers.FirstOrDefault(acc => acc.Id == followerId) is not null;
+        public EitherAsync<Error, bool> IsFollowingAccount(Guid followerId, Guid followeeId)
+        {
+            var followeeContext = GetAccountByIdAsync(followeeId).ToAsync();
+            var followerContext = GetAccountByIdAsync(followerId).ToAsync();
+
+            return
+                followeeContext.Bind(followee =>
+                followerContext.BindAsync<bool>(async follower =>
+                {
+                    var exists = await _dbContext.Entry(followee)
+                        .Collection(nameof(followee.Followers))
+                        .Query()
+                        .Cast<Account>()
+                        .AnyAsync(acc => acc.Id == follower.Id);
+
+                    return exists;
+                }));
+        }
     }
 }

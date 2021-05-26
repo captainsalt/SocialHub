@@ -17,5 +17,7 @@ namespace SocialHub.Application.Models
         public static readonly Error CannotFollowSelf = Error.New("Cannot follow yourself");
 
         public static readonly Error AlreadyFollowing = Error.New("You are already following this user");
+
+        public static readonly Error InvalidToken = Error.New("Invalid token");
     }
 }

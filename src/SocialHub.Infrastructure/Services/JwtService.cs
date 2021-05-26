@@ -1,8 +1,10 @@
 ﻿using LanguageExt;
+using LanguageExt.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using SocialHub.Application.Interfaces;
+using SocialHub.Application.Models;
 using SocialHub.Domain.Entities;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -43,8 +45,13 @@ namespace SocialHub.Infrastructure.Services
             return tokenHandler.WriteToken(token);
         }
 
-        public Account GetAccountFromToken(HttpContext context) =>
-            context.Items[Key] as Account;
+        public Either<Error, Account> GetAccountFromToken(HttpContext context)
+        {
+            if (context.Items[Key] is Account acc)
+                return acc;
+            else
+                return Errors.InvalidToken;
+        }
 
         public Option<JwtSecurityToken> ValidateToken(string token)
         {

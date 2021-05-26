@@ -20,5 +20,7 @@ namespace SocialHub.Application.Interfaces
         EitherAsync<Error, Unit> UnfollowAccountAsync(Guid followerId, Guid followeeId);
 
         EitherAsync<Error, AccountProfile> GetAccountProfile(string username);
+
+        EitherAsync<Error, bool> IsFollowingAccount(Guid followerId, Guid followeeId);
     }
 }
