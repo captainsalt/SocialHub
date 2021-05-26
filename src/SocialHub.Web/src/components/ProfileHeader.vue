@@ -29,7 +29,7 @@
 <script lang="ts">
 import ProfileModel from "@/models/ProfileModel";
 import { follow, unfollow } from "@/services/api-interface";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 interface Props {
   profile: ProfileModel
@@ -45,12 +45,9 @@ export default {
   setup(props: Props) {
     const isFollowing = ref(false);
 
-    const interval = setInterval(() => {
-      if (props.profile !== null) {
-        isFollowing.value = props.profile?.isFollowing;
-        clearInterval(interval);
-      }
-    }, 300);
+    watch(() => props.profile?.isFollowing, newVal => {
+      isFollowing.value = newVal;
+    });
 
     async function followUser() {
       await follow(props.profile.account.username);

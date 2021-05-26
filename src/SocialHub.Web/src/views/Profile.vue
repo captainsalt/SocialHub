@@ -14,7 +14,7 @@ export default {
   components: { PureProfile },
   setup() {
     const { posts, setValue: setPostsValue } = usePostsStore();
-    const profile = ref<ProfileModel | null>(null);
+    const profile = ref<ProfileModel>();
 
     async function displayProfile() {
       const username = router.currentRoute.value.params.username.toString();
