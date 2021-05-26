@@ -186,7 +186,8 @@ namespace SocialHub.Infrastructure.Services
 
         private async Task<Either<Error, List<Post>>> GetOwnPosts(Account account)
         {
-            var postCollection = _dbContext.Entry(account).Collection(nameof(account.Posts));
+            var postCollection = _dbContext.Entry(account)
+                .Collection(nameof(account.Posts));
 
             if (!postCollection.IsLoaded)
                 await postCollection.LoadAsync();
@@ -196,12 +197,12 @@ namespace SocialHub.Infrastructure.Services
 
         private async Task<Either<Error, List<Post>>> GetSharedPosts(Account account)
         {
-            var sharesCollection = _dbContext.Entry(account).Collection(nameof(account.Shares));
+            var dbUser = await _dbContext.Accounts
+                .Include(acc => acc.Shares)
+                .ThenInclude(p => p.Account)
+                .FirstOrDefaultAsync(acc => acc.Id == account.Id);
 
-            if (!sharesCollection.IsLoaded)
-                await sharesCollection.LoadAsync();
-
-            return account.Shares;
+            return dbUser.Shares;
         }
 
         /// <summary>
@@ -211,7 +212,9 @@ namespace SocialHub.Infrastructure.Services
         /// <returns></returns>
         private async Task<Either<Error, List<Post>>> GetFolloweePosts(Account account)
         {
-            await _dbContext.Entry(account).Collection(nameof(account.Following)).LoadAsync();
+            await _dbContext.Entry(account)
+                .Collection(nameof(account.Following))
+                .LoadAsync();
 
             var includeQuery = _dbContext.Accounts
                 .Include(acc => acc.Following)
