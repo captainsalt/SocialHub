@@ -69,8 +69,8 @@ namespace SocialHub.Infrastructure.Services
 
             return
                 followeeContext.Bind(followee =>
-                followerContext.Bind(follower => 
-                IsFollowingAccount(followerId, followeeId).BindAsync<Unit>(async isFollowing => 
+                followerContext.Bind(follower =>
+                IsFollowingAccount(followerId, followeeId).BindAsync<Unit>(async isFollowing =>
                 {
                     if (isFollowing)
                         return Errors.AlreadyFollowing;
@@ -138,9 +138,9 @@ namespace SocialHub.Infrastructure.Services
             var followeeContext = GetAccountByIdAsync(followeeId).ToAsync();
             var followerContext = GetAccountByIdAsync(followerId).ToAsync();
 
-            return 
-                followeeContext.Bind(followee => 
-                followerContext.BindAsync<bool>(async follower=>
+            return
+                followeeContext.Bind(followee =>
+                followerContext.BindAsync<bool>(async follower =>
                 {
                     var exists = await _dbContext.Entry(followee)
                         .Collection(nameof(followee.Followers))

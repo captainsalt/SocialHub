@@ -108,13 +108,13 @@ namespace SocialHub.API.Controllers
         [HttpDelete("share/remove")]
         public async Task<IActionResult> RemoveShare([FromQuery] Guid postId)
         {
-            var result = 
-                from tokenAccount in _jwtService.GetAccountFromToken(HttpContext).ToAsync() 
-                from unit in _postService.RemoveShareAsync(tokenAccount.Id, postId).ToAsync() 
+            var result =
+                from tokenAccount in _jwtService.GetAccountFromToken(HttpContext).ToAsync()
+                from unit in _postService.RemoveShareAsync(tokenAccount.Id, postId).ToAsync()
                 select unit;
 
             return await result.Match<IActionResult>(
-                unit => Ok(), 
+                unit => Ok(),
                 err => BadRequest(MapError(err))
             );
         }
@@ -122,13 +122,13 @@ namespace SocialHub.API.Controllers
         [HttpDelete("like/remove")]
         public async Task<IActionResult> RemoveLike([FromQuery] Guid postId)
         {
-            var result = 
-                from tokenAccount in _jwtService.GetAccountFromToken(HttpContext).ToAsync() 
-                from unit in _postService.RemoveLikeAsync(tokenAccount.Id, postId).ToAsync() 
+            var result =
+                from tokenAccount in _jwtService.GetAccountFromToken(HttpContext).ToAsync()
+                from unit in _postService.RemoveLikeAsync(tokenAccount.Id, postId).ToAsync()
                 select unit;
 
             return await result.Match<IActionResult>(
-                unit => Ok(), 
+                unit => Ok(),
                 err => BadRequest(MapError(err))
             );
         }

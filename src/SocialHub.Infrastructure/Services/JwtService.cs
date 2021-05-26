@@ -45,7 +45,8 @@ namespace SocialHub.Infrastructure.Services
             return tokenHandler.WriteToken(token);
         }
 
-        public Either<Error, Account> GetAccountFromToken(HttpContext context) {
+        public Either<Error, Account> GetAccountFromToken(HttpContext context)
+        {
             if (context.Items[Key] is Account acc)
                 return acc;
             else
