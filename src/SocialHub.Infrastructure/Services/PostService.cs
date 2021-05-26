@@ -69,6 +69,32 @@ namespace SocialHub.Infrastructure.Services
                 select shared.ConcatFast(own).Distinct().ToList();
         }
 
+        public EitherAsync<Error, List<Post>> PopulatePostStatus(Guid accountId, List<Post> posts)
+        {
+            return _accountService.GetAccountByIdAsync(accountId).ToAsync()
+                .BindAsync<List<Post>>(async acc =>
+                {
+                    var dbAccount = await _dbContext.Accounts
+                        .Include(acc => acc.Likes)
+                        .Include(acc => acc.Shares)
+                        .FirstOrDefaultAsync(acc => acc.Id == accountId);
+
+                    var mappedPosts = posts.AsParallel()
+                        .Select(p => 
+                        {
+                            if (dbAccount.Likes.Contains(p))
+                                p.IsLiked = true;
+                            if (dbAccount.Shares.Contains(p))
+                                p.IsShared = true;
+
+                            return p;
+                        })
+                        .ToList();
+
+                    return mappedPosts;
+                });
+        }
+
         // TODO: Remove code repetition
         public async Task<Either<Error, Unit>> LikePostAsync(Guid accountId, Guid postId)
         {

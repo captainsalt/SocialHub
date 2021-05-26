@@ -22,5 +22,7 @@ namespace SocialHub.Application.Interfaces
         EitherAsync<Error, List<Post>> GetHomeFeed(Guid accountId);
 
         EitherAsync<Error, List<Post>> GetProfileFeed(Guid accountId);
+
+        EitherAsync<Error, List<Post>> PopulatePostStatus(Guid accountId, List<Post> posts);
     }
 }

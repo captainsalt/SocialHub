@@ -39,7 +39,8 @@ namespace SocialHub.API.Controllers
         {
             var result =
                 from tokenAccount in _jwtService.GetAccountFromToken(HttpContext).ToAsync()
-                from feed in _postService.GetHomeFeed(tokenAccount.Id)
+                from posts in _postService.GetHomeFeed(tokenAccount.Id)
+                from feed in _postService.PopulatePostStatus(tokenAccount.Id, posts)
                 select feed;
 
             return await result.Match<IActionResult>(
@@ -53,8 +54,9 @@ namespace SocialHub.API.Controllers
         {
             var result =
                 from acc in _accountService.GetAccountByUsernameAsync(username).ToAsync()
-                from feed in _postService.GetHomeFeed(acc.Id)
-                select feed;
+                from posts in _postService.GetHomeFeed(acc.Id)
+                from feed in _postService.PopulatePostStatus(acc.Id, posts)
+                select posts;
 
             return await result.Match<IActionResult>(
                 posts => Ok(MapPostList(posts)),
