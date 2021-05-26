@@ -1241,6 +1241,11 @@
   dependencies:
     "@hapi/hoek" "^8.3.0"
 
+"@heroicons/vue@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@heroicons/vue/-/vue-1.0.1.tgz#bd37662a45ed031d9b4ab1c860574e2174ca1bd3"
+  integrity sha512-pClbScVNpkBCHdM86+EAjQ5iUAs1PVjRHDFRNImQQyot75KrAk4SDfeKGDkQqPaGdJ9ZHIK13cl2W0eYc29QWg==
+
 "@intervolga/optimize-cssnano-plugin@^1.0.5":
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/@intervolga/optimize-cssnano-plugin/-/optimize-cssnano-plugin-1.0.6.tgz#be7c7846128b88f6a9b1d1261a0ad06eb5c0fdf8"
@@ -14518,6 +14523,7 @@ vue-jest@^5.0.0-0:
     tsconfig "^7.0.0"
 
 "vue-loader-v16@npm:vue-loader@^16.1.0", vue-loader@^16.2.0:
+  name vue-loader-v16
   version "16.2.0"
   resolved "https://registry.yarnpkg.com/vue-loader/-/vue-loader-16.2.0.tgz#046a53308dd47e58efe20ddec1edec027ce3b46e"
   integrity sha512-TitGhqSQ61RJljMmhIGvfWzJ2zk9m1Qug049Ugml6QP3t0e95o0XJjk29roNEiPKJQBEi8Ord5hFuSuELzSp8Q==
