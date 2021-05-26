@@ -2,5 +2,5 @@
 
 namespace SocialHub.API.Models
 {
-    public record FollowRequest(Guid followeeId);
+    public record FollowRequest(string FolloweeUsername);
 }

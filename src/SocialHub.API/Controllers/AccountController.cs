@@ -72,7 +72,8 @@ namespace SocialHub.API.Controllers
         {
             var result =
                 from tokenAccount in _jwtService.GetAccountFromToken(HttpContext).ToAsync()
-                from unit in _accountService.FollowAccountAsync(tokenAccount.Id, request.followeeId)
+                from followeeAcc in _accountService.GetAccountByUsernameAsync(request.FolloweeUsername).ToAsync()
+                from unit in _accountService.FollowAccountAsync(tokenAccount.Id, followeeAcc.Id)
                 select unit;
 
             return await result.Match<IActionResult>(
@@ -86,7 +87,8 @@ namespace SocialHub.API.Controllers
         {
             var result =
                 from tokenAccount in _jwtService.GetAccountFromToken(HttpContext).ToAsync()
-                from unit in _accountService.UnfollowAccountAsync(tokenAccount.Id, request.followeeId)
+                from followeeAcc in _accountService.GetAccountByUsernameAsync(request.FolloweeUsername).ToAsync()
+                from unit in _accountService.UnfollowAccountAsync(tokenAccount.Id, followeeAcc.Id)
                 select unit;
 
             return await result.Match<IActionResult>(
