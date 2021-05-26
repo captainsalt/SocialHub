@@ -10,6 +10,17 @@ interface AuthResponse {
   account: AccountModel;
 }
 
+async function fetchRequestVoid(method: string, route: string, options: RequestInit): Promise<void> { // eslint-disable-line no-undef
+  const response = await fetch(`${process.env.VUE_APP_API_URL}${route}`, {
+    ...options,
+    method,
+    mode: "cors"
+  });
+
+  if (!response.ok)
+    throw new Error((await response.json()).message);
+}
+
 async function fetchRequest<T>(method: string, route: string, options: RequestInit): Promise<T> { // eslint-disable-line no-undef
   const response = await fetch(`${process.env.VUE_APP_API_URL}${route}`, {
     ...options,
@@ -97,7 +108,7 @@ export async function getProfile(username: string) {
 }
 
 export async function follow(followeeUsername: string) {
-  return fetchRequest<void>("POST", `/api/account/follow?followeeUsername=${followeeUsername}`, {
+  await fetchRequestVoid("POST", `/api/account/follow?followeeUsername=${followeeUsername}`, {
     headers: {
       "Content-Type": "application/json",
       "Authorization": token.value
@@ -106,7 +117,7 @@ export async function follow(followeeUsername: string) {
 }
 
 export async function unfollow(followeeUsername: string) {
-  return fetchRequest<void>("DELETE", `/api/account/unfollow?followeeUsername=${followeeUsername}`, {
+  await fetchRequestVoid("DELETE", `/api/account/unfollow?followeeUsername=${followeeUsername}`, {
     headers: {
       "Content-Type": "application/json",
       "Authorization": token.value
