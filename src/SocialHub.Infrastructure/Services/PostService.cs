@@ -1,5 +1,6 @@
 ﻿using LanguageExt;
 using LanguageExt.Common;
+using Microsoft.EntityFrameworkCore;
 using SocialHub.Application.Interfaces;
 using SocialHub.Application.Models;
 using SocialHub.Domain.Entities;
@@ -184,14 +185,23 @@ namespace SocialHub.Infrastructure.Services
         /// <returns></returns>
         private async Task<Either<Error, List<Post>>> GetFolloweePosts(Account account)
         {
-            var followees = _dbContext.Entry(account).Collection(nameof(account.Following));
+            await _dbContext.Entry(account).Collection(nameof(account.Following)).LoadAsync();
 
-            if (!followees.IsLoaded)
-                await followees.LoadAsync();
+            var includeQuery = _dbContext.Accounts
+                .Include(acc => acc.Following)
+                .ThenInclude(followee => followee.Posts);
 
-            return account.Following
-                .SelectMany(followee => followee.Posts.ConcatFast(followee.Shares))
-                .ToList();
+            var followeePosts = includeQuery
+                .Where(acc => account.Following.Contains(acc))
+                .SelectMany(acc => acc.Posts)
+                .AsEnumerable();
+
+            var followeeShares = includeQuery
+                .Where(acc => account.Following.Contains(acc))
+                .SelectMany(acc => acc.Shares)
+                .AsEnumerable();
+
+            return followeePosts.ConcatFast(followeeShares).ToList();
         }
     }
 }
