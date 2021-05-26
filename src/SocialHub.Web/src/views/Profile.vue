@@ -16,22 +16,22 @@ export default {
     const { posts, setValue: setPostsValue } = usePostsStore();
     const profile = ref<ProfileModel | null>(null);
 
-    async function setProfile() {
+    async function displayProfile() {
       const username = router.currentRoute.value.params.username.toString();
-      const feedResponse = await getUserFeed(username);
       const profileResponse = await getProfile(username);
+      const feedResponse = await getUserFeed(username);
 
       setPostsValue(feedResponse);
       profile.value = profileResponse;
     }
 
     onBeforeMount(async () => {
-      await setProfile();
+      await displayProfile();
     });
 
     watch(router.currentRoute, (newRoute, oldRoute) => {
       if (newRoute.params.username !== oldRoute.params.username)
-        setProfile();
+        displayProfile();
     });
 
     return {
