@@ -8,20 +8,22 @@
       <p>Following: {{ profile.following }}</p>
       <p>Total posts: {{ profile.totalPosts }}</p>
 
-      <button
-        v-if="isFollowing"
-        class="btn btn-primary"
-        @click="unfollowUser"
-      >
-        Unfollow
-      </button>
-      <button
-        v-else
-        class="btn btn-primary"
-        @click="followUser"
-      >
-        Follow
-      </button>
+      <div v-if="showFollowButton">
+        <button
+          v-if="isFollowing"
+          class="btn btn-primary"
+          @click="unfollowUser"
+        >
+          Unfollow
+        </button>
+        <button
+          v-else
+          class="btn btn-primary"
+          @click="followUser"
+        >
+          Follow
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -30,6 +32,7 @@
 import ProfileModel from "@/models/ProfileModel";
 import { follow, unfollow } from "@/services/api-interface";
 import { ref, watch } from "vue";
+import { account } from "@/store";
 
 interface Props {
   profile: ProfileModel
@@ -44,9 +47,14 @@ export default {
   },
   setup(props: Props) {
     const isFollowing = ref(false);
+    const showFollowButton = ref(false);
 
     watch(() => props.profile?.isFollowing, newVal => {
       isFollowing.value = newVal;
+    });
+
+    watch(() => props.profile?.account.id, newVal => {
+      showFollowButton.value = account.value.id !== newVal;
     });
 
     async function followUser() {
@@ -62,7 +70,8 @@ export default {
     return {
       followUser,
       unfollowUser,
-      isFollowing
+      isFollowing,
+      showFollowButton
     };
   }
 };
