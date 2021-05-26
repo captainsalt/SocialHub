@@ -124,3 +124,35 @@ export async function unfollow(followeeUsername: string) {
     }
   });
 }
+
+export async function like(postId: string) {
+  await fetchRequestVoid("POST", `/api/post/like?postId=${postId}`, {
+    headers: {
+      "Authorization": token.value
+    }
+  });
+}
+
+export async function share(postId: string) {
+  await fetchRequestVoid("POST", `/api/post/share?postId=${postId}`, {
+    headers: {
+      "Authorization": token.value
+    }
+  });
+}
+
+export async function removeLike(postId: string) {
+  await fetchRequestVoid("DELETE", `/api/post/like/remove?postId=${postId}`, {
+    headers: {
+      "Authorization": token.value
+    }
+  });
+}
+
+export async function removeShare(postId: string) {
+  await fetchRequestVoid("DELETE", `/api/post/share/remove?postId=${postId}`, {
+    headers: {
+      "Authorization": token.value
+    }
+  });
+}
