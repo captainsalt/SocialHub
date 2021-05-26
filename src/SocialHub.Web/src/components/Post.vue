@@ -12,22 +12,44 @@
     </div>
 
     <!-- Footer -->
-    <div class="flex justify-around text-gray-600" @click="$emit('postShared', post.id)">
-      <div class="hover:underline hover:cursor-pointer">
-        Shares: 0
-      </div>
+    <div class="flex justify-around">
+      <HeartSolid
+        v-if="post.isLiked"
+        class="text-red-500 svg"
+        @click="$emit('likeRemove', post.id)"
+      />
+      <HeartOutline
+        v-else
+        class="svg"
+        @click="$emit('like', post.id)"
+      />
 
-      <div class="hover:underline hover:cursor-pointer" @click="$emit('postLiked', post.id)">
-        Likes: 0
-      </div>
+      <SpeakerSolid
+        v-if="post.isShared"
+        class="text-green-500 svg"
+        @click="$emit('shareRemove', post.id) "
+      />
+      <SpeakerOutline
+        v-else
+        class="svg"
+        @click="$emit('share', post.id) "
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import PostModel from "@/models/PostModel";
+import { HeartIcon as HeartOutline, SpeakerphoneIcon as SpeakerOutline } from "@heroicons/vue/outline";
+import { HeartIcon as HeartSolid, SpeakerphoneIcon as SpeakerSolid } from "@heroicons/vue/solid";
 
 export default {
+  components: {
+    HeartOutline,
+    SpeakerOutline,
+    HeartSolid,
+    SpeakerSolid
+  },
   props: {
     post: {
       type: PostModel,
@@ -35,8 +57,20 @@ export default {
     }
   },
   emits: {
-    postLiked: null,
-    postShared: null
+    like: null,
+    share: null,
+    likeRemove: null,
+    shareRemove: null
   }
 };
 </script>
+
+<style scoped>
+.svg {
+  @apply h-5;
+}
+
+.svg:hover {
+  @apply cursor-pointer;
+}
+</style>
