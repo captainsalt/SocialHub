@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using SocialHub.API.Attributes;
 using SocialHub.API.Dtos;
 using SocialHub.API.Models;
-using SocialHub.API.Models.Dtos;
 using SocialHub.Application.Interfaces;
 using SocialHub.Domain.Entities;
 using System;
