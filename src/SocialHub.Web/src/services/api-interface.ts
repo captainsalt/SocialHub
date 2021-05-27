@@ -40,7 +40,7 @@ async function fetchRequest<T>(method: string, route: string, options: RequestIn
 
     throw {
       response,
-      statusCode: response.status,
+      status: response.status,
       message
     };
   }

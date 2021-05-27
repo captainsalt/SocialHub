@@ -42,8 +42,8 @@ export default {
         setPostsValue(feedResponse);
         profile.value = profileResponse;
       }
-      catch (response) {
-        if (response.status === 400)
+      catch (err) {
+        if (err.status === 400)
           notFound.value = true;
       }
     }
