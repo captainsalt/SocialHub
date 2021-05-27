@@ -7,6 +7,7 @@ using SocialHub.Domain.Entities;
 using SocialHub.Infrastructure.Services;
 using SocialHub.Infrastructure.Tests.Helpers;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -27,7 +28,7 @@ namespace SocialHub.Infrastructure.Tests.Services
         }
 
         [Fact]
-        public async Task CreatePostAsync_ShouldReturnRightAsync_WhenAccountExists()
+        public async Task CreatePostAsync_ShouldReturnRight_WhenAccountExists()
         {
             // Arrange 
             _accountService.GetAccountByIdAsync(default)
@@ -41,7 +42,7 @@ namespace SocialHub.Infrastructure.Tests.Services
         }
 
         [Fact]
-        public async Task CreatePostAsync_ShouldReturnLeftAsync_WhenAccountDoesNotExist()
+        public async Task CreatePostAsync_ShouldReturnLeft_WhenAccountDoesNotExist()
         {
             // Arrange
             _accountService.GetAccountByIdAsync(default)
@@ -55,7 +56,7 @@ namespace SocialHub.Infrastructure.Tests.Services
         }
 
         [Fact]
-        public async Task LikePostAsync_ShouldReturnRightAsync_WhenPostExists()
+        public async Task LikePostAsync_ShouldReturnRight_WhenPostExists()
         {
             // Arrange 
             _dbContext.Object
@@ -74,7 +75,7 @@ namespace SocialHub.Infrastructure.Tests.Services
         }
 
         [Fact]
-        public async Task LikePostAsync_ShouldReturnLeftAsync_WhenPostDoesNotExist()
+        public async Task LikePostAsync_ShouldReturnLeft_WhenPostDoesNotExist()
         {
             // Arrange 
             _dbContext.Object
@@ -93,7 +94,7 @@ namespace SocialHub.Infrastructure.Tests.Services
         }
 
         [Fact]
-        public async Task LikePostAsync_ShouldReturnLeftAsync_WhenAccountDoesNotExist()
+        public async Task LikePostAsync_ShouldReturnLeft_WhenAccountDoesNotExist()
         {
             // Arrange 
             _dbContext.Object
@@ -112,7 +113,7 @@ namespace SocialHub.Infrastructure.Tests.Services
         }
 
         [Fact]
-        public async Task SharePostAsync_ShouldReturnRightAsync_WhenPostExists()
+        public async Task SharePostAsync_ShouldReturnRight_WhenPostExists()
         {
             // Arrange
             _dbContext.Object
@@ -131,7 +132,7 @@ namespace SocialHub.Infrastructure.Tests.Services
         }
 
         [Fact]
-        public async Task SharePostAsync_ShouldReturnErrorAsync_WhenPostDoestNotExist()
+        public async Task SharePostAsync_ShouldReturnLeft_WhenPostDoestNotExist()
         {
             // Arrange
             _dbContext.Object
@@ -150,7 +151,7 @@ namespace SocialHub.Infrastructure.Tests.Services
         }
 
         [Fact]
-        public async Task SharePostAsync_ShouldReturnErrorAsync_WhenAccountDoesNotExist()
+        public async Task SharePostAsync_ShouldReturnLeft_WhenAccountDoesNotExist()
         {
             // Arrange
             _dbContext.Object
@@ -169,48 +170,48 @@ namespace SocialHub.Infrastructure.Tests.Services
         }
 
         [Fact]
-        public async Task RemoveLikeAsync_ShouldLoadLikesCollectionAsync_WhenCalled()
+        public async Task RemoveLikeAsync_ShouldLoadLikesCollection_WhenCalled()
         {
 
         }
 
         [Fact]
-        public async Task RemoveLikeAsync_ShouldReturnRightAsync_WhenPostExists()
+        public async Task RemoveLikeAsync_ShouldReturnRight_WhenPostExists()
         {
 
         }
 
         [Fact]
-        public async Task RemoveLikeAsync_ShouldReturnErrorAsync_WhenPostDoesNotExist()
+        public async Task RemoveLikeAsync_ShouldReturnLeft_WhenPostDoesNotExist()
         {
 
         }
 
         [Fact]
-        public async Task RemoveLikeAsync_ShouldReturnErrorAsync_WhenAccountDoesNotExit()
+        public async Task RemoveLikeAsync_ShouldReturnLeft_WhenAccountDoesNotExit()
         {
 
         }
 
         [Fact]
-        public async Task RemoveShareAsync_ShouldLoadSharesCollectionAsync_WhenCalled()
+        public async Task RemoveShareAsync_ShouldLoadSharesCollection_WhenCalled()
         {
 
         }
 
         [Fact]
-        public async Task RemoveShareAsync_ShouldReturnRightAsync_WhenPostExists()
+        public async Task RemoveShareAsync_ShouldReturnRight_WhenPostExists()
         {
         }
 
         [Fact]
-        public async Task RemoveShareAsync_ShouldReturnErrorAsync_WhenPostDoesNotExist()
+        public async Task RemoveShareAsync_ShouldReturnLeft_WhenPostDoesNotExist()
         {
 
         }
 
         [Fact]
-        public async Task RemoveShareAsync_ShouldReturnErrorAsync_WhenAccountDoesNotExist()
+        public async Task RemoveShareAsync_ShouldReturnLeft_WhenAccountDoesNotExist()
         {
 
         }
