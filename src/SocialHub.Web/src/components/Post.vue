@@ -15,7 +15,7 @@
     <div class="flex justify-around">
       <HeartSolid
         v-if="isLiked"
-        class="text-red-500 post-button"
+        class="text-red-500 post-button hover:opacity-50"
         @click="removePostLike"
       />
       <HeartOutline
@@ -26,7 +26,7 @@
 
       <RefreshSolid
         v-if="isShared"
-        class="text-green-500 post-button"
+        class="text-green-500 post-button hover:opacity-50"
         @click="removePostShare"
       />
       <RefreshOutline
