@@ -24,12 +24,12 @@
         @click="likePost"
       />
 
-      <SpeakerSolid
+      <RefreshSolid
         v-if="isShared"
         class="text-green-500 post-button"
         @click="removePostShare"
       />
-      <SpeakerOutline
+      <RefreshOutline
         v-else
         class="hover:text-green-500 post-button hover:stroke-current"
         @click="sharePost"
@@ -42,8 +42,14 @@
 import { ref } from "vue";
 import PostModel from "@/models/PostModel";
 import { share, like, removeLike, removeShare } from "@/services/api-interface";
-import { HeartIcon as HeartOutline, SpeakerphoneIcon as SpeakerOutline } from "@heroicons/vue/outline";
-import { HeartIcon as HeartSolid, SpeakerphoneIcon as SpeakerSolid } from "@heroicons/vue/solid";
+import {
+  HeartIcon as HeartOutline,
+  RefreshIcon as RefreshOutline
+} from "@heroicons/vue/outline";
+import {
+  HeartIcon as HeartSolid,
+  RefreshIcon as RefreshSolid
+} from "@heroicons/vue/solid";
 
 interface Props {
   post: PostModel
@@ -52,9 +58,9 @@ interface Props {
 export default {
   components: {
     HeartOutline,
-    SpeakerOutline,
+    RefreshOutline,
     HeartSolid,
-    SpeakerSolid
+    RefreshSolid
   },
   props: {
     post: {
