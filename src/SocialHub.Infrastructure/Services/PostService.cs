@@ -57,7 +57,12 @@ namespace SocialHub.Infrastructure.Services
                 from shared in GetSharedPosts(acc).ToAsync()
                 from own in GetOwnPosts(acc).ToAsync()
                 from followed in GetFolloweePosts(acc).ToAsync()
-                select shared.ConcatFast(own).ConcatFast(followed).Distinct().ToList();
+                select 
+                    shared.ConcatFast(own)
+                    .ConcatFast(followed)
+                    .Distinct()
+                    .OrderByDescending(p => p.CreatedAt)
+                    .ToList();
         }
 
         public EitherAsync<Error, List<Post>> GetProfileFeed(Guid accountId)
@@ -66,7 +71,11 @@ namespace SocialHub.Infrastructure.Services
                 from acc in _accountService.GetAccountByIdAsync(accountId).ToAsync()
                 from shared in GetSharedPosts(acc).ToAsync()
                 from own in GetOwnPosts(acc).ToAsync()
-                select shared.ConcatFast(own).Distinct().ToList();
+                select 
+                    shared.ConcatFast(own)
+                    .Distinct()
+                    .OrderByDescending(p => p.CreatedAt)
+                    .ToList();
         }
 
         public EitherAsync<Error, List<Post>> PopulatePostStatus(Guid accountId, List<Post> posts)
@@ -107,8 +116,8 @@ namespace SocialHub.Infrastructure.Services
                 async res =>
                 {
                     await _dbContext.Entry(res.account)
-                    .Collection(nameof(res.account.Likes))
-                    .LoadAsync();
+                        .Collection(nameof(res.account.Likes))
+                        .LoadAsync();
 
                     if (res.account.Likes.Contains(res.post))
                         return unit;
