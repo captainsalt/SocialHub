@@ -33,7 +33,7 @@ namespace SocialHub.Domain.Entities
         public string Password { get; set; }
 
         [Required]
-        public DateTime CreatedAt { get; set; }
+        public double CreatedAt { get; set; }
 
         public virtual List<Post> Posts { get; set; } = new();
 

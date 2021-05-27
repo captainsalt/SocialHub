@@ -19,7 +19,7 @@ async function fetchRequestVoid(method: string, route: string, options: RequestI
 
   if (!response.ok) {
     const message = (await response.json()).message;
-    
+
     throw {
       response,
       status: response.status,
