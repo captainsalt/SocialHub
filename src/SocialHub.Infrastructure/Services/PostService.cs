@@ -106,6 +106,13 @@ namespace SocialHub.Infrastructure.Services
             return await result.MatchAsync<Either<Error, Unit>>(
                 async res =>
                 {
+                    await _dbContext.Entry(res.account)
+                    .Collection(nameof(res.account.Likes))
+                    .LoadAsync();
+
+                    if (res.account.Likes.Contains(res.post))
+                        return unit;
+
                     res.account.Likes.Add(res.post);
                     await _dbContext.UpdateAsync(res.account);
                     return unit;
@@ -124,6 +131,13 @@ namespace SocialHub.Infrastructure.Services
             return await result.MatchAsync<Either<Error, Unit>>(
                 async res =>
                 {
+                    await _dbContext.Entry(res.account)
+                        .Collection(nameof(res.account.Shares))
+                        .LoadAsync();
+
+                    if (res.account.Shares.Contains(res.post))
+                        return unit;
+
                     res.account.Shares.Add(res.post);
                     await _dbContext.UpdateAsync(res.account);
                     return unit;
