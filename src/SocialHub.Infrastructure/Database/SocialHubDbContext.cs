@@ -53,24 +53,38 @@ namespace SocialHub.Infrastructure.Database
         // TODO: Capture errors
         public async Task<Either<Error, T>> AddAsync<T>(T entity) where T : class
         {
-            var doesNotExist = !Entry(entity).IsKeySet;
+            try
+            {
+                var doesNotExist = !Entry(entity).IsKeySet;
 
-            if (entity is IEntity x && doesNotExist)
-                x.CreatedAt = DateTime.Now;
+                if (entity is IEntity x && doesNotExist)
+                    x.CreatedAt = DateTime.Now;
 
-            var added = await base.AddAsync(entity);
-            await SaveChangesAsync();
+                var added = await base.AddAsync(entity);
+                await SaveChangesAsync();
 
-            return added.Entity;
+                return added.Entity;
+            }
+            catch (Exception ex)
+            {
+                return Error.New(ex);
+            }
         }
 
         // TODO: Capture errors
         public async Task<Either<Error, T>> UpdateAsync<T>(T entity) where T : class
         {
-            var updated = base.Update(entity);
-            await SaveChangesAsync();
+            try
+            {
+                var updated = base.Update(entity);
+                await SaveChangesAsync();
 
-            return updated.Entity;
+                return updated.Entity;
+            }
+            catch (Exception ex)
+            {
+                return Error.New(ex);
+            }
         }
     }
 }

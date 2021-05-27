@@ -10,7 +10,6 @@
 
 <script lang="ts">
 import Post from "@/components/Post.vue";
-import PostModel from "@/models/PostModel";
 
 export default {
   components: {
@@ -19,9 +18,7 @@ export default {
   props: {
     posts: {
       type: Array,
-      required: true,
-      validator: (val: any[]) =>
-        val.every(item => item instanceof PostModel)
+      required: true
     }
   }
 };

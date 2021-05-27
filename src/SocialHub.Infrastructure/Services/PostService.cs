@@ -57,7 +57,12 @@ namespace SocialHub.Infrastructure.Services
                 from shared in GetSharedPosts(acc).ToAsync()
                 from own in GetOwnPosts(acc).ToAsync()
                 from followed in GetFolloweePosts(acc).ToAsync()
-                select shared.ConcatFast(own).ConcatFast(followed).Distinct().ToList();
+                select 
+                    shared.ConcatFast(own)
+                    .ConcatFast(followed)
+                    .Distinct()
+                    .OrderByDescending(p => p.CreatedAt)
+                    .ToList();
         }
 
         public EitherAsync<Error, List<Post>> GetProfileFeed(Guid accountId)
@@ -66,7 +71,37 @@ namespace SocialHub.Infrastructure.Services
                 from acc in _accountService.GetAccountByIdAsync(accountId).ToAsync()
                 from shared in GetSharedPosts(acc).ToAsync()
                 from own in GetOwnPosts(acc).ToAsync()
-                select shared.ConcatFast(own).Distinct().ToList();
+                select 
+                    shared.ConcatFast(own)
+                    .Distinct()
+                    .OrderByDescending(p => p.CreatedAt)
+                    .ToList();
+        }
+
+        public EitherAsync<Error, List<Post>> PopulatePostStatus(Guid accountId, List<Post> posts)
+        {
+            return _accountService.GetAccountByIdAsync(accountId).ToAsync()
+                .BindAsync<List<Post>>(async acc =>
+                {
+                    var dbAccount = await _dbContext.Accounts
+                        .Include(acc => acc.Likes)
+                        .Include(acc => acc.Shares)
+                        .FirstOrDefaultAsync(acc => acc.Id == accountId);
+
+                    var mappedPosts = posts.AsParallel()
+                        .Select(p =>
+                        {
+                            if (dbAccount.Likes.Contains(p))
+                                p.IsLiked = true;
+                            if (dbAccount.Shares.Contains(p))
+                                p.IsShared = true;
+
+                            return p;
+                        })
+                        .ToList();
+
+                    return mappedPosts;
+                });
         }
 
         // TODO: Remove code repetition
@@ -80,6 +115,13 @@ namespace SocialHub.Infrastructure.Services
             return await result.MatchAsync<Either<Error, Unit>>(
                 async res =>
                 {
+                    await _dbContext.Entry(res.account)
+                        .Collection(nameof(res.account.Likes))
+                        .LoadAsync();
+
+                    if (res.account.Likes.Contains(res.post))
+                        return unit;
+
                     res.account.Likes.Add(res.post);
                     await _dbContext.UpdateAsync(res.account);
                     return unit;
@@ -98,6 +140,13 @@ namespace SocialHub.Infrastructure.Services
             return await result.MatchAsync<Either<Error, Unit>>(
                 async res =>
                 {
+                    await _dbContext.Entry(res.account)
+                        .Collection(nameof(res.account.Shares))
+                        .LoadAsync();
+
+                    if (res.account.Shares.Contains(res.post))
+                        return unit;
+
                     res.account.Shares.Add(res.post);
                     await _dbContext.UpdateAsync(res.account);
                     return unit;
@@ -160,7 +209,8 @@ namespace SocialHub.Infrastructure.Services
 
         private async Task<Either<Error, List<Post>>> GetOwnPosts(Account account)
         {
-            var postCollection = _dbContext.Entry(account).Collection(nameof(account.Posts));
+            var postCollection = _dbContext.Entry(account)
+                .Collection(nameof(account.Posts));
 
             if (!postCollection.IsLoaded)
                 await postCollection.LoadAsync();
@@ -170,12 +220,12 @@ namespace SocialHub.Infrastructure.Services
 
         private async Task<Either<Error, List<Post>>> GetSharedPosts(Account account)
         {
-            var sharesCollection = _dbContext.Entry(account).Collection(nameof(account.Shares));
+            var dbUser = await _dbContext.Accounts
+                .Include(acc => acc.Shares)
+                .ThenInclude(p => p.Account)
+                .FirstOrDefaultAsync(acc => acc.Id == account.Id);
 
-            if (!sharesCollection.IsLoaded)
-                await sharesCollection.LoadAsync();
-
-            return account.Shares;
+            return dbUser.Shares;
         }
 
         /// <summary>
@@ -185,7 +235,9 @@ namespace SocialHub.Infrastructure.Services
         /// <returns></returns>
         private async Task<Either<Error, List<Post>>> GetFolloweePosts(Account account)
         {
-            await _dbContext.Entry(account).Collection(nameof(account.Following)).LoadAsync();
+            await _dbContext.Entry(account)
+                .Collection(nameof(account.Following))
+                .LoadAsync();
 
             var includeQuery = _dbContext.Accounts
                 .Include(acc => acc.Following)

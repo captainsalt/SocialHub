@@ -2,7 +2,6 @@
 using LanguageExt.Common;
 using SocialHub.API.Dtos;
 using SocialHub.API.Models;
-using SocialHub.API.Models.Dtos;
 using SocialHub.Application.Models;
 using SocialHub.Domain.Entities;
 

@@ -17,7 +17,10 @@ export default {
     const profile = ref<ProfileModel>();
 
     async function displayProfile() {
-      const username = router.currentRoute.value.params.username.toString();
+      const username = router.currentRoute.value.params.username?.toString();
+      if (!username)
+        return;
+
       const profileResponse = await getProfile(username);
       const feedResponse = await getUserFeed(username);
 

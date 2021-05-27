@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SocialHub.Domain.Entities
 {
@@ -24,6 +25,12 @@ namespace SocialHub.Domain.Entities
 
         [Required]
         public DateTime CreatedAt { get; set; }
+
+        [NotMapped]
+        public bool IsLiked { get; set; }
+
+        [NotMapped]
+        public bool IsShared { get; set; }
 
         /// <summary>
         /// Post Author Id

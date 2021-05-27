@@ -1,7 +1,6 @@
-﻿using SocialHub.API.Dtos;
-using System;
+﻿using System;
 
-namespace SocialHub.API.Models.Dtos
+namespace SocialHub.API.Dtos
 {
-    public record PostDto(Guid Id, string Content, DateTime CreatedAt, AccountDto Account);
+    public record PostDto(Guid Id, string Content, DateTime CreatedAt, AccountDto Account, bool IsLiked, bool IsShared);
 }
