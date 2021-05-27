@@ -17,8 +17,15 @@ async function fetchRequestVoid(method: string, route: string, options: RequestI
     mode: "cors"
   });
 
-  if (!response.ok)
-    throw response;
+  if (!response.ok) {
+    const message = (await response.json()).message;
+    
+    throw {
+      response,
+      status: response.status,
+      message
+    };
+  }
 }
 
 async function fetchRequest<T>(method: string, route: string, options: RequestInit): Promise<T> { // eslint-disable-line no-undef
@@ -28,9 +35,15 @@ async function fetchRequest<T>(method: string, route: string, options: RequestIn
     mode: "cors"
   });
 
-  if (!response.ok)
-    throw response;
+  if (!response.ok) {
+    const message = (await response.json()).message;
 
+    throw {
+      response,
+      statusCode: response.status,
+      message
+    };
+  }
   return response.json();
 }
 
