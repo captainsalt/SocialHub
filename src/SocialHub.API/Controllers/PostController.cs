@@ -53,9 +53,10 @@ namespace SocialHub.API.Controllers
         public async Task<IActionResult> GetProfileFeed(string username)
         {
             var result =
+                from tokenAcount in _jwtService.GetAccountFromToken(HttpContext).ToAsync()
                 from acc in _accountService.GetAccountByUsernameAsync(username).ToAsync()
-                from posts in _postService.GetHomeFeed(acc.Id)
-                from feed in _postService.PopulatePostStatus(acc.Id, posts)
+                from posts in _postService.GetProfileFeed(acc.Id)
+                from feed in _postService.PopulatePostStatus(tokenAcount.Id, posts)
                 select posts;
 
             return await result.Match<IActionResult>(
