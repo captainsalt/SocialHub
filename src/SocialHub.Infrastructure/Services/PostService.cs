@@ -80,7 +80,7 @@ namespace SocialHub.Infrastructure.Services
                         .FirstOrDefaultAsync(acc => acc.Id == accountId);
 
                     var mappedPosts = posts.AsParallel()
-                        .Select(p => 
+                        .Select(p =>
                         {
                             if (dbAccount.Likes.Contains(p))
                                 p.IsLiked = true;

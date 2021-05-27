@@ -30,7 +30,7 @@ namespace SocialHub.Domain.Entities
         public bool IsLiked { get; set; }
 
         [NotMapped]
-        public bool IsShared { get; set; }       
+        public bool IsShared { get; set; }
 
         /// <summary>
         /// Post Author Id
