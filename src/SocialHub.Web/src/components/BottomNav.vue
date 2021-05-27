@@ -7,7 +7,6 @@
         @click="$emit('onNav', '/home')"
       >
         <HomeIcon class="group-hover:text-white"/>
-
         <span class="group-hover:text-white">
           Home
         </span>
@@ -19,7 +18,6 @@
         @click="$emit('onNav', `/${account.username}`)"
       >
         <UserIcon class="group-hover:text-white"/>
-
         <span class="group-hover:text-white">
           Profile
         </span>
