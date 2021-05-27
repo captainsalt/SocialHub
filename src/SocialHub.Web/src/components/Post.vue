@@ -15,23 +15,23 @@
     <div class="flex justify-around">
       <HeartSolid
         v-if="isLiked"
-        class="text-red-500 svg"
+        class="text-red-500 post-button"
         @click="removePostLike"
       />
       <HeartOutline
         v-else
-        class="svg"
+        class="hover:text-red-500 post-button hover:stroke-current"
         @click="likePost"
       />
 
       <SpeakerSolid
         v-if="isShared"
-        class="text-green-500 svg"
+        class="text-green-500 post-button"
         @click="removePostShare"
       />
       <SpeakerOutline
         v-else
-        class="svg"
+        class="hover:text-green-500 post-button hover:stroke-current"
         @click="sharePost"
       />
     </div>
@@ -39,11 +39,11 @@
 </template>
 
 <script lang="ts">
+import { ref } from "vue";
 import PostModel from "@/models/PostModel";
 import { share, like, removeLike, removeShare } from "@/services/api-interface";
 import { HeartIcon as HeartOutline, SpeakerphoneIcon as SpeakerOutline } from "@heroicons/vue/outline";
 import { HeartIcon as HeartSolid, SpeakerphoneIcon as SpeakerSolid } from "@heroicons/vue/solid";
-import { ref } from "@vue/reactivity";
 
 interface Props {
   post: PostModel
@@ -100,11 +100,11 @@ export default {
 </script>
 
 <style scoped>
-.svg {
+.post-button {
   @apply h-5;
 }
 
-.svg:hover {
+.post-button:hover {
   @apply cursor-pointer;
 }
 </style>
