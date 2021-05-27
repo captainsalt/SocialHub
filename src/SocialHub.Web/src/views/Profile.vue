@@ -1,5 +1,15 @@
 <template>
-  <PureProfile :profile="profile" :posts="posts"/>
+  <Alert
+    v-if="notFound"
+    type="error"
+    message="User not found"
+    class="w-11/12 mx-auto mt-2"
+  />
+  <PureProfile
+    v-else
+    :profile="profile"
+    :posts="posts"
+  />
 </template>
 
 <script lang="ts">
@@ -9,23 +19,33 @@ import PureProfile from "@/views/pure/PureProfile.vue";
 import { usePostsStore } from "@/store/local";
 import { getUserFeed, getProfile } from "@/services/api-interface";
 import ProfileModel from "@/models/ProfileModel";
+import Alert from "@/components/Alert.vue";
 
 export default {
-  components: { PureProfile },
+  components: {
+    PureProfile,
+    Alert
+  },
   setup() {
     const { posts, setValue: setPostsValue } = usePostsStore();
     const profile = ref<ProfileModel>();
+    const notFound = ref(false);
 
     async function displayProfile() {
       const username = router.currentRoute.value.params.username?.toString();
       if (!username)
         return;
 
-      const profileResponse = await getProfile(username);
-      const feedResponse = await getUserFeed(username);
-
-      setPostsValue(feedResponse);
-      profile.value = profileResponse;
+      try {
+        const profileResponse = await getProfile(username);
+        const feedResponse = await getUserFeed(username);
+        setPostsValue(feedResponse);
+        profile.value = profileResponse;
+      }
+      catch (response) {
+        if (response.status === 400)
+          notFound.value = true;
+      }
     }
 
     onBeforeMount(async () => {
@@ -39,7 +59,8 @@ export default {
 
     return {
       posts,
-      profile
+      profile,
+      notFound
     };
   }
 };

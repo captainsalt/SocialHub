@@ -16,7 +16,7 @@
       <!-- Profile -->
       <div
         class="nav-button"
-        @click="$emit('onNav', `/profile/${account.username}`)"
+        @click="$emit('onNav', `/${account.username}`)"
       >
         <UserIcon class="group-hover:text-white"/>
 

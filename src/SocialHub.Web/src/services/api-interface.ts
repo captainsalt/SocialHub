@@ -18,7 +18,7 @@ async function fetchRequestVoid(method: string, route: string, options: RequestI
   });
 
   if (!response.ok)
-    throw new Error((await response.json()).message);
+    throw response;
 }
 
 async function fetchRequest<T>(method: string, route: string, options: RequestInit): Promise<T> { // eslint-disable-line no-undef
@@ -29,7 +29,7 @@ async function fetchRequest<T>(method: string, route: string, options: RequestIn
   });
 
   if (!response.ok)
-    throw new Error((await response.json()).message);
+    throw response;
 
   return response.json();
 }
