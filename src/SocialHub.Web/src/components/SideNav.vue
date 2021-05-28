@@ -1,11 +1,11 @@
 <template>
   <div class="flex flex-col">
-    <a href="" class="nav-item group">
+    <a class="nav-item group" @click="$router.push('/home')">
       <HomeIcon class="nav-image "/>
       <span class="nav-label ">Home</span>
     </a>
 
-    <a href="" class="nav-item group">
+    <a class="nav-item group" @click="$router.push(`/${account.username}`)">
       <UserIcon class="nav-image "/>
       <span class="nav-label ">Profile</span>
     </a>
@@ -14,10 +14,17 @@
 
 <script lang="ts">
 import { HomeIcon, UserIcon } from "@heroicons/vue/outline";
+import { account } from "@/store";
+
 export default {
   components: {
     HomeIcon,
     UserIcon
+  },
+  setup() {
+    return {
+      account
+    };
   }
 };
 </script>
