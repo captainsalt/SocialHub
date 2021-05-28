@@ -20,7 +20,7 @@ async function fetchRequestVoid(method: string, route: string, options: RequestI
   if (!response.ok) {
     const message = (await response.json()).message;
 
-    throw {
+    throw { // eslint-disable-line no-throw-literal
       response,
       status: response.status,
       message
@@ -38,7 +38,7 @@ async function fetchRequest<T>(method: string, route: string, options: RequestIn
   if (!response.ok) {
     const message = (await response.json()).message;
 
-    throw {
+    throw { // eslint-disable-line no-throw-literal
       response,
       status: response.status,
       message
