@@ -57,7 +57,7 @@ export default {
       errorMessages.value = [];
       const errors = [];
       const usernameRegex = /^[\w_-]{3,}$/;
-      const passwordRegex = /^[\w_-]{3,}$/;
+      const passwordRegex = /^.{3,}$/;
 
       if (!usernameRegex.test(formModel.username))
         errors.push("Username must be at least 3 characters long");
