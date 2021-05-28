@@ -89,7 +89,9 @@ export default {
     async function registerUser() {
       try {
         isLoading.value = true;
+
         validate();
+
         if (errorMessages.value.length > 0)
           return;
 

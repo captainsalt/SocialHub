@@ -72,7 +72,9 @@ export default {
       try {
         isLoading.value = true;
         errorMessages.value = [];
+
         validate();
+
         if (errorMessages.value.length > 0)
           return;
 
