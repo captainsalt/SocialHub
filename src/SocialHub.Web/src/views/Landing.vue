@@ -1,7 +1,7 @@
 <template>
-  <div class="grid items-center w-screen h-screen p-5 lg:p-96">
+  <div class="grid items-center w-screen h-screen p-5 md:w-8/12 md:mx-auto lg:w-5/12">
     <div>
-      <LoginForm v-if="showLogin"/>
+      <LoginForm v-if="showLogin"/> 
       <RegisterForm v-else/>
 
       <a
