@@ -15,9 +15,13 @@
       @keydown.enter="sendPost"
     >
 
-    <button class="col-span-3 row-start-2 btn btn-primary" @click="sendPost">
+    <Button
+      :is-loading="isLoading"
+      class="col-span-3 row-start-2 btn btn-primary"
+      @click="sendPost"
+    >
       Send
-    </button>
+    </Button>
   </div>
 </template>
 
@@ -34,21 +38,27 @@ export default {
   },
   setup() {
     const input = ref("");
+    const isLoading = ref(false);
 
     async function sendPost() {
       try {
+        isLoading.value = true;
         await createPost(input.value);
         input.value = "";
       }
       catch (response) {
         errorMessage.value = response.message ?? "Error sending post";
       }
+      finally {
+        isLoading.value = false;
+      }
     }
 
     return {
       input,
       sendPost,
-      errorMessage
+      errorMessage,
+      isLoading
     };
   }
 };
