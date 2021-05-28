@@ -2,7 +2,13 @@
   <div class="p-3 border-collapse border-gray-300">
     <!-- Header -->
     <div>
-      {{ post.account.username }}
+      <span
+        class="hover:underline hover:cursor-pointer"
+        @click="$router.push(post.account.username)"
+      >
+        {{ post.account.username }}
+      </span>
+      ·
       <span class="text-sm text-gray-600">{{ dayjs(post.createdAt).fromNow() }}</span>
     </div>
 
