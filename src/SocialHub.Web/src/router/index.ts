@@ -33,9 +33,9 @@ router.beforeEach(async (to, from, next) => {
     return next();
 
   if (!token.value)
-    return next({ path: "/"})
+    return next({ path: "/" });
 
   next();
-})
+});
 
 export default router;
