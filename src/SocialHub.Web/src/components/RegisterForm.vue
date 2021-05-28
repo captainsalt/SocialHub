@@ -72,7 +72,7 @@ export default {
       const errors = [];
       const emailRegex = /^.+?@.+\.(fake)$/;
       const usernameRegex = /^[\w_-]{3,}$/;
-      const passwordRegex = /^[\w_-]{3,}$/;
+      const passwordRegex = /^.{3,}$/;
 
       if (!emailRegex.test(formModel.email))
         errors.push("Invalid email. Emails must end with the 'fake' domain - debbie@domain.fake");
