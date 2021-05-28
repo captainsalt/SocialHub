@@ -41,9 +41,13 @@
         required
       >
 
-      <button class="w-full mt-2 btn btn-primary" @click.prevent="registerUser">
+      <Button
+        :is-loading="isLoading"
+        class="w-full mt-2 btn btn-primary"
+        @click.prevent="registerUser"
+      >
         Register
-      </button>
+      </Button>
     </div>
   </form>
 </template>
@@ -61,6 +65,7 @@ export default {
   setup() {
     const errorMessages = ref<string[]>([]);
     const formModel = reactive(new RegisterFormModel());
+    const isLoading = ref(false);
 
     function validate() {
       errorMessages.value = [];
@@ -83,6 +88,7 @@ export default {
 
     async function registerUser() {
       try {
+        isLoading.value = true;
         validate();
         if (errorMessages.value.length > 0)
           return;
@@ -95,13 +101,15 @@ export default {
       }
       catch (error) {
         errorMessages.value.push(error.message ?? "Error");
+        isLoading.value = false;
       }
     }
 
     return {
       ...toRefs(formModel),
       errorMessages,
-      registerUser
+      registerUser,
+      isLoading
     };
   }
 };

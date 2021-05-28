@@ -16,9 +16,13 @@
   }
 
   .btn {
-    @apply p-2 font-semibold tracking-wide uppercase rounded-md outline-none appearance-none;
+    @apply p-2 font-semibold tracking-wide uppercase rounded-md appearance-none;
   }
 
+  .btn:focus {
+    @apply outline-none ring-2 ring-purple-900 ring-opacity-50;
+  }
+  
   .btn-primary {
     @apply text-white bg-purple-700;
   }
@@ -29,5 +33,9 @@
 
   .btn-primary:active {
     @apply bg-purple-800 ring-0;
+  }
+
+  .btn:disabled {
+    @apply appearance-none cursor-wait opacity-60 ring-0;
   }
 }

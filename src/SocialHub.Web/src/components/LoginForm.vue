@@ -27,9 +27,13 @@
         required
       >
 
-      <button class="w-full mt-2 btn btn-primary" @click.prevent="userLogin">
+      <Button
+        :is-loading="isLoading"
+        class="w-full mt-2 btn-primary"
+        @click.prevent="userLogin"
+      >
         Log in
-      </button>
+      </Button>
     </div>
   </form>
 </template>
@@ -47,6 +51,7 @@ export default {
   setup() {
     const errorMessages = ref<string[]>([]);
     const formModel = reactive(new LoginFormModel());
+    const isLoading = ref(false);
 
     function validate() {
       errorMessages.value = [];
@@ -65,6 +70,7 @@ export default {
 
     async function userLogin() {
       try {
+        isLoading.value = true;
         errorMessages.value = [];
         validate();
         if (errorMessages.value.length > 0)
@@ -78,13 +84,15 @@ export default {
       }
       catch (error) {
         errorMessages.value.push(error.message ?? "Error");
+        isLoading.value = false;
       }
     }
 
     return {
       ...toRefs(formModel),
       errorMessages,
-      userLogin
+      userLogin,
+      isLoading
     };
   }
 };
