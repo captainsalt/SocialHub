@@ -58,7 +58,12 @@ namespace SocialHub.Infrastructure.Database
                 var doesNotExist = !Entry(entity).IsKeySet;
 
                 if (entity is IEntity x && doesNotExist)
-                    x.CreatedAt = DateTime.Now;
+                {
+                    // Use javascript inital date
+                    x.CreatedAt = DateTime.UtcNow
+                        .Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc))
+                        .TotalMilliseconds;
+                }
 
                 var added = await base.AddAsync(entity);
                 await SaveChangesAsync();

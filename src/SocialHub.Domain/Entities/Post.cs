@@ -24,7 +24,7 @@ namespace SocialHub.Domain.Entities
         public string Content { get; set; }
 
         [Required]
-        public DateTime CreatedAt { get; set; }
+        public double CreatedAt { get; set; }
 
         [NotMapped]
         public bool IsLiked { get; set; }

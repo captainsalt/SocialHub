@@ -2,5 +2,5 @@
 
 namespace SocialHub.API.Dtos
 {
-    public record AccountDto(Guid Id, string Username, string Email, DateTime CreatedAt);
+    public record AccountDto(Guid Id, string Username, string Email, long CreatedAt);
 }

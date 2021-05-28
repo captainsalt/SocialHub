@@ -68,6 +68,11 @@ namespace SocialHub.API.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> CreatePost([FromBody] CreatePostRequest request)
         {
+            if (request.Content.Length > 200)
+                return BadRequest(new ErrorDto("Message cannot be over 200 characters long"));
+            else if (string.IsNullOrWhiteSpace(request.Content))
+                return BadRequest(new ErrorDto("Message cannot be empty"));
+
             var result =
                 from tokenAccount in _jwtService.GetAccountFromToken(HttpContext).ToAsync()
                 from post in _postService.CreatePostAsync(tokenAccount.Id, request.Content).ToAsync()

@@ -1,16 +1,20 @@
 <template>
   <form>
     <div>
-      <Alert
-        v-if="errorMessage"
-        class="mb-2 text-center"
-        type="error"
-        :message="errorMessage"
-      />
+      <div v-if="errorMessages.length > 0">
+        <Alert
+          v-for="(msg, i) in errorMessages"
+          :key="i"
+          class="mb-2 text-center"
+          type="error"
+          :message="msg"
+        />
+      </div>
 
       <!-- Password -->
       <label class="label">Email</label>
       <input
+        id="email"
         v-model="email"
         class="input"
         type="text"
@@ -37,9 +41,13 @@
         required
       >
 
-      <button class="w-full mt-2 btn btn-primary" @click.prevent="registerUser">
+      <Button
+        :is-loading="isLoading"
+        class="w-full mt-2 btn btn-primary"
+        @click.prevent="registerUser"
+      >
         Register
-      </button>
+      </Button>
     </div>
   </form>
 </template>
@@ -55,11 +63,38 @@ import Alert from "@/components/Alert.vue";
 export default {
   components: { Alert },
   setup() {
-    const errorMessage = ref("");
+    const errorMessages = ref<string[]>([]);
     const formModel = reactive(new RegisterFormModel());
+    const isLoading = ref(false);
+
+    function validate() {
+      errorMessages.value = [];
+      const errors = [];
+      const emailRegex = /^.+?@.+\.(fake)$/;
+      const usernameRegex = /^[\w_-]{3,}$/;
+      const passwordRegex = /^.{3,}$/;
+
+      if (!emailRegex.test(formModel.email))
+        errors.push("Invalid email. Emails must end with the 'fake' domain - debbie@domain.fake");
+
+      if (!usernameRegex.test(formModel.username))
+        errors.push("Username must be at least 3 characters long");
+
+      if (!passwordRegex.test(formModel.password))
+        errors.push("Password must be at least 3 characters long");
+
+      errorMessages.value = errors;
+    }
 
     async function registerUser() {
       try {
+        isLoading.value = true;
+
+        validate();
+
+        if (errorMessages.value.length > 0)
+          return;
+
         const response = await register(formModel);
         setToken(response.token);
         setAccount(response.account);
@@ -67,14 +102,16 @@ export default {
         await router.push("/home");
       }
       catch (error) {
-        errorMessage.value = error.message ?? "Error";
+        errorMessages.value.push(error.message ?? "Error");
+        isLoading.value = false;
       }
     }
 
     return {
       ...toRefs(formModel),
-      errorMessage,
-      registerUser
+      errorMessages,
+      registerUser,
+      isLoading
     };
   }
 };

@@ -1,12 +1,15 @@
 <template>
   <form>
     <div>
-      <Alert
-        v-if="errorMessage"
-        type="error"
-        class="mb-2"
-        :message="errorMessage"
-      />
+      <div v-if="errorMessages.length > 0">
+        <Alert
+          v-for="(msg, i) in errorMessages"
+          :key="i"
+          class="mb-2 text-center"
+          type="error"
+          :message="msg"
+        />
+      </div>
 
       <label class="label">Username</label>
       <input
@@ -24,9 +27,13 @@
         required
       >
 
-      <button class="w-full mt-2 btn btn-primary" @click.prevent="userLogin">
+      <Button
+        :is-loading="isLoading"
+        class="w-full mt-2 btn-primary"
+        @click.prevent="userLogin"
+      >
         Log in
-      </button>
+      </Button>
     </div>
   </form>
 </template>
@@ -42,11 +49,35 @@ import router from "@/router";
 export default {
   components: { Alert },
   setup() {
-    const errorMessage = ref("");
+    const errorMessages = ref<string[]>([]);
     const formModel = reactive(new LoginFormModel());
+    const isLoading = ref(false);
+
+    function validate() {
+      errorMessages.value = [];
+      const errors = [];
+      const usernameRegex = /^[\w_-]{3,}$/;
+      const passwordRegex = /^.{3,}$/;
+
+      if (!usernameRegex.test(formModel.username))
+        errors.push("Username must be at least 3 characters long");
+
+      if (!passwordRegex.test(formModel.password))
+        errors.push("Password must be at least 3 characters long");
+
+      errorMessages.value = errors;
+    }
 
     async function userLogin() {
       try {
+        isLoading.value = true;
+        errorMessages.value = [];
+
+        validate();
+
+        if (errorMessages.value.length > 0)
+          return;
+
         const response = await login(formModel);
         setToken(response.token);
         setAccount(response.account);
@@ -54,14 +85,16 @@ export default {
         await router.push("/home");
       }
       catch (error) {
-        errorMessage.value = error.message ?? "Error";
+        errorMessages.value.push(error.message ?? "Error");
+        isLoading.value = false;
       }
     }
 
     return {
       ...toRefs(formModel),
-      errorMessage,
-      userLogin
+      errorMessages,
+      userLogin,
+      isLoading
     };
   }
 };

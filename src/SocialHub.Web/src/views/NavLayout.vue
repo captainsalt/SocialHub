@@ -3,7 +3,11 @@
     <router-view/>
 
     <div ref="bNav" class="fixed bottom-0 w-screen">
-      <PostInput v-show="isHome" class="px-4 mb-2"/>
+      <PostInput
+        v-show="isHome"
+        class="px-4 mb-2"
+        @error="setOffsetHeight"
+      />
       <BottomNav @on-nav="changeView"/>
     </div>
     <div ref="offsetDiv"/>
@@ -20,17 +24,17 @@ import PostInput from "@/components/PostInput.vue";
 const bNav: Ref<HTMLDivElement> = ref(); // eslint-disable-line no-undef
 const offsetDiv: Ref<HTMLDivElement> = ref(); // eslint-disable-line no-undef
 
-function setOffsetHeight(value: string | number) {
-  offsetDiv.value.style.height = `${value}px`;
+function setOffsetHeight() {
+  offsetDiv.value.style.height = `${bNav.value?.offsetHeight}px`;
 }
 
 async function changeView(payload: string) {
   await router.push(payload);
-  setOffsetHeight(bNav.value?.offsetHeight);
+  setOffsetHeight();
 }
 
 onMounted(() => {
-  setOffsetHeight(bNav.value?.offsetHeight);
+  setOffsetHeight();
 });
 
 const isHome = ref(router.currentRoute.value.name === "Home");

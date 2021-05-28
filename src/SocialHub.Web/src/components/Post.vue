@@ -2,8 +2,14 @@
   <div class="p-3 border-collapse border-gray-300">
     <!-- Header -->
     <div>
-      {{ post.account.username }}
-      <span class="text-sm text-gray-600">{{ post.createdAt }}</span>
+      <span
+        class="hover:underline hover:cursor-pointer"
+        @click="$router.push(post.account.username)"
+      >
+        {{ post.account.username }}
+      </span>
+      ·
+      <span class="text-sm text-gray-600">{{ dayjs(post.createdAt).fromNow() }}</span>
     </div>
 
     <!-- Content -->
@@ -42,6 +48,7 @@
 import { ref } from "vue";
 import PostModel from "@/models/PostModel";
 import { share, like, removeLike, removeShare } from "@/services/api-interface";
+import dayjs from "@/services/dayjs";
 import {
   HeartIcon as HeartOutline,
   RefreshIcon as RefreshOutline
@@ -99,7 +106,8 @@ export default {
       likePost,
       sharePost,
       removePostLike,
-      removePostShare
+      removePostShare,
+      dayjs
     };
   }
 };
