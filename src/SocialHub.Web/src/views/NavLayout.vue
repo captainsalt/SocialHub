@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="sm:grid-flow-col sm:grid-cols-4 sm:grid">
-      <div class="hidden sm:flex sm:items-center sm:h-screen sm:col-span-1 sm:sticky sm:top-0">
+    <div class="sm:grid-flow-col sm:grid-cols-12 sm:grid">
+      <div class="hidden sm:flex sm:items-center sm:h-screen sm:col-span-3 sm:sticky sm:top-0">
         <SideNav class="w-full mx-1"/>
       </div>
-      <router-view class="sm:col-span-4"/>
+      <router-view class="sm:col-span-9"/>
     </div>
 
     <div class="fixed bottom-0 w-screen">
