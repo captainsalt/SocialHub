@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex justify-around w-full bg-purple-500">
+    <div class="flex justify-around w-full bg-purple-100">
       <!-- Home -->
       <div
         class="nav-button"
@@ -48,11 +48,11 @@ export default {
 
 <style scoped>
 .nav-button {
-  @apply flex flex-col flex-wrap items-center justify-center p-2 w-52 group hover:cursor-pointer hover:bg-purple-600;
+  @apply flex flex-col flex-wrap items-center justify-center p-2 w-52 group hover:cursor-pointer hover:bg-purple-300;
 }
 
 .nav-button:active {
-  @apply bg-purple-700;
+  @apply bg-purple-400;
 }
 
 .nav-button svg {
