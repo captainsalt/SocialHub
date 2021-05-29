@@ -1,12 +1,12 @@
 <template>
   <div class="flex flex-col">
     <a class="nav-item group" @click="$router.push('/home')">
-      <HomeIcon class="nav-image"/>
+      <HomeIcon class="nav-image" />
       <span class="nav-label">Home</span>
     </a>
 
     <a class="nav-item group" @click="$router.push(`/${account.username}`)">
-      <UserIcon class="nav-image "/>
+      <UserIcon class="nav-image " />
       <span class="nav-label">Profile</span>
     </a>
   </div>
@@ -31,11 +31,18 @@ export default {
 
 <style scoped>
 .nav-item {
-  @apply  p-5 bg-purple-500 flex  text-center items-center justify-items-center;
+  @apply p-5 bg-purple-500 flex  text-center items-center justify-items-center;
+}
+.nav-item:first-child {
+  @apply rounded-t-lg;
+}
+
+.nav-item:last-child {
+  @apply rounded-b-lg;
 }
 
 .nav-item:hover {
-  @apply bg-purple-600;
+  @apply bg-purple-600 cursor-pointer;
 }
 
 .nav-item:active {
@@ -47,7 +54,7 @@ export default {
 }
 
 .nav-image {
-  @apply h-7 group-hover:text-white
+  @apply h-7 group-hover:text-white;
 }
 
 .nav-label {

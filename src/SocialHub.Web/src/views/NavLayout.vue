@@ -1,8 +1,10 @@
 <template>
   <div>
-    <div class="p-1 sm:grid-flow-col sm:grid-cols-12 sm:gap-1 sm:grid">
-      <SideNav class="hidden sm:col-span-3 sm:inline-block"/>
-      <router-view class="sm:col-span-9 sm:inline-block"/>
+    <div class="sm:grid-flow-col sm:grid-cols-4 sm:grid">
+      <div class="hidden sm:flex sm:items-center sm:h-screen sm:col-span-1 sm:sticky sm:top-0">
+        <SideNav class="w-full mx-1"/>
+      </div>
+      <router-view class="sm:col-span-4"/>
     </div>
 
     <div ref="bNav" class="fixed bottom-0 w-screen">
