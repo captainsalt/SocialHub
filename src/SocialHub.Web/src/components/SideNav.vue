@@ -31,14 +31,7 @@ export default {
 
 <style scoped>
 .nav-item {
-  @apply p-5 bg-purple-500 flex  text-center items-center justify-items-center;
-}
-.nav-item:first-child {
-  @apply rounded-t-lg;
-}
-
-.nav-item:last-child {
-  @apply rounded-b-lg;
+  @apply p-5 bg-purple-500 flex  text-center items-center justify-items-center h-auto;
 }
 
 .nav-item:hover {
