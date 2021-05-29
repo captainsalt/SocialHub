@@ -1,10 +1,13 @@
 <template>
-  <div class="divide-y rounded-md">
-    <Post
-      v-for="p in posts"
-      :key="p.id"
-      :post="p"
-    />
+  <div>
+    <div class="divide-y rounded-md">
+      <Post
+        v-for="p in posts"
+        :key="p.id"
+        :post="p"
+      />
+    </div>
+    <div id="offset" class="h-36"/>
   </div>
 </template>
 

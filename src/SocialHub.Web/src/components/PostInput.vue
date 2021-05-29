@@ -5,7 +5,6 @@
       type="error"
       class="row-start-1 col-span-full"
       :message="errorMessage"
-      @vnode-mounted="$emit('error')"
     />
 
     <input
@@ -33,9 +32,6 @@ const errorMessage = ref("");
 
 export default {
   components: { Alert },
-  emits: {
-    error: null
-  },
   setup() {
     const input = ref("");
     const isLoading = ref(false);
