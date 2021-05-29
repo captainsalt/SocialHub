@@ -3,7 +3,7 @@
     v-if="notFound"
     type="error"
     message="User not found"
-    class="w-11/12 mx-auto mt-2"
+    class="w-11/12 h-16 mx-auto mt-2"
   />
   <PureProfile
     v-else
