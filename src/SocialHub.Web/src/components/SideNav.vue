@@ -1,12 +1,12 @@
 <template>
   <div class="flex flex-col">
     <a class="nav-item group" @click="$router.push('/home')">
-      <HomeIcon class="nav-image" />
+      <HomeIcon class="nav-image"/>
       <span class="nav-label">Home</span>
     </a>
 
     <a class="nav-item group" @click="$router.push(`/${account.username}`)">
-      <UserIcon class="nav-image " />
+      <UserIcon class="nav-image "/>
       <span class="nav-label">Profile</span>
     </a>
   </div>
