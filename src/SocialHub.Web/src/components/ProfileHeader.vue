@@ -4,7 +4,7 @@
       <p>
         {{ profile.account.username }}
       </p>
-      <p>Followers: {{ profile.followers }} </p>
+      <p>Followers: {{ profile.followers }}</p>
       <p>Following: {{ profile.following }}</p>
       <p>Total posts: {{ profile.totalPosts }}</p>
 
