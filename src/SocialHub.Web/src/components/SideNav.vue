@@ -31,7 +31,7 @@ export default {
 
 <style scoped>
 .nav-item {
-  @apply p-5 flex text-center items-center justify-items-center;
+  @apply p-5 flex text-center items-center justify-items-center rounded-full mx-5;
 }
 
 .nav-item:hover {
