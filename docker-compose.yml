@@ -1,0 +1,37 @@
+version: "3.7"
+
+services:
+  api:
+    build: 
+      context: .
+      dockerfile: Dockerfile.API
+    environment:
+      POSTGRES_USER_FILE: /run/secrets/db_username
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+      SECRET_STRING_FILE: /run/secrets/secret_string
+    ports: 
+      - 3998:80
+    secrets:
+      - db_username
+      - db_password
+      - secret_string
+
+  db:
+    image: postgres:alpine
+    environment:
+      POSTGRES_USER_FILE: /run/secrets/db_username
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+      POSTGRES_DB: SocialHub
+    ports:
+      - 2345:5432
+    secrets:
+      - db_username
+      - db_password
+
+secrets: 
+  db_username:
+    file: ./secrets/db_username.txt
+  db_password:
+    file: ./secrets/db_password.txt
+  secret_string:
+    file: ./secrets/secret_string.txt
