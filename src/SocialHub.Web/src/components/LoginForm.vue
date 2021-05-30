@@ -86,6 +86,8 @@ export default {
       }
       catch (error) {
         errorMessages.value.push(error.message ?? "Error");
+      }
+      finally {
         isLoading.value = false;
       }
     }

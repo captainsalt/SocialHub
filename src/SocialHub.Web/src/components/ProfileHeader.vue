@@ -1,28 +1,34 @@
 <template>
   <div v-if="profile">
-    <div class="p-2 bg-purple-100">
-      <p>
-        {{ profile.account.username }}
-      </p>
-      <p>Followers: {{ profile.followers }} </p>
-      <p>Following: {{ profile.following }}</p>
-      <p>Total posts: {{ profile.totalPosts }}</p>
+    <div class="p-2 bg-purple-100 rounded-sm">
+      <div class="flex justify-between w-full">
+        <!-- Username -->
+        <p class="text-3xl">
+          {{ profile.account.username }}
+        </p>
+        <!-- Follow button -->
+        <div v-if="showFollowButton">
+          <button
+            v-if="isFollowing"
+            class=" btn btn-primary"
+            @click="unfollowUser"
+          >
+            Unfollow
+          </button>
+          <button
+            v-else
+            class="btn btn-primary"
+            @click="followUser"
+          >
+            Follow
+          </button>
+        </div>
+      </div>
 
-      <div v-if="showFollowButton">
-        <button
-          v-if="isFollowing"
-          class="btn btn-primary"
-          @click="unfollowUser"
-        >
-          Unfollow
-        </button>
-        <button
-          v-else
-          class="btn btn-primary"
-          @click="followUser"
-        >
-          Follow
-        </button>
+      <div class="flex justify-between">
+        <p>Followers: {{ profile.followers }}</p>
+        <p>Following: {{ profile.following }}</p>
+        <p>Total posts: {{ profile.totalPosts }}</p>
       </div>
     </div>
   </div>
