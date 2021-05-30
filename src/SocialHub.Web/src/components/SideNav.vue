@@ -31,7 +31,7 @@ export default {
 
 <style scoped>
 .nav-item {
-  @apply p-5 flex text-center items-center justify-items-center rounded-full mx-5;
+  @apply p-5 flex justify-center text-center rounded-full mx-5;
 }
 
 .nav-item:hover {
@@ -55,6 +55,6 @@ export default {
 }
 
 .nav-label {
-  @apply ml-4 text-xl;
+  @apply ml-4 hidden lg:block text-xl;
 }
 </style>
