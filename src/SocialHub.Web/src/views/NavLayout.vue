@@ -1,7 +1,7 @@
 <template>
-  <div class="sm:p-1">
+  <div>
     <div class="sm:grid-flow-col sm:grid-cols-12 sm:grid">
-      <SideNav class="hidden sm:col-start-3 sm:block sm:sticky sm:top-0 sm:h-screen sm:col-span-2"/>
+      <SideNav class="hidden sm:pt-1 sm:col-start-3 sm:block sm:sticky sm:top-0 sm:h-screen sm:col-span-2"/>
       <router-view class="sm:col-span-5"/>
     </div>
 
