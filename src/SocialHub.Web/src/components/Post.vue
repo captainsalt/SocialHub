@@ -18,7 +18,7 @@
     </div>
 
     <!-- Footer -->
-    <div class="flex justify-around">
+    <div class="flex justify-center gap-40">
       <HeartSolid
         v-if="isLiked"
         class="text-red-500 post-button hover:opacity-50"
