@@ -8,6 +8,7 @@ using SocialHub.Application.Models;
 using SocialHub.Domain.Entities;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Security.Claims;
 using System.Text;
 
@@ -16,10 +17,14 @@ namespace SocialHub.Infrastructure.Services
     class JwtService : IJwtService
     {
         private readonly IConfiguration _configuration;
+        private readonly string _secretString;
 
         public JwtService(IConfiguration configuration)
         {
             _configuration = configuration;
+            _secretString = File.ReadAllText(Environment.GetEnvironmentVariable("SECRET_STRING_FILE")) ??
+                _configuration["SecretString"] ??
+                throw new ValueIsNullException("SecretString is null");
         }
 
         public string Key { get; } = "USER";
@@ -27,7 +32,7 @@ namespace SocialHub.Infrastructure.Services
         public string GenerateJwtToken(Account account)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration["SecretString"]);
+            var key = Encoding.ASCII.GetBytes(_secretString);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -58,7 +63,7 @@ namespace SocialHub.Infrastructure.Services
             try
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes(_configuration["SecretString"]);
+                var key = Encoding.ASCII.GetBytes(_secretString);
 
                 tokenHandler.ValidateToken(token, new TokenValidationParameters
                 {
