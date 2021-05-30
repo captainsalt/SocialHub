@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="p-1">
     <div class="sm:grid-flow-col sm:grid-cols-12 sm:grid">
       <SideNav class="hidden sm:col-start-3 sm:block sm:sticky sm:top-0 sm:h-screen sm:col-span-2"/>
       <router-view class="sm:col-span-4"/>
