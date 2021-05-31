@@ -1,16 +1,25 @@
-version: "3.7"
+version: "3.3"
 
 services:
+  nginx:
+    depends_on:
+      - api
+    image: nginx:alpine
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 80:80
+
   api:
-    build: 
+    depends_on:
+      - db
+    build:
       context: .
       dockerfile: Dockerfile.API
     environment:
       POSTGRES_USER_FILE: /run/secrets/db_username
       POSTGRES_PASSWORD_FILE: /run/secrets/db_password
       SECRET_STRING_FILE: /run/secrets/secret_string
-    ports: 
-      - 3998:80
     secrets:
       - db_username
       - db_password
@@ -28,7 +37,7 @@ services:
       - db_username
       - db_password
 
-secrets: 
+secrets:
   db_username:
     file: ./secrets/db_username.txt
   db_password:
