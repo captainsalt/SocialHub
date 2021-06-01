@@ -8,7 +8,6 @@ using SocialHub.Application.Models;
 using SocialHub.Domain.Entities;
 using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.IO;
 using System.Security.Claims;
 using System.Text;
 
@@ -16,15 +15,11 @@ namespace SocialHub.Infrastructure.Services
 {
     class JwtService : IJwtService
     {
-        private readonly IConfiguration _configuration;
         private readonly string _secretString;
 
         public JwtService(IConfiguration configuration)
         {
-            _configuration = configuration;
-            _secretString = Environment.GetEnvironmentVariable("SECRET_STRING") ??
-                _configuration["SecretString"] ??
-                throw new ValueIsNullException("SecretString is null");
+            _secretString = configuration["SECRET_STRING"];
         }
 
         public string Key { get; } = "USER";
