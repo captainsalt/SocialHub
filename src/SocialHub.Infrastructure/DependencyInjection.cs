@@ -23,7 +23,7 @@ namespace SocialHub.Infrastructure
             }
             else
             {
-                var connectionString = $"server=db;Port=5432;Database=SocialHub;User Id={configuration["DB_USER"]};Password={configuration["DB_PASSWORD"]};";
+                var connectionString = $"server=db;Port=5432;Database=SocialHub;User Id={configuration["POSTGRES_USER"]};Password={configuration["POSTGRES_PASSWORD"]};";
                 serviceCollection.AddDbContext<ISocialHubDbContext, SocialHubDbContext>(options => options.UseNpgsql(connectionString));
             }
 
