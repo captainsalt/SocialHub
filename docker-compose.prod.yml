@@ -21,6 +21,7 @@ services:
       POSTGRES_USER_FILE: /run/secrets/db_user
       POSTGRES_PASSWORD_FILE: /run/secrets/db_password
       SECRET_STRING_FILE: /run/secrets/secret_string
+      ASPNETCORE_ENVIRONMENT: Production
     secrets:
       - db_user
       - db_password

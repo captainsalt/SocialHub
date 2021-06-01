@@ -18,7 +18,8 @@ services:
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
-      SECRET_STRING: supersecretString
+      SECRET_STRING: SuperSecretString
+      ASPNETCORE_ENVIRONMENT: Development
 
   db:
     image: postgres:alpine
