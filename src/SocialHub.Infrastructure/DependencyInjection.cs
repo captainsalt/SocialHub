@@ -5,7 +5,6 @@ using SocialHub.Application.Interfaces;
 using SocialHub.Infrastructure.Database;
 using SocialHub.Infrastructure.Services;
 using System;
-using System.IO;
 
 namespace SocialHub.Infrastructure
 {
@@ -13,17 +12,18 @@ namespace SocialHub.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection serviceCollection, IConfiguration configuration)
         {
-            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development"
-                && configuration.GetConnectionString("Postgres") is null)
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
             {
-                serviceCollection.AddDbContext<ISocialHubDbContext, SocialHubDbContext>(options => options.UseInMemoryDatabase("SocialHub"));
+                var connectionString = configuration.GetConnectionString("Postgres");
+
+                if (connectionString is null)
+                    serviceCollection.AddDbContext<ISocialHubDbContext, SocialHubDbContext>(options => options.UseInMemoryDatabase("SocialHub"));
+                else
+                    serviceCollection.AddDbContext<ISocialHubDbContext, SocialHubDbContext>(options => options.UseNpgsql(connectionString));
             }
             else
             {
-                var username = Environment.GetEnvironmentVariable("POSTGRES_USER") ?? throw new ArgumentNullException("DB Username cannot be null");
-                var password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? throw new ArgumentNullException("DB Password cannot be null");
-                var connectionString = $"server=db;Port=5432;Database=SocialHub;User Id={username};Password={password};";
-
+                var connectionString = $"server=db;Port=5432;Database=SocialHub;User Id={configuration["POSTGRES_USER"]};Password={configuration["POSTGRES_PASSWORD"]};";
                 serviceCollection.AddDbContext<ISocialHubDbContext, SocialHubDbContext>(options => options.UseNpgsql(connectionString));
             }
 

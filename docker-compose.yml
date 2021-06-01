@@ -5,9 +5,6 @@ services:
     image: nginx:alpine
     depends_on:
       - api
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - /etc/letsencrypt:/etc/letsencrypt:ro
     ports:
       - 80:80
       - 443:443
@@ -21,7 +18,8 @@ services:
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
-      SECRET_STRING: supersecretString
+      SECRET_STRING: SuperSecretString
+      ASPNETCORE_ENVIRONMENT: Development
 
   db:
     image: postgres:alpine
