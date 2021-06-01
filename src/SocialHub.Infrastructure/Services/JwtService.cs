@@ -22,7 +22,7 @@ namespace SocialHub.Infrastructure.Services
         public JwtService(IConfiguration configuration)
         {
             _configuration = configuration;
-            _secretString = File.ReadAllText(Environment.GetEnvironmentVariable("SECRET_STRING_FILE")) ??
+            _secretString = Environment.GetEnvironmentVariable("SECRET_STRING") ??
                 _configuration["SecretString"] ??
                 throw new ValueIsNullException("SecretString is null");
         }
