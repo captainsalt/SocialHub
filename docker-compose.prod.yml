@@ -1,0 +1,11 @@
+servicies:
+  nginx:
+    volumes: 
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    restart: always
+
+  api:
+    restart: always
+
+  db:
+    restart: always
