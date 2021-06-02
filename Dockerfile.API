@@ -1,8 +1,18 @@
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
+# Copy project files
+WORKDIR /app/src
+COPY src/SocialHub.Domain/*.csproj SocialHub.Domain/
+COPY src/SocialHub.Infrastructure/*.csproj SocialHub.Infrastructure/
+COPY src/SocialHub.Application/*.csproj SocialHub.Application/
+COPY src/SocialHub.API/*.csproj SocialHub.API/
+# Add files to sln and restore
 WORKDIR /app
+RUN dotnet new sln && \
+    dotnet sln add src/**/*.csproj && \
+    dotnet restore
+# Copy all files and build
 COPY src src
-RUN dotnet new sln && dotnet sln add src/**/*.csproj
 RUN dotnet publish -c Release -o out
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0
