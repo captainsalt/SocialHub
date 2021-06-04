@@ -1,6 +1,6 @@
 <template>
   <div class="grid items-center content-center w-screen h-screen p-5 md:w-8/12 md:mx-auto lg:w-5/12">
-    <Logo class="justify-self-center"/>
+    <img src="@/assets/logo.png" />
     <div>
       <LoginForm v-if="showLogin"/>
       <RegisterForm v-else/>
@@ -19,7 +19,6 @@
 /* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
 import RegisterForm from "@/components/RegisterForm.vue";
 import LoginForm from "@/components/LoginForm.vue";
-import Logo from "@/components/Logo.vue";
 import { ref } from "vue";
 
 const showLogin = ref(true);
