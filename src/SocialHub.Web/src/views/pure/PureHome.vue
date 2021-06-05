@@ -1,5 +1,10 @@
 <template>
-  <PostContainer :posts="posts"/>
+  <div>
+    <div class="sm:hidden">
+      <img class="h-10 mx-auto" src="@/assets/logo.png">
+    </div>
+    <PostContainer :posts="posts"/>
+  </div>
 </template>
 
 <script lang="ts">

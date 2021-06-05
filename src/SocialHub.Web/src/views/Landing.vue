@@ -1,5 +1,6 @@
 <template>
-  <div class="grid items-center w-screen h-screen p-5 md:w-8/12 md:mx-auto lg:w-5/12">
+  <div class="grid content-center w-screen h-screen p-5 md:w-8/12 md:mx-auto lg:w-5/12">
+    <img class="justify-self-center" src="@/assets/logo.png">
     <div>
       <LoginForm v-if="showLogin"/>
       <RegisterForm v-else/>
