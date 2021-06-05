@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col">
-    <img src="@/assets/logo.png"/>
-    
+    <img src="@/assets/logo.png">
+
     <a class="nav-item" @click="$router.push('/home')">
       <HomeIcon class="nav-image"/>
       <span class="nav-label">Home</span>
